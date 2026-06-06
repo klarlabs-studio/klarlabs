@@ -52,6 +52,7 @@
     "@types/d3-shape": "^3.1.6",
     "@types/d3-time-format": "^4.0.3",
     "@types/d3-transition": "^3.0.8",
+    "@types/node": "^25.9.2",
     "@vitest/coverage-v8": "^2.1.9",
     "happy-dom": "^15.11.7",
     "typescript": "^5.7.2",
