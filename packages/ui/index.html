@@ -183,6 +183,44 @@
 }</kl-code>
       </section>
 
+      <section id="inputs">
+        <h2>Inputs</h2>
+        <div class="grid">
+          <kl-input label="Email" type="email" placeholder="you@klarlabs.de" helper="Work email preferred"></kl-input>
+          <kl-input label="Password" type="password" error="Minimum 8 characters"></kl-input>
+          <kl-input label="Disabled" disabled placeholder="Not editable"></kl-input>
+        </div>
+      </section>
+
+      <section id="dividers">
+        <h2>Dividers</h2>
+        <kl-divider></kl-divider>
+        <kl-divider>Open source</kl-divider>
+      </section>
+
+      <section id="overlay">
+        <h2>Toast &amp; Modal</h2>
+        <div class="row">
+          <kl-button variant="secondary" id="toast-trigger">Show toast</kl-button>
+          <kl-button variant="secondary" id="modal-trigger">Open modal</kl-button>
+        </div>
+        <div
+          id="toast-stack"
+          style="position: fixed; inset-block-end: var(--kl-space-6); inset-inline-end: var(--kl-space-6); display: flex; flex-direction: column; gap: var(--kl-space-3); z-index: var(--kl-z-toast)"
+        >
+          <kl-toast variant="success" duration="4000" id="demo-toast">
+            <span slot="title">Deployed</span>
+            klarlabs.de is live.
+          </kl-toast>
+        </div>
+        <kl-modal id="demo-modal" aria-modal-label="Delete project">
+          <span slot="header">Delete project?</span>
+          This permanently removes the project and all its data. This action cannot be undone.
+          <kl-button slot="footer" variant="ghost" id="modal-cancel">Cancel</kl-button>
+          <kl-button slot="footer" variant="danger" id="modal-confirm">Delete</kl-button>
+        </kl-modal>
+      </section>
+
       <section id="charts">
         <h2>Charts</h2>
         <div class="grid">
@@ -206,6 +244,14 @@
         x: m,
         y: 40 + i * 12 + Math.sin(i) * 18,
       }));
+
+      document.querySelector('#toast-trigger').addEventListener('click', () => {
+        document.querySelector('#demo-toast').open = true;
+      });
+      const modal = document.querySelector('#demo-modal');
+      document.querySelector('#modal-trigger').addEventListener('click', () => modal.show());
+      document.querySelector('#modal-cancel').addEventListener('click', () => modal.close());
+      document.querySelector('#modal-confirm').addEventListener('click', () => modal.close());
 
       document.querySelector('#demo-bar').data = [
         { x: 'agent-go', y: 4200 },
