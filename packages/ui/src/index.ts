@@ -28,3 +28,6 @@ export type { ChartMargin } from './components/chart-base.js';
 export type { KlInputType, KlInputSize } from './components/kl-input.js';
 export type { KlDividerOrientation } from './components/kl-divider.js';
 export type { KlToastVariant } from './components/kl-toast.js';
+
+export { chartDataSchema, parseChartData } from './schemas/chart-data.js';
+export type { ChartDatum } from './schemas/chart-data.js';

@@ -19,7 +19,8 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: (id) => id === 'lit' || id.startsWith('lit/') || id.startsWith('d3-'),
+      external: (id) =>
+        id === 'lit' || id.startsWith('lit/') || id.startsWith('d3-') || id === 'zod',
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',

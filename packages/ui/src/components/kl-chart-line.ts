@@ -44,7 +44,8 @@ export class KlChartLine extends KlChartBase {
 
   protected renderChart() {
     const svgEl = this.svgRef.value;
-    if (!svgEl || !this.data.length) return;
+    const data = this.validData;
+    if (!svgEl || !data.length) return;
 
     const width = this.getBoundingClientRect().width || 640;
     const { top, right, bottom, left } = this.margin;
@@ -62,13 +63,13 @@ export class KlChartLine extends KlChartBase {
     const xVal = (d: Record<string, unknown>) => d[this.xKey] as number | Date;
     const yVal = (d: Record<string, unknown>) => Number(d[this.yKey]);
 
-    const domain = extent(this.data, xVal) as [number, number];
+    const domain = extent(data, xVal) as [number, number];
     const x = this.timeScale
       ? scaleTime().domain(domain).range([0, innerWidth])
       : scaleLinear().domain(domain).range([0, innerWidth]);
 
     const y = scaleLinear()
-      .domain([0, (max(this.data, yVal) ?? 0) * 1.1])
+      .domain([0, (max(data, yVal) ?? 0) * 1.1])
       .range([innerHeight, 0]);
 
     if (this.showGrid) {
@@ -88,7 +89,7 @@ export class KlChartLine extends KlChartBase {
         .y1((d) => y(yVal(d)))
         .curve(curveMonotoneX);
 
-      g.append('path').datum(this.data).attr('class', 'kl-chart-area').attr('d', area);
+      g.append('path').datum(data).attr('class', 'kl-chart-area').attr('d', area);
     }
 
     const line = d3Line<Record<string, unknown>>()
@@ -96,7 +97,7 @@ export class KlChartLine extends KlChartBase {
       .y((d) => y(yVal(d)))
       .curve(curveMonotoneX);
 
-    const path = g.append('path').datum(this.data).attr('class', 'kl-chart-line').attr('d', line);
+    const path = g.append('path').datum(data).attr('class', 'kl-chart-line').attr('d', line);
 
     if (this.motionAllowed) {
       const node = path.node();

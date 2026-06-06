@@ -36,7 +36,8 @@ export class KlChartBar extends KlChartBase {
 
   protected renderChart() {
     const svgEl = this.svgRef.value;
-    if (!svgEl || !this.data.length) return;
+    const data = this.validData;
+    if (!svgEl || !data.length) return;
 
     const width = this.getBoundingClientRect().width || 640;
     const { top, right, bottom, left } = this.margin;
@@ -55,12 +56,12 @@ export class KlChartBar extends KlChartBase {
     const yVal = (d: Record<string, unknown>) => Number(d[this.yKey]);
 
     const x = scaleBand()
-      .domain(this.data.map(xVal))
+      .domain(data.map(xVal))
       .range([0, innerWidth])
       .padding(0.25);
 
     const y = scaleLinear()
-      .domain([0, (max(this.data, yVal) ?? 0) * 1.1])
+      .domain([0, (max(data, yVal) ?? 0) * 1.1])
       .range([innerHeight, 0]);
 
     if (this.showGrid) {
@@ -75,7 +76,7 @@ export class KlChartBar extends KlChartBase {
 
     const bars = g
       .selectAll('rect.kl-chart-bar')
-      .data(this.data)
+      .data(data)
       .join('rect')
       .attr('class', 'kl-chart-bar')
       .attr('x', (d) => x(xVal(d)) ?? 0)

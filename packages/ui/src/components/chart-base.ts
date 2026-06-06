@@ -1,5 +1,6 @@
 import { LitElement, css } from 'lit';
 import { property } from 'lit/decorators.js';
+import { parseChartData, type ChartDatum } from '../schemas/chart-data.js';
 
 export interface ChartMargin {
   top: number;
@@ -50,7 +51,7 @@ export abstract class KlChartBase extends LitElement {
   `;
 
   /** Chart data. */
-  @property({ type: Array }) data: Record<string, unknown>[] = [];
+  @property({ type: Array }) data: ChartDatum[] = [];
 
   /** Key for the x value in each datum. */
   @property({ type: String, attribute: 'x-key' }) xKey = 'x';
@@ -73,6 +74,11 @@ export abstract class KlChartBase extends LitElement {
   protected margin: ChartMargin = { top: 16, right: 16, bottom: 32, left: 48 };
 
   private resizeObserver?: ResizeObserver;
+
+  /** Zod-validated data — invalid datums dropped with a console warning. */
+  protected get validData(): ChartDatum[] {
+    return parseChartData(this.data, this.xKey, this.yKey, this.tagName.toLowerCase());
+  }
 
   protected get motionAllowed(): boolean {
     return (
