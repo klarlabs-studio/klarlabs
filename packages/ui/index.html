@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Klarlabs UI — Component Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/tokens/tokens.css" />
+    <style>
+      body {
+        margin: 0;
+      }
+      main {
+        max-inline-size: var(--kl-content-lg);
+        margin-inline: auto;
+        padding: var(--kl-space-12) var(--kl-space-6);
+        display: grid;
+        gap: var(--kl-space-12);
+      }
+      section {
+        display: grid;
+        gap: var(--kl-space-6);
+      }
+      h2 {
+        font-size: var(--kl-text-lg);
+        letter-spacing: var(--kl-tracking-tight);
+        margin: 0;
+        border-block-end: 1px solid var(--kl-border);
+        padding-block-end: var(--kl-space-3);
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--kl-space-4);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+        gap: var(--kl-space-6);
+      }
+      .wordmark {
+        font-family: var(--kl-font-sans);
+        font-weight: var(--kl-weight-bold);
+        letter-spacing: var(--kl-tracking-tight);
+        color: var(--kl-ink);
+        text-decoration: none;
+      }
+      .wordmark em {
+        color: var(--kl-accent);
+        font-style: normal;
+      }
+    </style>
+  </head>
+  <body>
+    <kl-nav scroll-threshold="24">
+      <a class="wordmark" slot="brand" href="/">klar<em>labs</em></a>
+      <a href="#buttons">Components</a>
+      <a href="#charts">Charts</a>
+      <a href="#products">Products</a>
+      <kl-button slot="cta" size="sm" href="https://github.com/klarlabs-studio" target="_blank"
+        >GitHub</kl-button
+      >
+      <a slot="drawer" href="#buttons">Components</a>
+      <a slot="drawer" href="#charts">Charts</a>
+      <a slot="drawer" href="#products">Products</a>
+    </kl-nav>
+
+    <kl-hero animated>
+      <span slot="eyebrow">Klarlabs</span>
+      <h1 slot="title">We build tools that make complex things <em style="color: var(--kl-accent); font-style: normal">clear</em>.</h1>
+      <p slot="subtitle">Precision software from Munich.</p>
+      <span slot="actions">
+        <kl-button size="lg" href="#products">View products</kl-button>
+        <kl-button size="lg" variant="ghost" href="#oss" style="--kl-button-color: var(--kl-dark-ink)">Open source</kl-button>
+      </span>
+    </kl-hero>
+
+    <main>
+      <section id="buttons">
+        <h2>Buttons</h2>
+        <div class="row">
+          <kl-button>Primary</kl-button>
+          <kl-button variant="secondary">Secondary</kl-button>
+          <kl-button variant="ghost">Ghost</kl-button>
+          <kl-button variant="danger">Danger</kl-button>
+          <kl-button disabled>Disabled</kl-button>
+          <kl-button loading>Loading</kl-button>
+        </div>
+        <div class="row">
+          <kl-button size="sm">Small</kl-button>
+          <kl-button size="md">Medium</kl-button>
+          <kl-button size="lg">Large</kl-button>
+        </div>
+      </section>
+
+      <section id="badges">
+        <h2>Badges</h2>
+        <div class="row">
+          <kl-badge>Default</kl-badge>
+          <kl-badge variant="accent">Accent</kl-badge>
+          <kl-badge variant="success">Success</kl-badge>
+          <kl-badge variant="warning">Warning</kl-badge>
+          <kl-badge variant="error">Error</kl-badge>
+          <kl-badge variant="neutral">Neutral</kl-badge>
+          <kl-badge variant="accent" size="sm">Small</kl-badge>
+        </div>
+      </section>
+
+      <section id="metrics">
+        <h2>Metrics</h2>
+        <div class="row" style="gap: var(--kl-space-12)">
+          <kl-metric value="99.98%" label="Uptime" trend="up" delta="+0.02"></kl-metric>
+          <kl-metric value="1.2M" label="Requests / day" trend="up" delta="+12%"></kl-metric>
+          <kl-metric value="38ms" label="p99 latency" trend="down" delta="-4ms"></kl-metric>
+          <kl-metric value="7" label="Products" trend="neutral"></kl-metric>
+        </div>
+      </section>
+
+      <section id="cards">
+        <h2>Cards</h2>
+        <div class="grid">
+          <kl-card>
+            <span slot="header">Default</span>
+            Raised surface with border.
+          </kl-card>
+          <kl-card variant="outlined">
+            <span slot="header">Outlined</span>
+            Transparent, stronger border.
+          </kl-card>
+          <kl-card variant="elevated">
+            <span slot="header">Elevated</span>
+            Shadow, no border.
+          </kl-card>
+          <kl-card variant="interactive">
+            <span slot="header">Interactive</span>
+            Hover: teal border + lift.
+            <kl-button slot="footer" variant="secondary" size="sm">Action</kl-button>
+          </kl-card>
+        </div>
+      </section>
+
+      <section id="products">
+        <h2>Product cards</h2>
+        <div class="grid">
+          <kl-product-card
+            name="agent-go"
+            description="Production-grade AI agent framework for Go."
+            href="#"
+            status="live"
+          ></kl-product-card>
+          <kl-product-card
+            name="Obvia"
+            description="Observability that explains itself."
+            href="#"
+            status="beta"
+          ></kl-product-card>
+          <kl-product-card
+            name="Nomi"
+            description="Naming infrastructure for distributed teams."
+            href="#"
+            status="coming-soon"
+          ></kl-product-card>
+        </div>
+      </section>
+
+      <section id="code">
+        <h2>Code</h2>
+        <p>
+          Install via
+          <kl-code inline>go get github.com/klarlabs-studio/agent-go</kl-code> and import.
+        </p>
+        <kl-code language="go" copyable line-numbers>func main() {
+	agent := agentgo.New(
+		agentgo.WithModel("claude-opus-4-8"),
+	)
+	agent.Run(context.Background())
+}</kl-code>
+      </section>
+
+      <section id="charts">
+        <h2>Charts</h2>
+        <div class="grid">
+          <kl-card>
+            <span slot="header">Requests over time</span>
+            <kl-chart-line id="demo-line" aria-chart-label="Requests over time"></kl-chart-line>
+          </kl-card>
+          <kl-card>
+            <span slot="header">Downloads by library</span>
+            <kl-chart-bar id="demo-bar" aria-chart-label="Downloads by library"></kl-chart-bar>
+          </kl-card>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      import './src/index.ts';
+
+      const months = [...Array(12)].map((_, i) => new Date(2026, i, 1));
+      document.querySelector('#demo-line').data = months.map((m, i) => ({
+        x: m,
+        y: 40 + i * 12 + Math.sin(i) * 18,
+      }));
+
+      document.querySelector('#demo-bar').data = [
+        { x: 'agent-go', y: 4200 },
+        { x: 'mcp-go', y: 3100 },
+        { x: 'obvia', y: 1800 },
+        { x: 'nomi', y: 900 },
+      ];
+    </script>
+  </body>
+</html>

@@ -1,0 +1,191 @@
+/*
+ * Klarlabs Design System — Tokens v0.1
+ * Refined monochrome with a single precise accent.
+ * Studio: Munich, Germany — klarlabs.de
+ */
+
+@layer reset, base, tokens, components, utilities, overrides;
+
+@layer tokens {
+  :root {
+    /* ── Studio accent — Klarlabs Teal ─────────────────────── */
+    --kl-accent:        #0d9488;
+    --kl-accent-light:  #14b8a6;
+    --kl-accent-dim:    #0d948820;
+    --kl-accent-border: #0d948840;
+
+    /* ── Monochrome scale ──────────────────────────────────── */
+    --kl-ink:           #0a0a0b;
+    --kl-ink-secondary: #3f3f46;
+    --kl-ink-tertiary:  #71717a;
+    --kl-ink-disabled:  #a1a1aa;
+    --kl-ink-inverse:   #fafafa;
+
+    --kl-surface:        #ffffff;
+    --kl-surface-raised: #fafafa;
+    --kl-surface-muted:  #f4f4f5;
+    --kl-surface-subtle: #e4e4e7;
+
+    --kl-border:        #e4e4e7;
+    --kl-border-strong: #d4d4d8;
+
+    /* ── Dark mode surfaces (raw values) ───────────────────── */
+    --kl-dark-surface:        #09090b;
+    --kl-dark-surface-raised: #111113;
+    --kl-dark-surface-muted:  #18181b;
+    --kl-dark-border:         #27272a;
+    --kl-dark-border-strong:  #3f3f46;
+    --kl-dark-ink:            #fafafa;
+    --kl-dark-ink-secondary:  #a1a1aa;
+    --kl-dark-ink-tertiary:   #71717a;
+
+    /* ── Semantic states ───────────────────────────────────── */
+    --kl-success: #16a34a;
+    --kl-warning: #d97706;
+    --kl-error:   #dc2626;
+    --kl-info:    #0d9488;
+
+    /* ── Typography ────────────────────────────────────────── */
+    --kl-font-sans: 'DM Sans', system-ui, sans-serif;
+    --kl-font-mono: 'DM Mono', 'Fira Code', monospace;
+
+    /* Scale — Major Third (1.25) */
+    --kl-text-xs:   0.64rem;
+    --kl-text-sm:   0.8rem;
+    --kl-text-base: 1rem;
+    --kl-text-md:   1.25rem;
+    --kl-text-lg:   1.563rem;
+    --kl-text-xl:   1.953rem;
+    --kl-text-2xl:  2.441rem;
+    --kl-text-3xl:  3.052rem;
+
+    --kl-weight-normal:   400;
+    --kl-weight-medium:   500;
+    --kl-weight-semibold: 600;
+    --kl-weight-bold:     700;
+
+    --kl-leading-tight:   1.2;
+    --kl-leading-snug:    1.4;
+    --kl-leading-normal:  1.6;
+    --kl-leading-relaxed: 1.8;
+
+    --kl-tracking-tight:  -0.03em;
+    --kl-tracking-normal: -0.01em;
+    --kl-tracking-wide:   0.06em;
+    --kl-tracking-wider:  0.1em;
+    --kl-tracking-label:  0.08em;
+
+    /* ── Spacing — base unit 4px ───────────────────────────── */
+    --kl-space-1:  0.25rem;
+    --kl-space-2:  0.5rem;
+    --kl-space-3:  0.75rem;
+    --kl-space-4:  1rem;
+    --kl-space-5:  1.25rem;
+    --kl-space-6:  1.5rem;
+    --kl-space-8:  2rem;
+    --kl-space-10: 2.5rem;
+    --kl-space-12: 3rem;
+    --kl-space-16: 4rem;
+    --kl-space-20: 5rem;
+    --kl-space-24: 6rem;
+    --kl-space-32: 8rem;
+
+    /* ── Border radius ─────────────────────────────────────── */
+    --kl-radius-sm:   0.25rem;
+    --kl-radius-md:   0.5rem;
+    --kl-radius-lg:   0.75rem;
+    --kl-radius-xl:   1rem;
+    --kl-radius-full: 9999px;
+
+    /* ── Shadows ───────────────────────────────────────────── */
+    --kl-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --kl-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --kl-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+    --kl-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+    --kl-shadow-accent: 0 0 0 3px var(--kl-accent-dim);
+
+    /* ── Layout ────────────────────────────────────────────── */
+    --kl-content-xs:  20rem;
+    --kl-content-sm:  36rem;
+    --kl-content-md:  48rem;
+    --kl-content-lg:  64rem;
+    --kl-content-xl:  80rem;
+    --kl-content-2xl: 96rem;
+
+    /* ── Z-index scale ─────────────────────────────────────── */
+    --kl-z-base:    0;
+    --kl-z-raised:  10;
+    --kl-z-overlay: 100;
+    --kl-z-modal:   200;
+    --kl-z-toast:   300;
+    --kl-z-tooltip: 400;
+
+    /* ── Motion ────────────────────────────────────────────── */
+    --kl-duration-instant: 50ms;
+    --kl-duration-fast:    150ms;
+    --kl-duration-normal:  250ms;
+    --kl-duration-slow:    400ms;
+    --kl-duration-slower:  600ms;
+
+    --kl-ease-default: cubic-bezier(0.16, 1, 0.3, 1);
+    --kl-ease-in:      cubic-bezier(0.4, 0, 1, 1);
+    --kl-ease-out:     cubic-bezier(0, 0, 0.2, 1);
+    --kl-ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);
+    --kl-ease-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ── Dark mode ─────────────────────────────────────────────
+   * System preference, unless overridden by data-theme.
+   * data-theme="dark" / data-theme="light" forces a mode
+   * (technical pages default dark, consumer pages light). */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --kl-surface:        var(--kl-dark-surface);
+      --kl-surface-raised: var(--kl-dark-surface-raised);
+      --kl-surface-muted:  var(--kl-dark-surface-muted);
+      --kl-surface-subtle: var(--kl-dark-border);
+      --kl-border:         var(--kl-dark-border);
+      --kl-border-strong:  var(--kl-dark-border-strong);
+      --kl-ink:            var(--kl-dark-ink);
+      --kl-ink-secondary:  var(--kl-dark-ink-secondary);
+      --kl-ink-tertiary:   var(--kl-dark-ink-tertiary);
+      --kl-ink-inverse:    #0a0a0b;
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme='dark'] {
+    --kl-surface:        var(--kl-dark-surface);
+    --kl-surface-raised: var(--kl-dark-surface-raised);
+    --kl-surface-muted:  var(--kl-dark-surface-muted);
+    --kl-surface-subtle: var(--kl-dark-border);
+    --kl-border:         var(--kl-dark-border);
+    --kl-border-strong:  var(--kl-dark-border-strong);
+    --kl-ink:            var(--kl-dark-ink);
+    --kl-ink-secondary:  var(--kl-dark-ink-secondary);
+    --kl-ink-tertiary:   var(--kl-dark-ink-tertiary);
+    --kl-ink-inverse:    #0a0a0b;
+    color-scheme: dark;
+  }
+}
+
+@layer base {
+  body {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-base);
+    line-height: var(--kl-leading-normal);
+    letter-spacing: var(--kl-tracking-normal);
+    color: var(--kl-ink);
+    background: var(--kl-surface);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

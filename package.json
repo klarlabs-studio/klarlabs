@@ -1,0 +1,17 @@
+{
+  "name": "klarlabs",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Klarlabs — precision software from Munich. Monorepo for the studio design system and sites.",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "dev": "pnpm --filter @klarlabs/ui dev"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.24.0"
+}
