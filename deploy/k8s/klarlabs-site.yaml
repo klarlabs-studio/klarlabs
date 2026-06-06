@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: klarlabs-site
+  namespace: klarlabs
+  labels:
+    app: klarlabs-site
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: klarlabs-site
+  template:
+    metadata:
+      labels:
+        app: klarlabs-site
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: edge-light
+      imagePullSecrets:
+        - name: ghcr-pull
+      containers:
+        - name: site
+          image: ghcr.io/klarlabs-studio/klarlabs-site:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 200m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: klarlabs-site
+  namespace: klarlabs
+spec:
+  selector:
+    app: klarlabs-site
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: klarlabs-site
+  namespace: klarlabs
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: klarlabs.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: klarlabs-site
+                port:
+                  number: 80
+    - host: www.klarlabs.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: klarlabs-site
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - klarlabs.de
+        - www.klarlabs.de
+      secretName: klarlabs-de-tls
