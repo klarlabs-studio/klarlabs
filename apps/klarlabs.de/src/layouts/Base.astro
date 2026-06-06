@@ -1,0 +1,55 @@
+---
+import '@klarlabs/ui/tokens.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={Astro.url} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+    <script>
+      import '@klarlabs/ui/kl-nav.js';
+      import '@klarlabs/ui/kl-hero.js';
+      import '@klarlabs/ui/kl-button.js';
+      import '@klarlabs/ui/kl-product-card.js';
+      import '@klarlabs/ui/kl-divider.js';
+      import '@klarlabs/ui/kl-code.js';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  body {
+    margin: 0;
+    background: var(--kl-surface);
+  }
+
+  /* Avoid layout shift before custom elements upgrade */
+  :not(:defined) {
+    visibility: hidden;
+  }
+</style>
