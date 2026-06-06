@@ -19,6 +19,11 @@ spec:
         kubernetes.io/hostname: edge-light
       imagePullSecrets:
         - name: ghcr-pull
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: site
           image: ghcr.io/klarlabs-studio/klarlabs-site:latest
