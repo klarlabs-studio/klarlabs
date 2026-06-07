@@ -153,26 +153,38 @@ export const products: Product[] = [
   {
     slug: 'nexa',
     name: 'Nexa',
-    tagline: 'Coming soon.',
-    description: 'In development.',
+    tagline: 'Your personal finances, on autopilot.',
+    description: 'A personal finance operating system powered by intelligent agents.',
     theme: 'light',
     accent: '#8B5CF6',
     status: 'coming-soon',
-    problem: '',
-    solution: 'Nexa is in development. Details soon.',
-    features: [],
+    problem:
+      'Financial life is scattered across banks, insurers, employers, portals, and inboxes — with no single owner. Documents get lost, deductions get missed, and paperwork waits until it is urgent.',
+    solution:
+      'Nexa is a personal finance operating system powered by intelligent agents. Delegate taxes, documents, deadlines, and obligations to an agent that collects, organizes, and optimizes year-round — with full transparency and control. You focus on decisions; Nexa handles the administration. Starting with German tax.',
+    features: [
+      { heading: 'Continuous, not seasonal', body: 'Works through the year — not a panicked week in spring. Nothing missed, no deadline blown.' },
+      { heading: 'Document intelligence', body: 'Messy real-world paperwork read, organized, and remembered — across years and life events.' },
+      { heading: 'Transparent agency', body: 'The agent explains what it does and why. You stay in control of every action.' },
+    ],
   },
   {
     slug: 'lexora',
     name: 'Lexora',
-    tagline: 'Coming soon.',
-    description: 'In development.',
+    tagline: 'Regulation, operationalized.',
+    description: 'A regulatory operating system — obligations turned into executable workflows.',
     theme: 'light',
     accent: '#0D9488',
     status: 'coming-soon',
-    problem: '',
-    solution: 'Lexora is in development. Details soon.',
-    features: [],
+    problem:
+      'GDPR, the EU AI Act, DORA, NIS2, CRA — regulations are fragmented, frequently updated, and operationally disconnected. "Can we launch this feature?" should not require a consulting engagement.',
+    solution:
+      'Lexora transforms regulations into executable operational workflows: regulation → obligation → control → process → evidence. Instead of proving compliance after the fact, organizations see what applies, what to do, and stay compliant continuously as systems and rules evolve.',
+    features: [
+      { heading: 'Obligation mapping', body: 'Which regulations apply, what they require, and what changed — in one place.' },
+      { heading: 'Executable workflows', body: 'Obligations become concrete actions with owners — not PDF checklists.' },
+      { heading: 'Evidence continuity', body: 'Evidence collected as work happens. Audit-ready by default, not by fire drill.' },
+    ],
   },
 ];
 
