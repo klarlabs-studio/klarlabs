@@ -89,19 +89,19 @@ export const products: Product[] = [
     ctaLabel: 'Open Brotwerk',
   },
   {
-    slug: 'iri',
-    name: 'IRI — KraftSport Coach',
+    slug: 'kraftsport-coach',
+    name: 'KraftSport Coach',
     tagline: 'Strength programming, engineered.',
-    description: 'Programming, progression, and analysis for strength athletes.',
+    description: 'Programming, progression, and analysis — coached by IRI, the strength AI.',
     theme: 'light',
     accent: '#0D9488',
     status: 'live',
     problem:
       'Strength progress stalls when programming is guesswork. Spreadsheets do not understand fatigue, RPE, or periodisation.',
     solution:
-      'IRI plans and adapts strength training — progression schemes, load management, and analysis built on how strength is actually trained.',
+      'KraftSport Coach plans and adapts strength training — progression schemes, load management, and analysis built on how strength is actually trained. IRI, the AI coach inside, reads your logged sessions and adjusts the plan.',
     features: [
-      { heading: 'Adaptive programming', body: 'Plans that respond to logged performance, not a static spreadsheet.' },
+      { heading: 'Adaptive programming', body: 'IRI responds to logged performance — not a static spreadsheet.' },
       { heading: 'Load management', body: 'RPE and volume tracking that flags overreach before it costs a week.' },
       { heading: 'Progress analysis', body: 'Estimated 1RMs, trends, and PRs — clearly visualised.' },
     ],
