@@ -44,7 +44,7 @@ export const products: Product[] = [
       { heading: 'Blast-path topology', body: 'Walks the service dependency graph to surface every downstream service an incident will touch — before approval.' },
       { heading: 'Multi-agent fleet', body: 'Pipeline-scoped agents own slices of the topology, each with its own tool allowlist and scope filter.' },
     ],
-    ctaHref: 'https://obvia.klarlabs.de',
+    ctaHref: 'https://obvia.felixgeelhaar.de',
     ctaLabel: 'Open Obvia',
   },
   {
