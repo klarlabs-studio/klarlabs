@@ -6,7 +6,7 @@ export type KlProductStatus = 'live' | 'beta' | 'coming-soon';
 
 const STATUS_LABEL: Record<KlProductStatus, string> = {
   live: 'Live',
-  beta: 'Beta',
+  beta: 'Public Beta',
   'coming-soon': 'Coming Soon',
 };
 

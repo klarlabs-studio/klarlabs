@@ -33,7 +33,7 @@ export const products: Product[] = [
     description: 'AI-powered incident prediction and governed auto-remediation.',
     theme: 'dark',
     accent: '#6366F1',
-    status: 'live',
+    status: 'beta',
     problem:
       'Operations teams react. Telemetry piles up in dashboards, anomalies surface as outages, and remediation is a 3 a.m. runbook under pressure.',
     solution:
@@ -54,7 +54,7 @@ export const products: Product[] = [
     description: 'See your pet’s health drift months before the next vet visit.',
     theme: 'light',
     accent: '#0EA5E9',
-    status: 'live',
+    status: 'beta',
     problem:
       'A lab value looks fine in isolation, but you sense something has changed. Records live in PDFs, notebooks, and memory — and most pet apps just wrap an LLM around your data and call it a diagnosis.',
     solution:
@@ -95,7 +95,7 @@ export const products: Product[] = [
     description: 'Programming, progression, and analysis — coached by IRI, the strength AI.',
     theme: 'light',
     accent: '#0D9488',
-    status: 'live',
+    status: 'beta',
     problem:
       'Strength progress stalls when programming is guesswork. Spreadsheets do not understand fatigue, RPE, or periodisation.',
     solution:
@@ -115,7 +115,7 @@ export const products: Product[] = [
     description: 'Catches the LLM and MCP threats every other scanner misses — offline-first, open source.',
     theme: 'dark',
     accent: '#EF4444',
-    status: 'live',
+    status: 'beta',
     problem:
       'Teams ship LLM features — chat completions, RAG ingest, agents with tool calls, MCP servers — and every conventional scanner is blind to the threats that come with them.',
     solution:
@@ -136,7 +136,7 @@ export const products: Product[] = [
     description: 'Launch, track, and govern campaigns across 50+ Jira teams.',
     theme: 'dark',
     accent: '#0D9488',
-    status: 'live',
+    status: 'beta',
     problem:
       'Coordinating work across 50+ teams should not require 50+ spreadsheets. Security patches stall in scattered backlogs, compliance tasks lose their audit trail, and nobody can answer "are we delivering value?" at renewal.',
     solution:
