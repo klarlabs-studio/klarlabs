@@ -1,22 +1,22 @@
-# @klarlabs/ui
+# @klarlabs-studio/ui
 
 Klarlabs design system — Lit web components. Refined monochrome with a single precise accent (Klarlabs Teal `#0D9488`). Framework-agnostic: works in Astro, Vue, React, or plain HTML.
 
 ## Install
 
 ```bash
-pnpm add @klarlabs/ui lit
+pnpm add @klarlabs-studio/ui lit
 ```
 
 ## Usage
 
 ```html
 <!-- Load tokens once, globally -->
-<link rel="stylesheet" href="@klarlabs/ui/tokens.css" />
+<link rel="stylesheet" href="@klarlabs-studio/ui/tokens.css" />
 
 <script type="module">
-  import '@klarlabs/ui/kl-button.js';
-  import '@klarlabs/ui/kl-card.js';
+  import '@klarlabs-studio/ui/kl-button.js';
+  import '@klarlabs-studio/ui/kl-card.js';
 </script>
 
 <kl-card variant="interactive">
@@ -26,7 +26,7 @@ pnpm add @klarlabs/ui lit
 </kl-card>
 ```
 
-Import everything: `import '@klarlabs/ui'` (registers all elements, exports classes + types).
+Import everything: `import '@klarlabs-studio/ui'` (registers all elements, exports classes + types).
 
 ## Components
 

@@ -1,7 +1,7 @@
 {
-  "name": "@klarlabs/ui",
+  "name": "@klarlabs-studio/ui",
   "version": "0.1.0",
-  "description": "Klarlabs design system — Lit web components. Refined monochrome with a single precise accent.",
+  "description": "Klarlabs design system \u2014 Lit web components. Refined monochrome with a single precise accent.",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -58,5 +58,14 @@
     "typescript": "^5.7.2",
     "vite": "^6.0.7",
     "vitest": "^2.1.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/klarlabs-studio/klarlabs.git",
+    "directory": "packages/ui"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
   }
 }

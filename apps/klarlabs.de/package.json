@@ -2,7 +2,7 @@
   "name": "@klarlabs/site",
   "version": "0.1.0",
   "private": true,
-  "description": "klarlabs.de — studio landing page",
+  "description": "klarlabs.de \u2014 studio landing page",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
@@ -11,9 +11,9 @@
     "lint": "astro check"
   },
   "dependencies": {
-    "@klarlabs/ui": "workspace:*",
     "astro": "^5.1.1",
-    "lit": "^3.3.0"
+    "lit": "^3.3.0",
+    "@klarlabs-studio/ui": "workspace:*"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",

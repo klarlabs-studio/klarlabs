@@ -1,0 +1,51 @@
+name: Publish @klarlabs-studio/ui
+
+on:
+  push:
+    tags:
+      - 'ui-v*'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://npm.pkg.github.com
+          scope: '@klarlabs-studio'
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify tag matches package version
+        working-directory: packages/ui
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          TAG_VERSION="${GITHUB_REF_NAME#ui-v}"
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::tag $TAG_VERSION != package.json $PKG_VERSION"
+            exit 1
+          fi
+
+      - name: Test with coverage gate
+        run: pnpm --filter @klarlabs-studio/ui test:coverage
+
+      - name: Build
+        run: pnpm --filter @klarlabs-studio/ui build
+
+      - name: Publish to GitHub Packages
+        working-directory: packages/ui
+        run: pnpm publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

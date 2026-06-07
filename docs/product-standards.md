@@ -82,8 +82,8 @@ Nothing has been publicly launched. Until a product's GA decision:
 
 ## 6. Design system
 
-- `@klarlabs/ui` published to **GitHub Packages**
-  (`npm.pkg.github.com`, scope @klarlabs).
+- `@klarlabs-studio/ui` published to **GitHub Packages**
+  (`npm.pkg.github.com`, scope @klarlabs-studio — GH Packages requires scope = owner).
 - **Marketing sites**: full adoption — tokens.css + kl- components,
   DM Sans/DM Mono, `data-theme` per product (see design-system spec v2).
 - **Product apps**: tokens minimum (colors, type, spacing, motion via
@@ -127,7 +127,7 @@ TypeScript strict + zod at boundaries. TDD.
 | Product | Tenancy gap | Auth gap | Split gap | DS gap | Beta gap |
 |---|---|---|---|---|---|
 | Pet Medical | RLS enforcement (has tenant_id, add RLS) | passkeys | — ✅ | tokens adoption | add badges |
-| Lexora | — ✅ | magic link, passkeys, TOTP | — ✅ | adopt @klarlabs/ui in /site | add badges |
+| Lexora | — ✅ | magic link, passkeys, TOTP | — ✅ | adopt @klarlabs-studio/ui in /site | add badges |
 | Obvia | RLS | passkeys (has rest) | **extract marketing site** | tokens adoption | replace "pilot" |
 | Brotwerk | org tenancy + RLS | passkeys, password+TOTP | **extract marketing site** | tokens adoption | reword to Public Beta |
 | KraftSport | org tenancy + RLS | magic link, passkeys, TOTP | **extract marketing site** | tokens adoption | replace "private alpha" + **GCP→k3s** |
@@ -141,11 +141,11 @@ TypeScript strict + zod at boundaries. TDD.
 
 1. **Wave 0 — beta labeling** (days): badges + wording on all marketing
    surfaces and app shells. klarlabs.de done 2026-06-07.
-2. **Wave 1 — publish @klarlabs/ui** (days): GitHub Packages, versioned;
+2. **Wave 1 — publish @klarlabs-studio/ui** (days): GitHub Packages, versioned;
    adopt in lexora/site + pet-medical-www first.
 3. **Wave 2 — marketing extractions** (per product): Obvia, Brotwerk,
    KraftSport, Dispatch get standalone marketing sites on the standard
-   domain layout, built with @klarlabs/ui.
+   domain layout, built with @klarlabs-studio/ui.
 4. **Wave 3 — auth convergence**: shared Go auth library implementing the
    three methods; products adopt incrementally (Lexora first — fewest
    users; then Brotwerk, KraftSport, Obvia, Pet Medical).

@@ -8,7 +8,7 @@ Precision software from Munich. This monorepo holds the Klarlabs design system a
 
 | Package | Description |
 | --- | --- |
-| [`@klarlabs/ui`](packages/ui) | Design system — Lit web components, design tokens, D3 charts |
+| [`@klarlabs-studio/ui`](packages/ui) | Design system — Lit web components, design tokens, D3 charts |
 
 ## Development
 

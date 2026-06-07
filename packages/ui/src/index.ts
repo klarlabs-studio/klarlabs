@@ -1,5 +1,5 @@
 /**
- * @klarlabs/ui — Klarlabs design system.
+ * @klarlabs-studio/ui — Klarlabs design system.
  * Lit web components. Import the side-effectful component modules to
  * register custom elements, or import classes for typing.
  */

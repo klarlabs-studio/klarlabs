@@ -10,7 +10,7 @@ importers:
 
   apps/klarlabs.de:
     dependencies:
-      '@klarlabs/ui':
+      '@klarlabs-studio/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       astro:
