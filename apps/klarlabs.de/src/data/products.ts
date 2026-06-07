@@ -67,20 +67,22 @@ export const products: Product[] = [
   {
     slug: 'brotwerk',
     name: 'Brotwerk',
-    tagline: 'Serious tools for serious bread.',
-    description: 'Recipes, schedules, and dough math for ambitious home bakers.',
+    tagline: 'Daily AI coaching for your sourdough.',
+    description: 'A photo, a verdict, a tip — daily AI companionship for real sourdough.',
     theme: 'light',
     accent: '#D97706',
-    status: 'live',
+    status: 'beta',
     problem:
-      'Good bread is timing, ratios, and repetition. Notes apps and spreadsheets lose the details that make a bake repeatable.',
+      'Reading a sourdough starter is guesswork. Is it ready? Underfed? Past its peak? Most advice is folklore, not observation.',
     solution:
-      'Brotwerk handles the dough math — hydration, levain builds, timing schedules — so every successful bake can be repeated and refined.',
+      'Brotwerk reads your starter from a photo. A morning and evening snapshot from your phone — the model reads dome, bubbles, and rise, scores ripeness 0–100 with confidence, and answers in one plain sentence: feed, hydrate, wait, or bake.',
     features: [
-      { heading: 'Dough calculator', body: "Baker's percentages, hydration, and scaling — computed, not guessed." },
-      { heading: 'Bake schedules', body: 'Work backwards from when you want bread to when you need to start.' },
-      { heading: 'Bake journal', body: 'Track what changed between bakes and keep what worked.' },
+      { heading: 'Photo → verdict → tip', body: 'Eight seconds to photograph, six to assess, five to read. No light box, no tripod.' },
+      { heading: 'Ripeness score', body: 'A 0–100 maturity reading with confidence — dome, bubbles, and level, tracked across the seven-day arc.' },
+      { heading: 'Privacy by design', body: 'EU-hosted, no tracking pixels, photos never used for AI training. GDPR export and deletion built in.' },
     ],
+    ctaHref: 'https://brotwerk.app',
+    ctaLabel: 'Open Brotwerk',
   },
   {
     slug: 'iri',
@@ -123,22 +125,23 @@ export const products: Product[] = [
   {
     slug: 'armada',
     name: 'Armada',
-    tagline: 'Developer workflow tooling for Atlassian.',
-    description: 'Developer workflow tooling on the Atlassian Marketplace.',
+    tagline: 'Mission control for Jira at scale.',
+    description: 'Launch, track, and govern campaigns across 50+ Jira teams.',
     theme: 'dark',
     accent: '#0D9488',
     status: 'live',
     problem:
-      'Engineering reality and Jira drift apart. Keeping boards honest is manual work nobody wants.',
+      'Coordinating work across 50+ teams should not require 50+ spreadsheets. Security patches stall in scattered backlogs, compliance tasks lose their audit trail, and nobody can answer "are we delivering value?" at renewal.',
     solution:
-      'Armada keeps developer workflows and Atlassian tools in sync — less ceremony, more signal.',
+      'Armada turns Jira into mission control for large-scale campaigns: one-click fan-out to 50+ teams, outcome metrics, audit-ready governance, and BYOK AI postmortems — inside the Jira your operators already use.',
     features: [
-      { heading: 'Marketplace-native', body: 'Installs from the Atlassian Marketplace into your existing setup.' },
-      { heading: 'Workflow automation', body: 'The repetitive board work, automated.' },
-      { heading: 'Built for engineers', body: 'Designed around how development actually flows.' },
+      { heading: 'Campaign launch', body: 'One click creates 50+ linked issues across projects — atomic, templated, with rollback on failure.' },
+      { heading: 'Governance + audit', body: 'Approval gates, 180-day audit log, one-click CSV export. Compliance-grade without leaving Jira.' },
+      { heading: 'Outcome metrics', body: 'Time-to-launch, completion, recall rate, drift, AI spend — derived from real events, not opinions.' },
+      { heading: 'BYOK AI postmortems', body: 'Your provider key, your residency, your retention — OpenAI, Anthropic, Azure, or custom.' },
     ],
-    ctaHref: 'https://marketplace.atlassian.com',
-    ctaLabel: 'View on Marketplace',
+    ctaHref: 'https://armada.run',
+    ctaLabel: 'Open Armada',
   },
   {
     slug: 'nexa',
