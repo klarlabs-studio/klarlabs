@@ -30,6 +30,7 @@ export default defineConfig({
   },
   test: {
     environment: 'happy-dom',
+    setupFiles: ['test/setup.ts'],
     include: ['test/**/*.test.ts'],
     coverage: {
       provider: 'v8',

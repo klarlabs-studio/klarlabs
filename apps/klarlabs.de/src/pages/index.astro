@@ -1,126 +1,53 @@
 ---
 import Base from '../layouts/Base.astro';
-
-const products = [
-  {
-    name: 'Nomi',
-    description: 'Local-first AI agent platform — plan-review before execution, BYO LLM.',
-    href: 'https://github.com/klarlabs-studio/nomi',
-    status: 'live',
-  },
-  {
-    name: 'Scout',
-    description: 'Browser automation, one binary. The simpler alternative to Playwright.',
-    href: 'https://github.com/klarlabs-studio/scout',
-    status: 'live',
-  },
-  {
-    name: 'Mnemos',
-    description: 'Self-hosted memory + evidence layer for AI agents. No vendor cloud.',
-    href: 'https://github.com/klarlabs-studio/mnemos',
-    status: 'live',
-  },
-  {
-    name: 'Chronos',
-    description: 'Embeddable time-series pattern detection — spikes, anomalies, change-points. Pure Go.',
-    href: 'https://github.com/felixgeelhaar/chronos',
-    status: 'live',
-  },
-  {
-    name: 'coverctl',
-    description: 'Coverage feedback for AI coding agents — every language, every change.',
-    href: 'https://github.com/klarlabs-studio/coverctl',
-    status: 'live',
-  },
-  {
-    name: 'agent-go',
-    description: 'State-driven agent runtime for Go — trustworthy AI through structure.',
-    href: 'https://github.com/klarlabs-studio/agent-go',
-    status: 'live',
-  },
-  {
-    name: 'Briefkasten',
-    description: 'A mailbox as an MCP server — mail through a stable tool contract.',
-    href: 'https://github.com/klarlabs-studio/briefkasten',
-    status: 'beta',
-  },
-] as const;
-
-const libraries = [
-  {
-    name: 'mcp-go',
-    description: 'Go framework for building MCP servers.',
-    href: 'https://pkg.go.dev/github.com/klarlabs-studio/mcp-go',
-  },
-  {
-    name: 'fortify',
-    description: 'Resilience patterns for Go services calling LLMs — circuit breaker to cost budget.',
-    href: 'https://pkg.go.dev/github.com/klarlabs-studio/fortify',
-  },
-  {
-    name: 'fortify-ts',
-    description: 'Production-grade fault tolerance for TypeScript.',
-    href: 'https://github.com/klarlabs-studio/fortify-ts',
-  },
-  {
-    name: 'bolt',
-    description: 'Go logging that solves the Logger’s Trilemma.',
-    href: 'https://pkg.go.dev/github.com/klarlabs-studio/bolt',
-  },
-  {
-    name: 'axi-go',
-    description: 'Safe, auditable execution kernel for AI agent tools.',
-    href: 'https://pkg.go.dev/github.com/klarlabs-studio/axi-go',
-  },
-  {
-    name: 'statekit',
-    description: 'Go-native statecharts, XState-JSON compatible.',
-    href: 'https://pkg.go.dev/github.com/klarlabs-studio/statekit',
-  },
-] as const;
+import { products, ossLibraries } from '../data/products';
 ---
 
 <Base
   title="Klarlabs — We build tools that make complex things clear."
-  description="Precision software from Munich. Developer infrastructure, AI agent tooling, and open source — built by Klarlabs."
+  description="Precision software from Munich. Developer infrastructure, AI agent tooling, consumer apps, and open source — built by Klarlabs."
+  theme="dark"
+  themeToggle
 >
-  <kl-nav scroll-threshold="24">
-    <a class="wordmark" slot="brand" href="/">klar<em>labs</em></a>
-    <a href="#products">Products</a>
-    <a href="#oss">Open Source</a>
-    <a href="#studio">Studio</a>
-    <kl-button slot="cta" size="sm" variant="secondary" href="https://github.com/klarlabs-studio" target="_blank">
-      GitHub
-    </kl-button>
-    <a slot="drawer" href="#products">Products</a>
-    <a slot="drawer" href="#oss">Open Source</a>
-    <a slot="drawer" href="#studio">Studio</a>
+  <kl-nav>
+    <a class="wordmark" slot="brand" href="/">klar&hairsp;<em>labs</em></a>
+    <a href="/#products">Products</a>
+    <a href="/#oss">Open Source</a>
+    <a href="/#studio">Studio</a>
+    <span slot="cta" class="nav-actions">
+      <kl-button size="sm" variant="secondary" href="https://github.com/klarlabs-studio" target="_blank">
+        GitHub
+      </kl-button>
+      <kl-theme-toggle></kl-theme-toggle>
+    </span>
+    <a slot="drawer" href="/#products">Products</a>
+    <a slot="drawer" href="/#oss">Open Source</a>
+    <a slot="drawer" href="/#studio">Studio</a>
   </kl-nav>
 
   <kl-hero animated>
     <span slot="eyebrow">Klarlabs · Munich</span>
     <h1 slot="title">We build tools that make complex things <em class="accent">clear</em>.</h1>
-    <p slot="subtitle">
-      Precision software for developers and AI systems. Engineered, not assembled.
-    </p>
+    <p slot="subtitle">Precision software for developers and AI systems. Engineered, not assembled.</p>
     <span slot="actions" class="hero-actions">
-      <kl-button size="lg" href="#products">View products</kl-button>
-      <kl-button size="lg" variant="secondary" href="#oss">Open source</kl-button>
+      <kl-button size="lg" href="/#products">View Products</kl-button>
+      <kl-button size="lg" variant="ghost" href="/#oss">Open Source</kl-button>
     </span>
   </kl-hero>
 
   <main>
     <section id="products">
-      <h2><span class="index">01</span> Products</h2>
-      <p class="section-lead">Tools for building, running, and trusting AI systems.</p>
+      <span class="section-label">01 Products</span>
+      <h2>Tools for building, running, and trusting AI systems.</h2>
       <div class="grid">
         {
           products.map((p) => (
             <kl-product-card
               name={p.name}
               description={p.description}
-              href={p.href}
+              href={`/products/${p.slug}/`}
               status={p.status}
+              style={`--kl-product-card-accent: ${p.accent}`}
             />
           ))
         }
@@ -130,27 +57,27 @@ const libraries = [
     <kl-divider></kl-divider>
 
     <section id="oss">
-      <h2><span class="index">02</span> Open Source</h2>
-      <p class="section-lead">The infrastructure behind everything.</p>
-      <ul class="libraries">
+      <span class="section-label">02 Open Source</span>
+      <h2>The infrastructure behind everything we build.</h2>
+      <div class="oss-list">
         {
-          libraries.map((lib) => (
-            <li>
-              <a href={lib.href} target="_blank" rel="noopener noreferrer">
-                <kl-code inline>{lib.name}</kl-code>
-                <span class="lib-description">{lib.description}</span>
-                <span class="lib-arrow" aria-hidden="true">→</span>
-              </a>
-            </li>
+          ossLibraries.map((lib) => (
+            <kl-oss-card
+              name={lib.name}
+              description={lib.description}
+              repo-href={lib.repoHref}
+              docs-href={lib.docsHref}
+              docs-label={lib.docsLabel}
+            />
           ))
         }
-      </ul>
+      </div>
     </section>
 
     <kl-divider></kl-divider>
 
     <section id="studio">
-      <h2><span class="index">03</span> Studio</h2>
+      <span class="section-label">03 Studio</span>
       <p class="studio-copy">
         Klarlabs is an independent software studio in Munich. One engineer, strong opinions,
         production standards. We design for the long run: typed contracts, evidence over
@@ -160,12 +87,14 @@ const libraries = [
   </main>
 
   <footer>
-    <span class="footer-brand">klar<em>labs</em> · München</span>
+    <span class="footer-brand">klar&hairsp;<em>labs</em></span>
     <nav aria-label="Footer">
       <a href="https://felixgeelhaar.de" target="_blank" rel="noopener noreferrer">felixgeelhaar.de</a>
       <a href="https://github.com/klarlabs-studio" target="_blank" rel="noopener noreferrer">GitHub</a>
       <a href="https://felixgeelhaar.de/blog" target="_blank" rel="noopener noreferrer">Writing</a>
     </nav>
+    <span class="footer-place">Munich, Germany</span>
+    <span class="footer-copyright">© 2026 Klarlabs</span>
   </footer>
 </Base>
 
@@ -173,7 +102,7 @@ const libraries = [
   .wordmark {
     font-family: var(--kl-font-sans);
     font-size: var(--kl-text-md);
-    font-weight: var(--kl-weight-bold);
+    font-weight: var(--kl-weight-normal);
     letter-spacing: var(--kl-tracking-tight);
     color: var(--kl-ink);
     text-decoration: none;
@@ -182,7 +111,14 @@ const libraries = [
   .wordmark em,
   .footer-brand em {
     color: var(--kl-accent);
+    font-weight: var(--kl-weight-semibold);
     font-style: normal;
+  }
+
+  .nav-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--kl-space-3);
   }
 
   .accent {
@@ -198,7 +134,7 @@ const libraries = [
   }
 
   main {
-    max-inline-size: var(--kl-content-lg);
+    max-inline-size: var(--kl-content-xl);
     margin-inline: auto;
     padding-block: var(--kl-space-20);
     padding-inline: clamp(var(--kl-space-4), 4vw, var(--kl-space-12));
@@ -211,78 +147,34 @@ const libraries = [
     gap: var(--kl-space-6);
   }
 
+  .section-label {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-xs);
+    font-weight: var(--kl-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--kl-tracking-caps);
+    color: var(--kl-accent);
+  }
+
   h2 {
     margin: 0;
+    margin-block-start: calc(-1 * var(--kl-space-4));
     font-family: var(--kl-font-sans);
     font-size: var(--kl-text-lg);
     font-weight: var(--kl-weight-bold);
     letter-spacing: var(--kl-tracking-tight);
     color: var(--kl-ink);
-    display: flex;
-    align-items: baseline;
-    gap: var(--kl-space-3);
-  }
-
-  .index {
-    font-family: var(--kl-font-mono);
-    font-size: var(--kl-text-sm);
-    font-weight: var(--kl-weight-normal);
-    color: var(--kl-accent);
-  }
-
-  .section-lead {
-    margin: 0;
-    margin-block-start: calc(-1 * var(--kl-space-4));
-    color: var(--kl-ink-tertiary);
-    font-family: var(--kl-font-sans);
-    font-size: var(--kl-text-md);
   }
 
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-    gap: var(--kl-space-5);
+    gap: var(--kl-space-6);
   }
 
-  .libraries {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .oss-list {
     display: grid;
-    gap: var(--kl-space-1);
-  }
-
-  .libraries a {
-    display: grid;
-    grid-template-columns: 8rem 1fr auto;
-    align-items: center;
-    gap: var(--kl-space-4);
-    padding: var(--kl-space-3) var(--kl-space-3);
-    border-radius: var(--kl-radius-md);
-    text-decoration: none;
-    transition: background var(--kl-duration-fast) var(--kl-ease-default);
-  }
-
-  .libraries a:hover {
-    background: var(--kl-surface-muted);
-  }
-
-  .libraries a:hover .lib-arrow {
-    color: var(--kl-accent);
-    translate: 2px 0;
-  }
-
-  .lib-description {
-    font-family: var(--kl-font-sans);
-    font-size: var(--kl-text-sm);
-    color: var(--kl-ink-secondary);
-  }
-
-  .lib-arrow {
-    color: var(--kl-ink-tertiary);
-    transition:
-      color var(--kl-duration-fast) var(--kl-ease-default),
-      translate var(--kl-duration-fast) var(--kl-ease-default);
+    gap: var(--kl-space-2);
   }
 
   .studio-copy {
@@ -306,7 +198,13 @@ const libraries = [
 
   .footer-brand {
     font-family: var(--kl-font-sans);
-    font-weight: var(--kl-weight-semibold);
+    color: var(--kl-ink);
+  }
+
+  .footer-place,
+  .footer-copyright {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
     color: var(--kl-ink-tertiary);
   }
 
@@ -325,14 +223,5 @@ const libraries = [
 
   footer nav a:hover {
     color: var(--kl-accent);
-  }
-
-  @media (max-width: 480px) {
-    .libraries a {
-      grid-template-columns: 1fr auto;
-    }
-    .lib-description {
-      grid-column: 1 / -1;
-    }
   }
 </style>

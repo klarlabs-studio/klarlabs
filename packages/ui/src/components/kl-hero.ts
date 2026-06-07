@@ -3,18 +3,20 @@ import { customElement, property } from 'lit/decorators.js';
 import { labelType, reducedMotion } from '../styles/shared.js';
 
 /**
- * Klarlabs hero — full-width landing section.
- * Dark surface with subtle dot grid, staggered entrance animation.
+ * Klarlabs hero — full-width landing section. Theme-aware:
+ * dark theme gets dot grid + teal glow (token-driven via
+ * --kl-grid-color / --kl-hero-glow), light theme subtle grid lines.
  *
  * @slot eyebrow - Small uppercase label above the title
  * @slot title - Main heading
  * @slot subtitle - Supporting copy
  * @slot actions - CTA buttons
- * @slot visual - Optional visual below/beside content
+ * @slot visual - Optional visual below content (screenshot, code, terminal)
  * @csspart section - The section element
  * @csspart content - Inner content wrapper
  * @cssprop --kl-hero-bg - Background override
  * @cssprop --kl-hero-min-height - Minimum height (default 70vh)
+ * @cssprop --kl-hero-accent - Accent for eyebrow (per-product accent)
  */
 @customElement('kl-hero')
 export class KlHero extends LitElement {
@@ -33,19 +35,19 @@ export class KlHero extends LitElement {
         min-block-size: var(--kl-hero-min-height, 70vh);
         padding-block: var(--kl-space-24, 6rem);
         padding-inline: clamp(var(--kl-space-4, 1rem), 4vw, var(--kl-space-12, 3rem));
-        background: var(--kl-hero-bg, var(--kl-dark-surface, #09090b));
-        color: var(--kl-dark-ink, #fafafa);
+        background: var(--kl-hero-bg, var(--kl-surface, #ffffff));
+        color: var(--kl-ink, #0a0a0b);
         overflow: hidden;
       }
 
-      /* Subtle dot grid */
+      /* Theme-aware dot grid (visible per --kl-grid-color) */
       section::before {
         content: '';
         position: absolute;
         inset: 0;
         background-image: radial-gradient(
           circle 1px at 1px 1px,
-          var(--kl-dark-border, #27272a) 1px,
+          var(--kl-grid-color, rgb(0 0 0 / 0.04)) 1px,
           transparent 0
         );
         background-size: 24px 24px;
@@ -53,8 +55,31 @@ export class KlHero extends LitElement {
         pointer-events: none;
       }
 
+      /* Fade hero into the page surface */
+      section::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, transparent 60%, var(--kl-surface, #ffffff));
+        pointer-events: none;
+      }
+
+      /* Accent glow — token resolves to none in light theme */
+      .glow {
+        position: absolute;
+        inset-block-start: -10%;
+        inset-inline-start: 50%;
+        translate: -50% 0;
+        inline-size: min(600px, 90vw);
+        block-size: 400px;
+        background: var(--kl-hero-glow, none);
+        filter: blur(80px);
+        pointer-events: none;
+      }
+
       .content {
         position: relative;
+        z-index: 1;
         display: grid;
         gap: var(--kl-space-6, 1.5rem);
         justify-items: center;
@@ -63,13 +88,13 @@ export class KlHero extends LitElement {
       }
 
       .eyebrow {
-        color: var(--kl-accent, #0d9488);
+        color: var(--kl-hero-accent, var(--kl-accent, #0d9488));
       }
 
       .title ::slotted(*) {
         margin: 0;
         font-family: var(--kl-font-sans, 'DM Sans', system-ui, sans-serif);
-        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
         font-weight: var(--kl-weight-bold, 700);
         line-height: var(--kl-leading-tight, 1.2);
         letter-spacing: var(--kl-tracking-tight, -0.03em);
@@ -80,7 +105,8 @@ export class KlHero extends LitElement {
         margin: 0;
         font-size: var(--kl-text-md, 1.25rem);
         line-height: var(--kl-leading-normal, 1.6);
-        color: var(--kl-dark-ink-secondary, #a1a1aa);
+        color: var(--kl-ink-secondary, #3f3f46);
+        max-inline-size: 48ch;
         text-wrap: balance;
       }
 
@@ -102,19 +128,19 @@ export class KlHero extends LitElement {
         translate: 0 16px;
         animation: rise var(--kl-duration-slower, 600ms) var(--kl-ease-default, ease) forwards;
       }
-      :host([animated]) .stagger:nth-child(1) {
+      :host([animated]) .stagger:nth-child(2) {
         animation-delay: 0ms;
       }
-      :host([animated]) .stagger:nth-child(2) {
+      :host([animated]) .stagger:nth-child(3) {
         animation-delay: 100ms;
       }
-      :host([animated]) .stagger:nth-child(3) {
+      :host([animated]) .stagger:nth-child(4) {
         animation-delay: 200ms;
       }
-      :host([animated]) .stagger:nth-child(4) {
+      :host([animated]) .stagger:nth-child(5) {
         animation-delay: 300ms;
       }
-      :host([animated]) .stagger:nth-child(5) {
+      :host([animated]) .stagger:nth-child(6) {
         animation-delay: 400ms;
       }
 
@@ -141,6 +167,7 @@ export class KlHero extends LitElement {
   override render() {
     return html`
       <section part="section">
+        <div class="glow" aria-hidden="true"></div>
         <div class="content" part="content">
           <span class="eyebrow kl-label stagger"><slot name="eyebrow"></slot></span>
           <div class="title stagger"><slot name="title"></slot></div>

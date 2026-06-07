@@ -179,7 +179,7 @@ export class KlNav extends LitElement {
   ];
 
   /** Scroll offset (px) after which the bar turns solid. */
-  @property({ type: Number, attribute: 'scroll-threshold' }) scrollThreshold = 24;
+  @property({ type: Number, attribute: 'scroll-threshold' }) scrollThreshold = 80;
 
   /** Reflected when the page is scrolled past the threshold. */
   @property({ type: Boolean, reflect: true }) scrolled = false;

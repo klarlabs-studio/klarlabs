@@ -1,6 +1,8 @@
 /*
- * Klarlabs Design System — Tokens v0.1
+ * Klarlabs Design System — Tokens v2
  * Refined monochrome with a single precise accent.
+ * Theme via data-theme on <html> — always set explicitly; never rely
+ * solely on prefers-color-scheme. Studio page offers a user toggle.
  * Studio: Munich, Germany — klarlabs.de
  */
 
@@ -8,42 +10,21 @@
 
 @layer tokens {
   :root {
-    /* ── Studio accent — Klarlabs Teal ─────────────────────── */
+    /* ── Accent — Klarlabs Teal (same in both themes) ──────── */
     --kl-accent:        #0d9488;
     --kl-accent-light:  #14b8a6;
-    --kl-accent-dim:    #0d948820;
-    --kl-accent-border: #0d948840;
+    --kl-accent-dark:   #0f766e;
+    --kl-accent-dim:    color-mix(in srgb, #0d9488 12%, transparent);
+    --kl-accent-border: color-mix(in srgb, #0d9488 30%, transparent);
 
-    /* ── Monochrome scale ──────────────────────────────────── */
-    --kl-ink:           #0a0a0b;
-    --kl-ink-secondary: #3f3f46;
-    --kl-ink-tertiary:  #71717a;
-    --kl-ink-disabled:  #a1a1aa;
-    --kl-ink-inverse:   #fafafa;
-
-    --kl-surface:        #ffffff;
-    --kl-surface-raised: #fafafa;
-    --kl-surface-muted:  #f4f4f5;
-    --kl-surface-subtle: #e4e4e7;
-
-    --kl-border:        #e4e4e7;
-    --kl-border-strong: #d4d4d8;
-
-    /* ── Dark mode surfaces (raw values) ───────────────────── */
-    --kl-dark-surface:        #09090b;
-    --kl-dark-surface-raised: #111113;
-    --kl-dark-surface-muted:  #18181b;
-    --kl-dark-border:         #27272a;
-    --kl-dark-border-strong:  #3f3f46;
-    --kl-dark-ink:            #fafafa;
-    --kl-dark-ink-secondary:  #a1a1aa;
-    --kl-dark-ink-tertiary:   #71717a;
-
-    /* ── Semantic states ───────────────────────────────────── */
-    --kl-success: #16a34a;
-    --kl-warning: #d97706;
-    --kl-error:   #dc2626;
-    --kl-info:    #0d9488;
+    /* ── Semantic states (same in both themes) ─────────────── */
+    --kl-success:     #16a34a;
+    --kl-success-dim: color-mix(in srgb, #16a34a 10%, transparent);
+    --kl-warning:     #d97706;
+    --kl-warning-dim: color-mix(in srgb, #d97706 10%, transparent);
+    --kl-error:       #dc2626;
+    --kl-error-dim:   color-mix(in srgb, #dc2626 10%, transparent);
+    --kl-info:        var(--kl-accent);
 
     /* ── Typography ────────────────────────────────────────── */
     --kl-font-sans: 'DM Sans', system-ui, sans-serif;
@@ -72,8 +53,10 @@
     --kl-tracking-tight:  -0.03em;
     --kl-tracking-normal: -0.01em;
     --kl-tracking-wide:   0.06em;
+    --kl-tracking-caps:   0.08em;
+    /* Back-compat aliases (v1 names) */
+    --kl-tracking-label:  var(--kl-tracking-caps);
     --kl-tracking-wider:  0.1em;
-    --kl-tracking-label:  0.08em;
 
     /* ── Spacing — base unit 4px ───────────────────────────── */
     --kl-space-1:  0.25rem;
@@ -95,16 +78,10 @@
     --kl-radius-md:   0.5rem;
     --kl-radius-lg:   0.75rem;
     --kl-radius-xl:   1rem;
+    --kl-radius-2xl:  1.5rem;
     --kl-radius-full: 9999px;
 
-    /* ── Shadows ───────────────────────────────────────────── */
-    --kl-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --kl-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-    --kl-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
-    --kl-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.05);
-    --kl-shadow-accent: 0 0 0 3px var(--kl-accent-dim);
-
-    /* ── Layout ────────────────────────────────────────────── */
+    /* ── Max widths ────────────────────────────────────────── */
     --kl-content-xs:  20rem;
     --kl-content-sm:  36rem;
     --kl-content-md:  48rem;
@@ -112,7 +89,7 @@
     --kl-content-xl:  80rem;
     --kl-content-2xl: 96rem;
 
-    /* ── Z-index scale ─────────────────────────────────────── */
+    /* ── Z-index ───────────────────────────────────────────── */
     --kl-z-base:    0;
     --kl-z-raised:  10;
     --kl-z-overlay: 100;
@@ -134,37 +111,68 @@
     --kl-ease-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  /* ── Dark mode ─────────────────────────────────────────────
-   * System preference, unless overridden by data-theme.
-   * data-theme="dark" / data-theme="light" forces a mode
-   * (technical pages default dark, consumer pages light). */
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme='light']) {
-      --kl-surface:        var(--kl-dark-surface);
-      --kl-surface-raised: var(--kl-dark-surface-raised);
-      --kl-surface-muted:  var(--kl-dark-surface-muted);
-      --kl-surface-subtle: var(--kl-dark-border);
-      --kl-border:         var(--kl-dark-border);
-      --kl-border-strong:  var(--kl-dark-border-strong);
-      --kl-ink:            var(--kl-dark-ink);
-      --kl-ink-secondary:  var(--kl-dark-ink-secondary);
-      --kl-ink-tertiary:   var(--kl-dark-ink-tertiary);
-      --kl-ink-inverse:    #0a0a0b;
-      color-scheme: dark;
-    }
+  /* ── LIGHT THEME (also the no-attribute fallback) ────────── */
+  :root,
+  [data-theme='light'] {
+    --kl-surface:        #ffffff;
+    --kl-surface-raised: #fafafa;
+    --kl-surface-muted:  #f4f4f5;
+    --kl-surface-subtle: #e4e4e7;
+
+    --kl-border:        #e4e4e7;
+    --kl-border-strong: #d4d4d8;
+
+    --kl-ink:           #0a0a0b;
+    --kl-ink-secondary: #3f3f46;
+    --kl-ink-tertiary:  #71717a;
+    --kl-ink-disabled:  #a1a1aa;
+    --kl-ink-inverse:   #fafafa;
+
+    --kl-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --kl-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --kl-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+    --kl-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+    --kl-shadow-accent: 0 0 0 3px var(--kl-accent-dim);
+
+    /* Decorative */
+    --kl-grid-color:    rgb(0 0 0 / 0.04);
+    --kl-noise-opacity: 0.02;
+    --kl-hero-glow:     none;
+
+    color-scheme: light;
   }
 
-  :root[data-theme='dark'] {
-    --kl-surface:        var(--kl-dark-surface);
-    --kl-surface-raised: var(--kl-dark-surface-raised);
-    --kl-surface-muted:  var(--kl-dark-surface-muted);
-    --kl-surface-subtle: var(--kl-dark-border);
-    --kl-border:         var(--kl-dark-border);
-    --kl-border-strong:  var(--kl-dark-border-strong);
-    --kl-ink:            var(--kl-dark-ink);
-    --kl-ink-secondary:  var(--kl-dark-ink-secondary);
-    --kl-ink-tertiary:   var(--kl-dark-ink-tertiary);
-    --kl-ink-inverse:    #0a0a0b;
+  /* ── DARK THEME ──────────────────────────────────────────── */
+  [data-theme='dark'] {
+    --kl-surface:        #09090b;
+    --kl-surface-raised: #111113;
+    --kl-surface-muted:  #18181b;
+    --kl-surface-subtle: #27272a;
+
+    --kl-border:        #27272a;
+    --kl-border-strong: #3f3f46;
+
+    --kl-ink:           #fafafa;
+    --kl-ink-secondary: #a1a1aa;
+    --kl-ink-tertiary:  #71717a;
+    --kl-ink-disabled:  #52525b;
+    --kl-ink-inverse:   #0a0a0b;
+
+    --kl-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+    --kl-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --kl-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    --kl-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+    --kl-shadow-accent: 0 0 0 3px var(--kl-accent-dim);
+
+    /* Decorative */
+    --kl-grid-color:    rgb(255 255 255 / 0.03);
+    --kl-noise-opacity: 0.04;
+    --kl-hero-glow: radial-gradient(
+      ellipse,
+      color-mix(in srgb, var(--kl-accent) 15%, transparent),
+      transparent 70%
+    );
+
     color-scheme: dark;
   }
 }
@@ -187,5 +195,20 @@
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+@layer utilities {
+  /* Dot grid (dark) / line grid (light) — token-driven, theme-aware */
+  .kl-bg-grid {
+    background-image: radial-gradient(circle, var(--kl-grid-color) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .kl-bg-lines {
+    background-image:
+      linear-gradient(var(--kl-grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--kl-grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
 }

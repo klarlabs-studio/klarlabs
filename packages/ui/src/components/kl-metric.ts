@@ -32,8 +32,8 @@ export class KlMetric extends LitElement {
 
       .value {
         font-family: var(--kl-font-mono, 'DM Mono', monospace);
-        font-size: var(--kl-metric-value-size, var(--kl-text-xl, 1.953rem));
-        font-weight: var(--kl-weight-medium, 500);
+        font-size: var(--kl-metric-value-size, clamp(2rem, 4vw, 3rem));
+        font-weight: var(--kl-weight-bold, 700);
         line-height: var(--kl-leading-tight, 1.2);
         letter-spacing: var(--kl-tracking-tight, -0.03em);
         color: var(--kl-ink, #0a0a0b);

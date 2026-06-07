@@ -1,0 +1,185 @@
+---
+import Base from '../../layouts/Base.astro';
+import { products, type Product } from '../../data/products';
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const isComingSoon = product.status === 'coming-soon';
+---
+
+<Base
+  title={`${product.name} — ${product.tagline} | Klarlabs`}
+  description={product.description}
+  theme={product.theme}
+>
+  <div class="product-page" style={`--product-accent: ${product.accent}`}>
+    <kl-nav>
+      <a class="wordmark" slot="brand" href="/">klar&hairsp;<em>labs</em></a>
+      <a href="/#products">Products</a>
+      <a href="/#oss">Open Source</a>
+      <a href="/#studio">Studio</a>
+      <kl-klarlabs-badge slot="cta" href="/"></kl-klarlabs-badge>
+      <a slot="drawer" href="/#products">Products</a>
+      <a slot="drawer" href="/#oss">Open Source</a>
+      <a slot="drawer" href="/#studio">Studio</a>
+    </kl-nav>
+
+    <kl-hero animated style="--kl-hero-accent: var(--product-accent)">
+      <span slot="eyebrow">A Klarlabs Product</span>
+      <h1 slot="title">{product.name}</h1>
+      <p slot="subtitle">{product.tagline}</p>
+      <span slot="actions" class="hero-actions">
+        {
+          product.ctaHref && (
+            <kl-button size="lg" href={product.ctaHref} target="_blank">
+              {product.ctaLabel ?? `Open ${product.name}`}
+            </kl-button>
+          )
+        }
+        {isComingSoon && <kl-badge variant="neutral">Coming Soon</kl-badge>}
+      </span>
+    </kl-hero>
+
+    <main>
+      {
+        product.problem && (
+          <section>
+            <span class="section-label">The problem</span>
+            <p class="copy">{product.problem}</p>
+          </section>
+        )
+      }
+
+      <section>
+        <span class="section-label">What we built</span>
+        <p class="copy">{product.solution}</p>
+      </section>
+
+      {
+        product.features.length > 0 && (
+          <section>
+            <span class="section-label">Features</span>
+            <div class="features">
+              {product.features.map((f) => (
+                <kl-feature-card
+                  heading={f.heading}
+                  style="--kl-feature-accent: var(--product-accent)"
+                >
+                  {f.body}
+                </kl-feature-card>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
+        product.ctaHref && (
+          <section class="cta-section">
+            <kl-button size="lg" href={product.ctaHref} target="_blank">
+              {product.ctaLabel ?? `Open ${product.name}`}
+            </kl-button>
+          </section>
+        )
+      }
+    </main>
+
+    <footer>
+      <kl-klarlabs-badge href="/"></kl-klarlabs-badge>
+      <span class="footer-place">Munich, Germany · © 2026 Klarlabs</span>
+    </footer>
+  </div>
+</Base>
+
+<style>
+  .wordmark {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-md);
+    font-weight: var(--kl-weight-normal);
+    letter-spacing: var(--kl-tracking-tight);
+    color: var(--kl-ink);
+    text-decoration: none;
+  }
+
+  .wordmark em {
+    color: var(--kl-accent);
+    font-weight: var(--kl-weight-semibold);
+    font-style: normal;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--kl-space-3);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  main {
+    max-inline-size: var(--kl-content-lg);
+    margin-inline: auto;
+    padding-block: var(--kl-space-16);
+    padding-inline: clamp(var(--kl-space-4), 4vw, var(--kl-space-12));
+    display: grid;
+    gap: var(--kl-space-12);
+  }
+
+  section {
+    display: grid;
+    gap: var(--kl-space-4);
+  }
+
+  .section-label {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-xs);
+    font-weight: var(--kl-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--kl-tracking-caps);
+    color: var(--product-accent, var(--kl-accent));
+  }
+
+  .copy {
+    margin: 0;
+    max-inline-size: var(--kl-content-md);
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-md);
+    line-height: var(--kl-leading-relaxed);
+    color: var(--kl-ink-secondary);
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: var(--kl-space-5);
+  }
+
+  .cta-section {
+    justify-items: start;
+  }
+
+  footer {
+    border-block-start: 1px solid var(--kl-border);
+    padding: var(--kl-space-8) clamp(var(--kl-space-4), 4vw, var(--kl-space-12));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--kl-space-4);
+  }
+
+  .footer-place {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    color: var(--kl-ink-tertiary);
+  }
+</style>

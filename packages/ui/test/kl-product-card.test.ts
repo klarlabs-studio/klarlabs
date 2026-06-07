@@ -25,7 +25,7 @@ describe('kl-product-card', () => {
     const el = await fixture<KlProductCard>(
       '<kl-product-card name="Nomi" status="coming-soon"></kl-product-card>',
     );
-    expect(el.shadowRoot!.querySelector('[part="status"]')!.textContent).toBe('Coming soon');
+    expect(el.shadowRoot!.querySelector('[part="status"]')!.textContent).toBe('Coming Soon');
   });
 
   it('falls back to first letter when no logo provided', async () => {
