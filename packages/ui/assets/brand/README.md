@@ -4,7 +4,7 @@ Canonical logo files. Source of truth for the mark used in the site favicon, Git
 
 | File | Use |
 | --- | --- |
-| `klarlabs-mark.svg` | Square app-icon mark — teal K on `#09090B`, radius 112/512 |
+| `klarlabs-mark.svg` | Square app-icon mark — teal `kl` on `#09090B`, radius 112/512 |
 | `klarlabs-mark-512.png` | Raster export for avatars (GitHub org, social) |
 | `klarlabs-logo-light.svg` | Horizontal lockup for light backgrounds (ink `#0a0a0b`) |
 | `klarlabs-logo-dark.svg` | Horizontal lockup for dark backgrounds (ink `#fafafa`, accent `#14b8a6`) |
@@ -13,8 +13,8 @@ Canonical logo files. Source of truth for the mark used in the site favicon, Git
 
 - Accent is Klarlabs Teal `#0d9488` (`--kl-accent`); `#14b8a6` (`--kl-accent-light`) on dark ink.
 - Wordmark is always lowercase: `klar` in ink + `labs` in accent, semibold — matches the site header (`klar&hairsp;<em>labs</em>`).
-- Typeface: DM Sans (`--kl-font-sans`). Lockup SVGs reference it by name; embed or outline the text before using where DM Sans is not loaded.
-- The mark's K is drawn, not typeset — stroke `40/512`, round caps. Don't substitute a font glyph.
+- The mark is `kl` in DM Mono Medium — same glyphs as the `kl-klarlabs-badge` component and the `kl-` component prefix. Glyph paths are outlined in the SVGs (extracted from `DMMono-Medium.ttf` via fontTools), so the mark renders identically without the font installed. Don't re-typeset it.
+- Wordmark typeface: DM Sans (`--kl-font-sans`). Lockup SVGs reference it by name; outline the text before using where DM Sans is not loaded.
 - Regenerate the PNG from the SVG (headless Chrome renders it correctly; ImageMagick's SVG renderer does not):
 
 ```bash
