@@ -7,3 +7,6 @@ coverage/
 .env.*
 !.env.example
 .vite/
+
+# Product/project repos (independent git repos, not part of the monorepo)
+projects/
