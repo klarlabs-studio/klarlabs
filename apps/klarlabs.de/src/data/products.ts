@@ -27,8 +27,8 @@ export interface Product {
  */
 export const products: Product[] = [
   {
-    slug: 'obvia',
-    name: 'Obvia',
+    slug: 'vorhut',
+    name: 'Vorhut',
     tagline: 'Predict incidents before they happen.',
     description: 'AI-powered incident prediction and governed auto-remediation.',
     theme: 'dark',
@@ -37,15 +37,15 @@ export const products: Product[] = [
     problem:
       'Operations teams react. Telemetry piles up in dashboards, anomalies surface as outages, and remediation is a 3 a.m. runbook under pressure.',
     solution:
-      'Obvia sits on the observability stack you already pay for — Datadog, Prometheus, OpenSearch — detects anomalies, predicts outages, and remediates under explicit governance. Workflows graduate from draft to shadow to auto-execution only after the evaluation harness clears them.',
+      'Vorhut sits on the observability stack you already pay for — Datadog, Prometheus, OpenSearch — detects anomalies, predicts outages, and remediates under explicit governance. Workflows graduate from draft to shadow to auto-execution only after the evaluation harness clears them.',
     features: [
       { heading: 'Pattern detection', body: 'Threshold, error-rate, and trend detectors with calibration and confidence scoring — over-confident detectors stay out of the queue.' },
       { heading: 'Governed remediation', body: 'Runtime Policy Language gates every action by confidence, blast radius, scope, and environment. Operators stay in the loop until the loop is proven.' },
       { heading: 'Blast-path topology', body: 'Walks the service dependency graph to surface every downstream service an incident will touch — before approval.' },
       { heading: 'Multi-agent fleet', body: 'Pipeline-scoped agents own slices of the topology, each with its own tool allowlist and scope filter.' },
     ],
-    ctaHref: 'https://obvia.felixgeelhaar.de',
-    ctaLabel: 'Open Obvia',
+    ctaHref: 'https://vorhut.dev',
+    ctaLabel: 'Open Vorhut',
   },
   {
     slug: 'pet-medical',
