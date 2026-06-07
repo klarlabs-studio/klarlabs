@@ -189,5 +189,5 @@ export const ossLibraries: OssLibrary[] = [
   { name: 'mnemos', description: 'Self-hosted memory + evidence layer for AI agents.', repoHref: gh('mnemos') },
   { name: 'coverctl', description: 'Domain-aware test coverage enforcement.', repoHref: gh('coverctl') },
   { name: 'briefkasten', description: 'Email retrieval and sending as an MCP server.', repoHref: gh('briefkasten') },
-  { name: 'chronos', description: 'Embeddable time-series pattern detection engine.', repoHref: 'https://github.com/felixgeelhaar/chronos', docsHref: 'https://pkg.go.dev/github.com/felixgeelhaar/chronos', docsLabel: 'pkg.go.dev' },
+  { name: 'chronos', description: 'Time-series pattern detection — the temporal layer of the agent cognitive stack.', repoHref: 'https://github.com/felixgeelhaar/chronos', docsHref: 'https://pkg.go.dev/github.com/felixgeelhaar/chronos', docsLabel: 'pkg.go.dev' },
 ];
