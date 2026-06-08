@@ -198,19 +198,22 @@ export interface OssLibrary {
 
 const gh = (repo: string) => `https://github.com/klarlabs-studio/${repo}`;
 const godoc = (repo: string) => `https://pkg.go.dev/github.com/klarlabs-studio/${repo}`;
+// Most Go libs publish under the go.klarlabs.de vanity import path, whose last
+// segment differs from the repo name (agent-go -> agent, mcp-go -> mcp, …).
+const vdoc = (mod: string) => `https://pkg.go.dev/go.klarlabs.de/${mod}`;
 
 export const ossLibraries: OssLibrary[] = [
-  { name: 'agent-go', description: 'State-driven AI agent runtime for Go.', repoHref: gh('agent-go'), docsHref: godoc('agent-go'), docsLabel: 'pkg.go.dev' },
-  { name: 'mcp-go', description: 'Go framework for building MCP servers.', repoHref: gh('mcp-go'), docsHref: godoc('mcp-go'), docsLabel: 'pkg.go.dev' },
-  { name: 'fortify', description: 'Resilience patterns for Go + LLM services.', repoHref: gh('fortify'), docsHref: godoc('fortify'), docsLabel: 'pkg.go.dev' },
+  { name: 'agent-go', description: 'State-driven AI agent runtime for Go.', repoHref: gh('agent-go'), docsHref: vdoc('agent'), docsLabel: 'pkg.go.dev' },
+  { name: 'mcp-go', description: 'Go framework for building MCP servers.', repoHref: gh('mcp-go'), docsHref: vdoc('mcp'), docsLabel: 'pkg.go.dev' },
+  { name: 'fortify', description: 'Resilience patterns for Go + LLM services.', repoHref: gh('fortify'), docsHref: vdoc('fortify'), docsLabel: 'pkg.go.dev' },
   { name: 'fortify-ts', description: 'Production-grade fault tolerance for TypeScript.', repoHref: gh('fortify-ts') },
-  { name: 'axi-go', description: 'Safe, auditable execution kernel for AI agent tools.', repoHref: gh('axi-go'), docsHref: godoc('axi-go'), docsLabel: 'pkg.go.dev' },
-  { name: 'statekit', description: 'Go-native statecharts, XState-JSON compatible.', repoHref: gh('statekit'), docsHref: godoc('statekit'), docsLabel: 'pkg.go.dev' },
-  { name: 'bolt', description: "Go logging that solves the Logger's Trilemma.", repoHref: gh('bolt'), docsHref: godoc('bolt'), docsLabel: 'pkg.go.dev' },
-  { name: 'scout', description: 'Browser automation. One binary, no Node, no Python.', repoHref: gh('scout') },
-  { name: 'mnemos', description: 'Self-hosted memory + evidence layer for AI agents.', repoHref: gh('mnemos') },
-  { name: 'coverctl', description: 'Domain-aware test coverage enforcement.', repoHref: gh('coverctl') },
+  { name: 'axi-go', description: 'Safe, auditable execution kernel for AI agent tools.', repoHref: gh('axi-go'), docsHref: vdoc('axi'), docsLabel: 'pkg.go.dev' },
+  { name: 'statekit', description: 'Go-native statecharts, XState-JSON compatible.', repoHref: gh('statekit'), docsHref: vdoc('statekit'), docsLabel: 'pkg.go.dev' },
+  { name: 'bolt', description: "Go logging that solves the Logger's Trilemma.", repoHref: gh('bolt'), docsHref: vdoc('bolt'), docsLabel: 'pkg.go.dev' },
+  { name: 'scout', description: 'Browser automation. One binary, no Node, no Python.', repoHref: gh('scout'), docsHref: vdoc('scout'), docsLabel: 'pkg.go.dev' },
+  { name: 'mnemos', description: 'Self-hosted memory + evidence layer for AI agents.', repoHref: gh('mnemos'), docsHref: vdoc('mnemos'), docsLabel: 'pkg.go.dev' },
+  { name: 'coverctl', description: 'Domain-aware test coverage enforcement.', repoHref: gh('coverctl'), docsHref: vdoc('coverctl'), docsLabel: 'pkg.go.dev' },
   { name: 'auth-go', description: 'Strict-DDD auth for Go — magic link, password, TOTP, passkeys, sessions.', repoHref: gh('auth-go'), docsHref: godoc('auth-go'), docsLabel: 'pkg.go.dev' },
-  { name: 'briefkasten', description: 'Email retrieval and sending as an MCP server.', repoHref: gh('briefkasten') },
+  { name: 'briefkasten', description: 'Email retrieval and sending as an MCP server.', repoHref: gh('briefkasten'), docsHref: vdoc('briefkasten'), docsLabel: 'pkg.go.dev' },
   { name: 'chronos', description: 'Time-series pattern detection — the temporal layer of the agent cognitive stack.', repoHref: 'https://github.com/felixgeelhaar/chronos', docsHref: 'https://pkg.go.dev/github.com/felixgeelhaar/chronos', docsLabel: 'pkg.go.dev' },
 ];
