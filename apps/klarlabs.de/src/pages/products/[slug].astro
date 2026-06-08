@@ -14,7 +14,9 @@ interface Props {
 }
 
 const { product } = Astro.props;
-const isComingSoon = product.status === 'coming-soon';
+const STATUS_LABEL = { live: 'Live', beta: 'Public Beta', 'coming-soon': 'Coming Soon' } as const;
+const statusLabel = STATUS_LABEL[product.status];
+const statusVariant = product.status === 'coming-soon' ? 'neutral' : 'accent';
 ---
 
 <Base
@@ -46,7 +48,7 @@ const isComingSoon = product.status === 'coming-soon';
             </kl-button>
           )
         }
-        {isComingSoon && <kl-badge variant="neutral">Coming Soon</kl-badge>}
+        <kl-badge variant={statusVariant}>{statusLabel}</kl-badge>
       </span>
     </kl-hero>
 

@@ -115,7 +115,7 @@ export const products: Product[] = [
     description: 'Catches the LLM and MCP threats every other scanner misses — offline-first, open source.',
     theme: 'dark',
     accent: '#EF4444',
-    status: 'beta',
+    status: 'live',
     problem:
       'Teams ship LLM features — chat completions, RAG ingest, agents with tool calls, MCP servers — and every conventional scanner is blind to the threats that come with them.',
     solution:
@@ -136,7 +136,7 @@ export const products: Product[] = [
     description: 'Launch, track, and govern campaigns across 50+ Jira teams.',
     theme: 'dark',
     accent: '#0D9488',
-    status: 'beta',
+    status: 'live',
     problem:
       'Coordinating work across 50+ teams should not require 50+ spreadsheets. Security patches stall in scattered backlogs, compliance tasks lose their audit trail, and nobody can answer "are we delivering value?" at renewal.',
     solution:
@@ -210,6 +210,7 @@ export const ossLibraries: OssLibrary[] = [
   { name: 'scout', description: 'Browser automation. One binary, no Node, no Python.', repoHref: gh('scout') },
   { name: 'mnemos', description: 'Self-hosted memory + evidence layer for AI agents.', repoHref: gh('mnemos') },
   { name: 'coverctl', description: 'Domain-aware test coverage enforcement.', repoHref: gh('coverctl') },
+  { name: 'auth-go', description: 'Strict-DDD auth for Go — magic link, password, TOTP, passkeys, sessions.', repoHref: gh('auth-go'), docsHref: godoc('auth-go'), docsLabel: 'pkg.go.dev' },
   { name: 'briefkasten', description: 'Email retrieval and sending as an MCP server.', repoHref: gh('briefkasten') },
   { name: 'chronos', description: 'Time-series pattern detection — the temporal layer of the agent cognitive stack.', repoHref: 'https://github.com/felixgeelhaar/chronos', docsHref: 'https://pkg.go.dev/github.com/felixgeelhaar/chronos', docsLabel: 'pkg.go.dev' },
 ];
