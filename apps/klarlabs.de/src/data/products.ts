@@ -196,24 +196,52 @@ export interface OssLibrary {
   docsLabel?: string;
 }
 
+export interface OssGroup {
+  title: string;
+  libraries: OssLibrary[];
+}
+
 const gh = (repo: string) => `https://github.com/klarlabs-studio/${repo}`;
 const godoc = (repo: string) => `https://pkg.go.dev/github.com/klarlabs-studio/${repo}`;
 // Most Go libs publish under the go.klarlabs.de vanity import path, whose last
 // segment differs from the repo name (agent-go -> agent, mcp-go -> mcp, …).
 const vdoc = (mod: string) => `https://pkg.go.dev/go.klarlabs.de/${mod}`;
 
-export const ossLibraries: OssLibrary[] = [
-  { name: 'agent-go', description: 'State-driven AI agent runtime for Go.', repoHref: gh('agent-go'), docsHref: vdoc('agent'), docsLabel: 'pkg.go.dev' },
-  { name: 'mcp-go', description: 'Go framework for building MCP servers.', repoHref: gh('mcp-go'), docsHref: vdoc('mcp'), docsLabel: 'pkg.go.dev' },
-  { name: 'fortify', description: 'Composable resilience for Go: circuit breaker, retry, rate limit, timeout — one API.', repoHref: gh('fortify'), docsHref: vdoc('fortify'), docsLabel: 'pkg.go.dev' },
-  { name: 'fortify-ts', description: 'Composable resilience for TypeScript: circuit breaker, retry, rate limit, bulkhead, fallback.', repoHref: gh('fortify-ts') },
-  { name: 'axi-go', description: 'Safe, auditable execution kernel for AI agent tools.', repoHref: gh('axi-go'), docsHref: vdoc('axi'), docsLabel: 'pkg.go.dev' },
-  { name: 'statekit', description: 'Go-native statecharts, XState-JSON compatible.', repoHref: gh('statekit'), docsHref: vdoc('statekit'), docsLabel: 'pkg.go.dev' },
-  { name: 'bolt', description: 'Zero-allocation slog handler for Go, with first-class OpenTelemetry.', repoHref: gh('bolt'), docsHref: vdoc('bolt'), docsLabel: 'pkg.go.dev' },
-  { name: 'scout', description: 'Browser automation. One binary, no Node, no Python.', repoHref: gh('scout'), docsHref: vdoc('scout'), docsLabel: 'pkg.go.dev' },
-  { name: 'mnemos', description: 'Self-hosted memory + evidence layer for AI agents.', repoHref: gh('mnemos'), docsHref: vdoc('mnemos'), docsLabel: 'pkg.go.dev' },
-  { name: 'coverctl', description: 'Coverage your AI coding agent checks before commit — domain-aware, MCP-native.', repoHref: gh('coverctl'), docsHref: vdoc('coverctl'), docsLabel: 'pkg.go.dev' },
-  { name: 'auth-go', description: 'Auth for Go — magic link, password, TOTP, passkeys, sessions.', repoHref: gh('auth-go'), docsHref: godoc('auth-go'), docsLabel: 'pkg.go.dev' },
-  { name: 'briefkasten', description: 'Any mailbox as an MCP server — list, fetch, send, search.', repoHref: gh('briefkasten'), docsHref: vdoc('briefkasten'), docsLabel: 'pkg.go.dev' },
-  { name: 'chronos', description: 'Time-series pattern detection for AI agents — trends, spikes, drops, anomalies as structured signals.', repoHref: 'https://github.com/felixgeelhaar/chronos', docsHref: 'https://pkg.go.dev/github.com/felixgeelhaar/chronos', docsLabel: 'pkg.go.dev' },
+/**
+ * Open-source libraries grouped by role — mirrors the org overview at
+ * github.com/klarlabs-studio so the portfolio reads as a coherent stack
+ * rather than a flat list of repos.
+ */
+export const ossGroups: OssGroup[] = [
+  {
+    title: 'Agent infrastructure',
+    libraries: [
+      { name: 'agent-go', description: 'State-driven AI agent runtime for Go.', repoHref: gh('agent-go'), docsHref: vdoc('agent'), docsLabel: 'pkg.go.dev' },
+      { name: 'axi-go', description: 'Safe, auditable execution kernel for AI agent tools.', repoHref: gh('axi-go'), docsHref: vdoc('axi'), docsLabel: 'pkg.go.dev' },
+      { name: 'mnemos', description: 'Self-hosted memory + evidence layer for AI agents.', repoHref: gh('mnemos'), docsHref: vdoc('mnemos'), docsLabel: 'pkg.go.dev' },
+      { name: 'chronos', description: 'Time-series pattern detection for AI agents — trends, spikes, drops, anomalies as structured signals.', repoHref: 'https://github.com/felixgeelhaar/chronos', docsHref: 'https://pkg.go.dev/github.com/felixgeelhaar/chronos', docsLabel: 'pkg.go.dev' },
+      { name: 'mcp-go', description: 'Go framework for building MCP servers.', repoHref: gh('mcp-go'), docsHref: vdoc('mcp'), docsLabel: 'pkg.go.dev' },
+      { name: 'scout', description: 'Browser automation. One binary, no Node, no Python.', repoHref: gh('scout'), docsHref: vdoc('scout'), docsLabel: 'pkg.go.dev' },
+      { name: 'briefkasten', description: 'Any mailbox as an MCP server — list, fetch, send, search.', repoHref: gh('briefkasten'), docsHref: vdoc('briefkasten'), docsLabel: 'pkg.go.dev' },
+    ],
+  },
+  {
+    title: 'Resilience & observability',
+    libraries: [
+      { name: 'fortify', description: 'Composable resilience for Go: circuit breaker, retry, rate limit, timeout — one API.', repoHref: gh('fortify'), docsHref: vdoc('fortify'), docsLabel: 'pkg.go.dev' },
+      { name: 'fortify-ts', description: 'Composable resilience for TypeScript: circuit breaker, retry, rate limit, bulkhead, fallback.', repoHref: gh('fortify-ts') },
+      { name: 'bolt', description: 'Zero-allocation slog handler for Go, with first-class OpenTelemetry.', repoHref: gh('bolt'), docsHref: vdoc('bolt'), docsLabel: 'pkg.go.dev' },
+      { name: 'auth-go', description: 'Auth for Go — magic link, password, TOTP, passkeys, sessions.', repoHref: gh('auth-go'), docsHref: godoc('auth-go'), docsLabel: 'pkg.go.dev' },
+    ],
+  },
+  {
+    title: 'Developer tooling',
+    libraries: [
+      { name: 'coverctl', description: 'Coverage your AI coding agent checks before commit — domain-aware, MCP-native.', repoHref: gh('coverctl'), docsHref: vdoc('coverctl'), docsLabel: 'pkg.go.dev' },
+      { name: 'statekit', description: 'Go-native statecharts, XState-JSON compatible.', repoHref: gh('statekit'), docsHref: vdoc('statekit'), docsLabel: 'pkg.go.dev' },
+    ],
+  },
 ];
+
+/** Flat view of every library, derived from the grouped source. */
+export const ossLibraries: OssLibrary[] = ossGroups.flatMap((g) => g.libraries);

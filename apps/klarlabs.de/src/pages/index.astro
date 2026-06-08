@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { products, ossLibraries } from '../data/products';
+import { products, ossGroups } from '../data/products';
 ---
 
 <Base
@@ -59,19 +59,24 @@ import { products, ossLibraries } from '../data/products';
     <section id="oss">
       <span class="section-label">02 Open Source</span>
       <h2>The infrastructure behind everything we build.</h2>
-      <div class="oss-list">
-        {
-          ossLibraries.map((lib) => (
-            <kl-oss-card
-              name={lib.name}
-              description={lib.description}
-              repo-href={lib.repoHref}
-              docs-href={lib.docsHref}
-              docs-label={lib.docsLabel}
-            />
-          ))
-        }
-      </div>
+      {
+        ossGroups.map((group) => (
+          <div class="oss-group">
+            <h3 class="oss-group-title">{group.title}</h3>
+            <div class="oss-list">
+              {group.libraries.map((lib) => (
+                <kl-oss-card
+                  name={lib.name}
+                  description={lib.description}
+                  repo-href={lib.repoHref}
+                  docs-href={lib.docsHref}
+                  docs-label={lib.docsLabel}
+                />
+              ))}
+            </div>
+          </div>
+        ))
+      }
     </section>
 
     <kl-divider></kl-divider>
@@ -170,6 +175,22 @@ import { products, ossLibraries } from '../data/products';
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: var(--kl-space-6);
+  }
+
+  .oss-group {
+    display: grid;
+    gap: var(--kl-space-3);
+    margin-block-start: var(--kl-space-5);
+  }
+
+  .oss-group-title {
+    margin: 0;
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    font-weight: var(--kl-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--kl-tracking-caps);
+    color: var(--kl-ink-secondary);
   }
 
   .oss-list {
