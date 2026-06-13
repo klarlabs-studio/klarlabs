@@ -1,0 +1,102 @@
+apiVersion: rollops.klarlabs.de/v1
+kind: RolloutConfig
+metadata:
+  name: klarlabs-klarlabs-site
+spec:
+  target:
+    kind: kubernetes
+    ref: klarlabs/prod/klarlabs-site
+    criticality: medium
+    spec:
+      namespace: klarlabs
+      resource: deployment/klarlabs-site
+      image: ghcr.io/klarlabs-studio/klarlabs-site:latest
+      manifest: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          labels:
+            app: klarlabs-site
+          name: klarlabs-site
+          namespace: klarlabs
+        spec:
+          progressDeadlineSeconds: 600
+          replicas: 1
+          revisionHistoryLimit: 10
+          selector:
+            matchLabels:
+              app: klarlabs-site
+          strategy:
+            rollingUpdate:
+              maxSurge: 25%
+              maxUnavailable: 25%
+            type: RollingUpdate
+          template:
+            metadata:
+              annotations:
+                keel.sh/update-time: 2026-06-08 21:02:25.549240556 +0000 UTC m=+145504.408003150
+                kubectl.kubernetes.io/restartedAt: '2026-06-07T06:24:29+02:00'
+              labels:
+                app: klarlabs-site
+            spec:
+              containers:
+              - image: ghcr.io/klarlabs-studio/klarlabs-site:latest
+                imagePullPolicy: Always
+                livenessProbe:
+                  failureThreshold: 3
+                  httpGet:
+                    path: /
+                    port: 8080
+                    scheme: HTTP
+                  initialDelaySeconds: 5
+                  periodSeconds: 30
+                  successThreshold: 1
+                  timeoutSeconds: 1
+                name: site
+                ports:
+                - containerPort: 8080
+                  protocol: TCP
+                readinessProbe:
+                  failureThreshold: 3
+                  httpGet:
+                    path: /
+                    port: 8080
+                    scheme: HTTP
+                  initialDelaySeconds: 2
+                  periodSeconds: 10
+                  successThreshold: 1
+                  timeoutSeconds: 1
+                resources:
+                  limits:
+                    cpu: 200m
+                    memory: 64Mi
+                  requests:
+                    cpu: 10m
+                    memory: 16Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                    - ALL
+                  readOnlyRootFilesystem: false
+                terminationMessagePath: /dev/termination-log
+                terminationMessagePolicy: File
+              dnsPolicy: ClusterFirst
+              imagePullSecrets:
+              - name: ghcr-pull
+              nodeSelector:
+                kubernetes.io/hostname: edge-light
+              restartPolicy: Always
+              schedulerName: default-scheduler
+              securityContext:
+                runAsNonRoot: true
+                runAsUser: 101
+                seccompProfile:
+                  type: RuntimeDefault
+              terminationGracePeriodSeconds: 30
+  strategy:
+    type: rolling
+  verification: shallow
+  imagePolicy:
+    mode: digest
+    allowMutableTags: true
