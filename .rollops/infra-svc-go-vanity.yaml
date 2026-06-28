@@ -16,5 +16,4 @@ spec:
         \  selector:\n    app: go-vanity\n  sessionAffinity: None\n  type: ClusterIP\n"
   strategy:
     type: rolling
-  verification: shallow
 

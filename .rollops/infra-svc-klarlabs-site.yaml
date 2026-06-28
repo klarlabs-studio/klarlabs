@@ -16,5 +16,4 @@ spec:
         \ klarlabs-site\n  sessionAffinity: None\n  type: ClusterIP\n"
   strategy:
     type: rolling
-  verification: shallow
 
