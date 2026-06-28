@@ -1,0 +1,20 @@
+apiVersion: rollops.klarlabs.de/v1
+kind: RolloutConfig
+metadata:
+  name: kl-svc-go-vanity
+spec:
+  target:
+    kind: kubernetes
+    ref: klarlabs/prod/svc-go-vanity
+    criticality: low
+    spec:
+      namespace: klarlabs
+      resource: service/go-vanity
+      manifest: "apiVersion: v1\nkind: Service\nmetadata:\n  labels:\n    app: go-vanity\n\
+        \  name: go-vanity\n  namespace: klarlabs\nspec:\n  internalTrafficPolicy:\
+        \ Cluster\n  ports:\n  - port: 80\n    protocol: TCP\n    targetPort: 8080\n\
+        \  selector:\n    app: go-vanity\n  sessionAffinity: None\n  type: ClusterIP\n"
+  strategy:
+    type: rolling
+  verification: shallow
+
