@@ -20,8 +20,6 @@ spec:
       labels:
         app: klarlabs-site
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: edge-light
       imagePullSecrets:
         - name: ghcr-pull
       securityContext:
