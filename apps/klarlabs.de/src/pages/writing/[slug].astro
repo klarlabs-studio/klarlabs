@@ -1,6 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { articles, type Article } from '../../data/articles';
+import compositionSvg from '../../charts/composition.svg?raw';
+import readsSvg from '../../charts/reads.svg?raw';
+
+const CHARTS: Record<string, string> = {
+  composition: compositionSvg,
+  reads: readsSvg,
+};
 
 export function getStaticPaths() {
   return articles.map((article) => ({
@@ -73,6 +80,29 @@ const dateLabel = new Date(article.date).toLocaleDateString('en-US', {
                     </div>
                   ))}
                 </div>
+              );
+            if (block.type === 'code')
+              return (
+                <figure class="codeblock">
+                  <pre><code class={`lang-${block.lang ?? 'text'}`}>{block.code}</code></pre>
+                  {(block.caption || block.href) && (
+                    <figcaption>
+                      {block.caption}
+                      {block.href && (
+                        <a href={block.href} target="_blank" rel="noreferrer">
+                          {block.hrefLabel ?? 'View on GitHub'} →
+                        </a>
+                      )}
+                    </figcaption>
+                  )}
+                </figure>
+              );
+            if (block.type === 'svg')
+              return (
+                <figure class="chart">
+                  <div class="chart-svg" set:html={CHARTS[block.id]} />
+                  {block.caption && <p class="chart-caption">{block.caption}</p>}
+                </figure>
               );
             return null;
           })
@@ -221,6 +251,198 @@ const dateLabel = new Date(article.date).toLocaleDateString('en-US', {
     text-transform: uppercase;
     letter-spacing: var(--kl-tracking-caps);
     color: var(--article-accent, var(--kl-accent));
+  }
+
+  /* --- code blocks --- */
+  .codeblock {
+    margin: var(--kl-space-4) 0;
+    display: grid;
+    gap: var(--kl-space-2);
+  }
+
+  .codeblock pre {
+    margin: 0;
+    padding: var(--kl-space-5);
+    background: var(--kl-surface-raised, rgba(127, 127, 127, 0.08));
+    border: 1px solid var(--kl-border);
+    border-radius: var(--kl-radius-lg, 12px);
+    overflow-x: auto;
+  }
+
+  .codeblock code {
+    font-family: var(--kl-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+    font-size: var(--kl-text-sm);
+    line-height: var(--kl-leading-relaxed);
+    color: var(--kl-ink);
+    white-space: pre;
+  }
+
+  .codeblock figcaption {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    color: var(--kl-ink-tertiary);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--kl-space-2);
+  }
+
+  .codeblock figcaption a {
+    color: var(--article-accent, var(--kl-accent));
+    text-decoration: none;
+    font-weight: var(--kl-weight-medium);
+  }
+
+  /* --- charts (single-hue accent; identity via direct labels, not color) --- */
+  .chart {
+    margin: var(--kl-space-6) 0;
+    padding: var(--kl-space-6);
+    border: 1px solid var(--kl-border);
+    border-radius: var(--kl-radius-lg, 12px);
+    display: grid;
+    gap: var(--kl-space-5);
+  }
+
+  .chart-title {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-md);
+    font-weight: var(--kl-weight-semibold);
+    color: var(--kl-ink);
+  }
+
+  /* tokenops-rendered SVG — inherits ink via currentColor, scales to width */
+  .chart-svg {
+    color: var(--kl-ink);
+  }
+
+  .chart-svg :global(svg) {
+    inline-size: 100%;
+    block-size: auto;
+    display: block;
+  }
+
+  .chart-caption {
+    margin: 0;
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    line-height: var(--kl-leading-relaxed);
+    color: var(--kl-ink-tertiary);
+  }
+
+  .bars {
+    display: grid;
+    gap: var(--kl-space-4);
+  }
+
+  .bar-row {
+    display: grid;
+    gap: var(--kl-space-1);
+  }
+
+  .bar-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--kl-space-3);
+  }
+
+  .bar-label {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    font-weight: var(--kl-weight-medium);
+    color: var(--kl-ink);
+  }
+
+  .bar-value {
+    font-family: var(--kl-font-mono, ui-monospace, monospace);
+    font-size: var(--kl-text-sm);
+    font-weight: var(--kl-weight-semibold);
+    color: var(--kl-ink-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bar-track {
+    block-size: 10px;
+    background: var(--kl-surface-raised, rgba(127, 127, 127, 0.1));
+    border-radius: 999px;
+  }
+
+  .bar-fill {
+    block-size: 100%;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--article-accent, var(--kl-accent)) 34%, transparent);
+    min-inline-size: 6px;
+  }
+
+  .bar-fill.hi {
+    background: var(--article-accent, var(--kl-accent));
+  }
+
+  .bar-note {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-xs);
+    color: var(--kl-ink-tertiary);
+  }
+
+  /* ratio hero */
+  .ratio {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--kl-space-6);
+    align-items: center;
+  }
+
+  .ratio-big {
+    font-family: var(--kl-font-sans);
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: var(--kl-weight-bold);
+    letter-spacing: var(--kl-tracking-tight);
+    color: var(--article-accent, var(--kl-accent));
+    line-height: 1;
+  }
+
+  .ratio-bars {
+    display: grid;
+    gap: var(--kl-space-3);
+    min-inline-size: 0;
+  }
+
+  .ratio-row {
+    display: grid;
+    gap: var(--kl-space-1);
+  }
+
+  .ratio-label {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-xs);
+    color: var(--kl-ink-secondary);
+  }
+
+  .ratio-track {
+    block-size: 12px;
+    background: var(--kl-surface-raised, rgba(127, 127, 127, 0.1));
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .ratio-fill {
+    block-size: 100%;
+    border-radius: 999px;
+  }
+
+  .ratio-fill.input {
+    background: var(--article-accent, var(--kl-accent));
+  }
+
+  .ratio-fill.output {
+    background: var(--kl-ink-secondary);
+    min-inline-size: 3px;
+  }
+
+  @media (max-width: 520px) {
+    .ratio {
+      grid-template-columns: 1fr;
+      gap: var(--kl-space-4);
+    }
   }
 
   .cta {
