@@ -1,0 +1,261 @@
+---
+import Base from '../../layouts/Base.astro';
+import { articles, type Article } from '../../data/articles';
+
+export function getStaticPaths() {
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+const dateLabel = new Date(article.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Base
+  title={`${article.title} — Klarlabs`}
+  description={article.dek}
+  theme="dark"
+>
+  <div class="article-page" style={`--article-accent: ${article.accent}`}>
+    <kl-nav>
+      <a class="wordmark" slot="brand" href="/">klar&hairsp;<em>labs</em></a>
+      <a href="/#products">Products</a>
+      <a href="/#oss">Open Source</a>
+      <a href="/writing/">Writing</a>
+      <kl-klarlabs-badge slot="cta" href="/"></kl-klarlabs-badge>
+      <a slot="drawer" href="/#products">Products</a>
+      <a slot="drawer" href="/#oss">Open Source</a>
+      <a slot="drawer" href="/writing/">Writing</a>
+    </kl-nav>
+
+    <kl-hero animated style="--kl-hero-accent: var(--article-accent)">
+      <span slot="eyebrow">Writing · {dateLabel} · {article.readingMinutes} min read</span>
+      <h1 slot="title">{article.title}</h1>
+      <p slot="subtitle">{article.dek}</p>
+      <span slot="actions" class="hero-meta">
+        <span class="byline">By {article.author}</span>
+        {article.tags.map((t) => <kl-badge variant="neutral">{t}</kl-badge>)}
+      </span>
+    </kl-hero>
+
+    <main>
+      <article>
+        {
+          article.blocks.map((block) => {
+            if (block.type === 'p') return <p class="copy">{block.text}</p>;
+            if (block.type === 'h') return <h2 class="subhead">{block.text}</h2>;
+            if (block.type === 'quote') return <blockquote class="pullquote">{block.text}</blockquote>;
+            if (block.type === 'list')
+              return (
+                <ul class="copy list">
+                  {block.items.map((i) => (
+                    <li>{i}</li>
+                  ))}
+                </ul>
+              );
+            if (block.type === 'stats')
+              return (
+                <div class="stats">
+                  {block.stats.map((s) => (
+                    <div class="stat">
+                      <span class="stat-value">{s.value}</span>
+                      <span class="stat-label">{s.label}</span>
+                    </div>
+                  ))}
+                </div>
+              );
+            return null;
+          })
+        }
+      </article>
+
+      {
+        article.cta && (
+          <section class="cta">
+            <span class="section-label">Open Source</span>
+            <h2 class="subhead">{article.cta.heading}</h2>
+            <p class="copy">{article.cta.body}</p>
+            <kl-button size="lg" href={article.cta.href} target="_blank">
+              {article.cta.label}
+            </kl-button>
+          </section>
+        )
+      }
+
+      <a class="back" href="/writing/">← All writing</a>
+    </main>
+
+    <footer>
+      <kl-klarlabs-badge href="/"></kl-klarlabs-badge>
+      <span class="footer-place">Munich, Germany · © 2026 Klarlabs</span>
+    </footer>
+  </div>
+</Base>
+
+<style>
+  .wordmark {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-md);
+    font-weight: var(--kl-weight-normal);
+    letter-spacing: var(--kl-tracking-tight);
+    color: var(--kl-ink);
+    text-decoration: none;
+  }
+
+  .wordmark em {
+    color: var(--kl-accent);
+    font-weight: var(--kl-weight-semibold);
+    font-style: normal;
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--kl-space-3);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .byline {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    color: var(--kl-ink-secondary);
+  }
+
+  main {
+    max-inline-size: var(--kl-content-md);
+    margin-inline: auto;
+    padding-block: var(--kl-space-16);
+    padding-inline: clamp(var(--kl-space-4), 4vw, var(--kl-space-12));
+    display: grid;
+    gap: var(--kl-space-8);
+  }
+
+  article {
+    display: grid;
+    gap: var(--kl-space-6);
+  }
+
+  .subhead {
+    margin: var(--kl-space-6) 0 0;
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-lg);
+    font-weight: var(--kl-weight-semibold);
+    letter-spacing: var(--kl-tracking-tight);
+    color: var(--kl-ink);
+  }
+
+  .copy {
+    margin: 0;
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-md);
+    line-height: var(--kl-leading-relaxed);
+    color: var(--kl-ink-secondary);
+  }
+
+  .list {
+    display: grid;
+    gap: var(--kl-space-2);
+    padding-inline-start: var(--kl-space-5);
+  }
+
+  .list li {
+    padding-inline-start: var(--kl-space-1);
+  }
+
+  .pullquote {
+    margin: var(--kl-space-4) 0;
+    padding: var(--kl-space-4) var(--kl-space-6);
+    border-inline-start: 3px solid var(--article-accent, var(--kl-accent));
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-lg);
+    font-weight: var(--kl-weight-medium);
+    line-height: var(--kl-leading-relaxed);
+    color: var(--kl-ink);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: var(--kl-space-5);
+    margin: var(--kl-space-4) 0;
+    padding: var(--kl-space-6);
+    border: 1px solid var(--kl-border);
+    border-radius: var(--kl-radius-lg, 12px);
+  }
+
+  .stat {
+    display: grid;
+    gap: var(--kl-space-2);
+  }
+
+  .stat-value {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-xl, 2rem);
+    font-weight: var(--kl-weight-bold);
+    letter-spacing: var(--kl-tracking-tight);
+    color: var(--article-accent, var(--kl-accent));
+  }
+
+  .stat-label {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    line-height: var(--kl-leading-relaxed);
+    color: var(--kl-ink-tertiary);
+  }
+
+  .section-label {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-xs);
+    font-weight: var(--kl-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--kl-tracking-caps);
+    color: var(--article-accent, var(--kl-accent));
+  }
+
+  .cta {
+    display: grid;
+    gap: var(--kl-space-4);
+    justify-items: start;
+    margin-block-start: var(--kl-space-8);
+    padding-block-start: var(--kl-space-8);
+    border-block-start: 1px solid var(--kl-border);
+  }
+
+  .back {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    color: var(--kl-ink-tertiary);
+    text-decoration: none;
+  }
+
+  .back:hover {
+    color: var(--kl-ink);
+  }
+
+  footer {
+    border-block-start: 1px solid var(--kl-border);
+    padding: var(--kl-space-8) clamp(var(--kl-space-4), 4vw, var(--kl-space-12));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--kl-space-4);
+  }
+
+  .footer-place {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    color: var(--kl-ink-tertiary);
+  }
+</style>

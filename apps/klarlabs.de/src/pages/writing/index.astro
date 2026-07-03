@@ -1,0 +1,157 @@
+---
+import Base from '../../layouts/Base.astro';
+import { articles } from '../../data/articles';
+
+const sorted = [...articles].sort((a, b) => (a.date < b.date ? 1 : -1));
+const fmt = (iso: string) =>
+  new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<Base
+  title="Writing — Klarlabs"
+  description="Engineering notes from Klarlabs. Precision software, measured honestly."
+  theme="dark"
+  themeToggle
+>
+  <kl-nav>
+    <a class="wordmark" slot="brand" href="/">klar&hairsp;<em>labs</em></a>
+    <a href="/#products">Products</a>
+    <a href="/#oss">Open Source</a>
+    <a href="/writing/">Writing</a>
+    <span slot="cta" class="nav-actions">
+      <kl-button size="sm" variant="secondary" href="https://github.com/klarlabs-studio" target="_blank">
+        GitHub
+      </kl-button>
+      <kl-theme-toggle></kl-theme-toggle>
+    </span>
+    <a slot="drawer" href="/#products">Products</a>
+    <a slot="drawer" href="/#oss">Open Source</a>
+    <a slot="drawer" href="/writing/">Writing</a>
+  </kl-nav>
+
+  <kl-hero animated>
+    <span slot="eyebrow">Klarlabs · Writing</span>
+    <h1 slot="title">Engineering notes, measured <em class="accent">honestly</em>.</h1>
+    <p slot="subtitle">What we learned building and running our tools — with the numbers, including the ones that surprised us.</p>
+  </kl-hero>
+
+  <main>
+    <ul class="posts">
+      {
+        sorted.map((a) => (
+          <li class="post">
+            <a class="post-link" href={`/writing/${a.slug}/`}>
+              <span class="post-meta">{fmt(a.date)} · {a.readingMinutes} min</span>
+              <h2 class="post-title">{a.title}</h2>
+              <p class="post-dek">{a.dek}</p>
+              <span class="post-tags">{a.tags.join(' · ')}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+
+  <footer>
+    <kl-klarlabs-badge href="/"></kl-klarlabs-badge>
+    <span class="footer-place">Munich, Germany · © 2026 Klarlabs</span>
+  </footer>
+</Base>
+
+<style>
+  .wordmark {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-md);
+    font-weight: var(--kl-weight-normal);
+    letter-spacing: var(--kl-tracking-tight);
+    color: var(--kl-ink);
+    text-decoration: none;
+  }
+
+  .wordmark em {
+    color: var(--kl-accent);
+    font-weight: var(--kl-weight-semibold);
+    font-style: normal;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--kl-space-3);
+  }
+
+  main {
+    max-inline-size: var(--kl-content-lg);
+    margin-inline: auto;
+    padding-block: var(--kl-space-16);
+    padding-inline: clamp(var(--kl-space-4), 4vw, var(--kl-space-12));
+  }
+
+  .posts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--kl-space-8);
+  }
+
+  .post {
+    border-block-end: 1px solid var(--kl-border);
+    padding-block-end: var(--kl-space-8);
+  }
+
+  .post-link {
+    display: grid;
+    gap: var(--kl-space-3);
+    text-decoration: none;
+  }
+
+  .post-meta {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-xs);
+    font-weight: var(--kl-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--kl-tracking-caps);
+    color: var(--kl-accent);
+  }
+
+  .post-title {
+    margin: 0;
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-lg);
+    font-weight: var(--kl-weight-semibold);
+    letter-spacing: var(--kl-tracking-tight);
+    color: var(--kl-ink);
+  }
+
+  .post-dek {
+    margin: 0;
+    max-inline-size: var(--kl-content-md);
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-md);
+    line-height: var(--kl-leading-relaxed);
+    color: var(--kl-ink-secondary);
+  }
+
+  .post-tags {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    color: var(--kl-ink-tertiary);
+  }
+
+  footer {
+    border-block-start: 1px solid var(--kl-border);
+    padding: var(--kl-space-8) clamp(var(--kl-space-4), 4vw, var(--kl-space-12));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--kl-space-4);
+  }
+
+  .footer-place {
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    color: var(--kl-ink-tertiary);
+  }
+</style>
