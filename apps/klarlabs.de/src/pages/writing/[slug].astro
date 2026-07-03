@@ -3,10 +3,14 @@ import Base from '../../layouts/Base.astro';
 import { articles, type Article } from '../../data/articles';
 import compositionSvg from '../../charts/composition.svg?raw';
 import readsSvg from '../../charts/reads.svg?raw';
+import ratioSvg from '../../charts/ratio.svg?raw';
+import fmtRoiSvg from '../../charts/fmt-roi.svg?raw';
 
 const CHARTS: Record<string, string> = {
   composition: compositionSvg,
   reads: readsSvg,
+  ratio: ratioSvg,
+  'fmt-roi': fmtRoiSvg,
 };
 
 export function getStaticPaths() {

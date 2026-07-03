@@ -5,8 +5,8 @@ export type ArticleBlock =
   | { type: 'list'; items: string[] }
   | { type: 'stats'; stats: ArticleStat[] }
   | { type: 'code'; code: string; lang?: string; caption?: string; href?: string; hrefLabel?: string }
-  /** A chart rendered by tokenops (`tokenops fmt analyze --svg`), embedded verbatim. */
-  | { type: 'svg'; id: 'composition' | 'reads'; caption?: string };
+  /** A chart rendered by tokenops (`tokenops fmt analyze --svg` / `spend --svg`), embedded verbatim. */
+  | { type: 'svg'; id: 'composition' | 'reads' | 'ratio' | 'fmt-roi'; caption?: string };
 
 export interface ArticleStat {
   value: string;
@@ -72,6 +72,11 @@ export const articles: Article[] = [
         text: 'Over roughly six months of real usage we sent tens of billions of input tokens and received about forty million output tokens back. That is a ratio near 800 to 1. Every turn re-sends the entire growing context — system prompt, tool definitions, file contents, command output, conversation history — to get back a few hundred tokens of reply.',
       },
       {
+        type: 'svg',
+        id: 'ratio',
+        caption: 'From `tokenops spend`. The output bar is 0.12% of the total, drawn to scale — a hairline. That sliver is the only thing “make the AI talk terse” can touch.',
+      },
+      {
         type: 'p',
         text: 'The terse-talking trick compresses only the model’s prose, and it leaves code, tool calls, and structured output alone. That prose is 0.12% of our token volume. Even weighting for the fact that output tokens are priced several times higher than input, the absolute ceiling on what "make the AI talk less" could ever save us is around 1% of the bill. We were about to optimize a rounding error.',
       },
@@ -124,6 +129,11 @@ Context composition — 768 sessions, 78539 tool results
       {
         type: 'p',
         text: 'Then we ran it against our actual command history — and it reclaimed 1–4%. The formatters are excellent at compressing noisy builds and verbose test runs. Our commands, it turned out, are mostly grep, cat, echo, and small git calls — already terse, nothing to strip. The catalog was not wrong; our usage simply does not lean on the commands it shines at. Honest measurement beat the demo number.',
+      },
+      {
+        type: 'svg',
+        id: 'fmt-roi',
+        caption: 'From `tokenops fmt analyze`. The same 57–68% formatters, measured against our real command mix instead of a benchmark corpus.',
       },
       {
         type: 'h',
