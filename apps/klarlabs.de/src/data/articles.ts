@@ -42,7 +42,7 @@ export const articles: Article[] = [
     title: '800 to 1',
     dek: 'We set out to cut the token bill on our AI-assisted coding. The popular fix — make the model talk in terse shorthand — turned out to touch about 1% of it. Here is what the numbers actually showed, and the tool we built and open-sourced to find out.',
     date: '2026-07-03',
-    readingMinutes: 7,
+    readingMinutes: 9,
     author: 'Felix Geelhaar',
     accent: '#6366F1',
     tags: ['AI', 'Developer Tools', 'Measurement', 'Open Source'],
@@ -199,6 +199,65 @@ $ tokenops fmt learn`,
         caption: 'Point it at your own logs. Local-first, deterministic, no telemetry.',
         href: 'https://github.com/klarlabs-studio/tokenops',
         hrefLabel: 'github.com/klarlabs-studio/tokenops',
+      },
+      {
+        type: 'h',
+        text: 'Point it at your own usage',
+      },
+      {
+        type: 'p',
+        text: 'Setup is not installing another optimizer — it is aiming the measurement at your own situation. Everything below reads the logs your agent already writes; the only question is how much you want wired in. Four common starting points, in order of commitment.',
+      },
+      {
+        type: 'p',
+        text: 'If you only want to check your own denominator before trusting anyone’s percentage: install, run one command, read the split. No daemon, no account, nothing left running. This is where every number in this post came from.',
+      },
+      {
+        type: 'code',
+        lang: 'console',
+        code: `$ brew install felixgeelhaar/tap/tokenops
+
+# context composition from the logs already on disk — no daemon, no account
+$ tokenops fmt analyze`,
+        caption: 'Cost-curious / skeptic — measure first, decide later. Nothing persists.',
+        href: 'https://github.com/klarlabs-studio/tokenops',
+        hrefLabel: 'github.com/klarlabs-studio/tokenops',
+      },
+      {
+        type: 'p',
+        text: 'If you are the person in this post — coding all day against a Claude Max or ChatGPT plan and tired of mid-task cutoffs — bind your plan so tokenops can predict the window, and wire the read-guard hook so genuinely redundant full re-reads never spend tokens. It starts in observe mode; you flip it to active once you have seen what it would block.',
+      },
+      {
+        type: 'code',
+        lang: 'console',
+        code: `$ tokenops init --detect                      # sniff installed AI clients
+$ tokenops plan set anthropic claude-max-20x  # predict the rate-limit window
+$ tokenops read-guard hook                    # prints the Claude Code settings.json block`,
+        caption: 'Solo dev on a flat-rate plan — predict the cutoff, reclaim redundant re-reads.',
+      },
+      {
+        type: 'p',
+        text: 'If you are building your own agent or MCP workflow, the deterministic formatters are the reusable part. Wrap a noisy command so its output is compressed — losslessly for errors and changed state — before it ever reaches context, or run the whole thing as an MCP server your agent calls directly.',
+      },
+      {
+        type: 'code',
+        lang: 'console',
+        code: `$ tokenops fmt -- go test ./...            # compress this command's output in place
+$ eval "$(tokenops fmt hook --shell zsh)"  # then: export TOKENOPS_FMT=1 to activate
+$ tokenops serve                           # MCP server over stdio — tools your agent calls`,
+        caption: 'Agent / tool builder — the deterministic formatters and MCP tools, in your own pipeline.',
+      },
+      {
+        type: 'p',
+        text: 'And if you run a team, the daemon adds per-project and per-session attribution: which project burns the most, and where a specific session went wide. The coach turns that into ranked, dollar- and hour-denominated recommendations — measured against your traffic, not a benchmark corpus.',
+      },
+      {
+        type: 'code',
+        lang: 'console',
+        code: `$ tokenops start            # daemon: proxy + analytics + dashboard
+$ tokenops spend --by agent  # which project burns the most
+$ tokenops coach prompts     # per-session waste, ranked by tokens / $ / hours`,
+        caption: 'Team / eng lead — attribution across projects and sessions, plus ranked coaching.',
       },
       {
         type: 'h',
