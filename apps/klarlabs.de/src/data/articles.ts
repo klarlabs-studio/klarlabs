@@ -117,8 +117,8 @@ Context composition — 768 sessions, 78539 tool results
   Agent                     861k     2.8%
   Edit                      723k     2.3%`,
         caption: 'tokenops fmt analyze — context composition from your own logs.',
-        href: 'https://github.com/felixgeelhaar/tokenops',
-        hrefLabel: 'github.com/felixgeelhaar/tokenops',
+        href: 'https://github.com/klarlabs-studio/tokenops',
+        hrefLabel: 'github.com/klarlabs-studio/tokenops',
       },
       {
         type: 'h',
@@ -163,8 +163,8 @@ read-guard — 112 reads seen across 3 sessions
     ├─ post-edit (file changed — not waste):  2
     └─ ranged (intentional partial re-read):  47`,
         caption: 'tokenops read-guard — a Claude Code hook that blocks only redundant re-reads.',
-        href: 'https://github.com/felixgeelhaar/tokenops',
-        hrefLabel: 'github.com/felixgeelhaar/tokenops',
+        href: 'https://github.com/klarlabs-studio/tokenops',
+        hrefLabel: 'github.com/klarlabs-studio/tokenops',
       },
       {
         type: 'p',
@@ -197,8 +197,8 @@ $ tokenops fmt analyze
 # what would the command-output formatters save on my traffic?
 $ tokenops fmt learn`,
         caption: 'Point it at your own logs. Local-first, deterministic, no telemetry.',
-        href: 'https://github.com/felixgeelhaar/tokenops',
-        hrefLabel: 'github.com/felixgeelhaar/tokenops',
+        href: 'https://github.com/klarlabs-studio/tokenops',
+        hrefLabel: 'github.com/klarlabs-studio/tokenops',
       },
       {
         type: 'h',
@@ -212,7 +212,7 @@ $ tokenops fmt learn`,
     cta: {
       heading: 'tokenops is open source',
       body: 'Point it at your own logs and see where your AI-coding tokens actually go. Local-first, deterministic, no telemetry.',
-      href: 'https://github.com/felixgeelhaar/tokenops',
+      href: 'https://github.com/klarlabs-studio/tokenops',
       label: 'View on GitHub',
     },
   },
