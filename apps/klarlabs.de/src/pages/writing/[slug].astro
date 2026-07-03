@@ -105,6 +105,7 @@ const dateLabel = new Date(article.date).toLocaleDateString('en-US', {
               return (
                 <figure class="chart">
                   <div class="chart-svg" set:html={CHARTS[block.id]} />
+                  <p class="chart-cmd"><span class="prompt">$</span> {block.cmd}</p>
                   {block.caption && <p class="chart-caption">{block.caption}</p>}
                 </figure>
               );
@@ -322,6 +323,25 @@ const dateLabel = new Date(article.date).toLocaleDateString('en-US', {
     inline-size: 100%;
     block-size: auto;
     display: block;
+  }
+
+  .chart-cmd {
+    margin: 0;
+    padding: var(--kl-space-2) var(--kl-space-3);
+    background: var(--kl-surface-raised, rgba(127, 127, 127, 0.08));
+    border: 1px solid var(--kl-border);
+    border-radius: var(--kl-radius-sm, 8px);
+    font-family: var(--kl-font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+    font-size: var(--kl-text-sm);
+    color: var(--kl-ink-secondary);
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .chart-cmd .prompt {
+    color: var(--article-accent, var(--kl-accent));
+    user-select: none;
+    margin-inline-end: var(--kl-space-2);
   }
 
   .chart-caption {
