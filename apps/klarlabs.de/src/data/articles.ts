@@ -74,7 +74,7 @@ export const articles: Article[] = [
       },
       {
         type: 'p',
-        text: 'Over roughly six months of real usage we sent tens of billions of input tokens and received about forty million output tokens back. That is a ratio near 800 to 1. Every turn re-sends the entire growing context — system prompt, tool definitions, file contents, command output, conversation history — to get back a few hundred tokens of reply.',
+        text: 'Over several weeks of heavy real usage we sent tens of billions of input tokens and received about forty million output tokens back. That is a ratio near 800 to 1. Every turn re-sends the entire growing context — system prompt, tool definitions, file contents, command output, conversation history — to get back a few hundred tokens of reply.',
       },
       {
         type: 'svg',
