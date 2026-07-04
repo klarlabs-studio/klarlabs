@@ -218,7 +218,7 @@ export const ossGroups: OssGroup[] = [
     libraries: [
       { name: 'agent-go', description: 'State-driven AI agent runtime for Go.', repoHref: gh('agent-go'), docsHref: vdoc('agent'), docsLabel: 'pkg.go.dev' },
       { name: 'axi-go', description: 'Safe, auditable execution kernel for AI agent tools.', repoHref: gh('axi-go'), docsHref: vdoc('axi'), docsLabel: 'pkg.go.dev' },
-      { name: 'mnemos', description: 'Self-hosted memory + evidence layer for AI agents.', repoHref: gh('mnemos'), docsHref: vdoc('mnemos'), docsLabel: 'pkg.go.dev' },
+      { name: 'mnemos', description: 'Self-hosted memory brain for AI agents: evidence-backed claims, contradiction detection, and a cognitive layer that consolidates, forgets, and self-corrects — no vendor cloud, no LLM required.', repoHref: gh('mnemos'), docsHref: vdoc('mnemos'), docsLabel: 'pkg.go.dev' },
       { name: 'chronos', description: 'Time-series pattern detection for AI agents — trends, spikes, drops, anomalies as structured signals.', repoHref: 'https://github.com/felixgeelhaar/chronos', docsHref: 'https://pkg.go.dev/github.com/felixgeelhaar/chronos', docsLabel: 'pkg.go.dev' },
       { name: 'mcp-go', description: 'Go framework for building MCP servers.', repoHref: gh('mcp-go'), docsHref: vdoc('mcp'), docsLabel: 'pkg.go.dev' },
       { name: 'scout', description: 'Browser automation. One binary, no Node, no Python.', repoHref: gh('scout'), docsHref: vdoc('scout'), docsLabel: 'pkg.go.dev' },
