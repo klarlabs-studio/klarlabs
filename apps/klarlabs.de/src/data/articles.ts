@@ -43,6 +43,148 @@ export interface Article {
  */
 export const articles: Article[] = [
   {
+    slug: 'the-tool-was-guessing',
+    title: 'The tool was guessing',
+    dek: 'We built a tool to tell an AI agent when it was about to hit its rate-limit cap. A code review found it was answering with a guess — while the real number sat unread in its own database. Here is the bug, and why it is the most dangerous kind.',
+    date: '2026-07-04',
+    readingMinutes: 8,
+    author: 'Felix Geelhaar',
+    accent: '#0D9488',
+    tags: ['AI', 'Developer Tools', 'Measurement', 'Debugging'],
+    blocks: [
+      {
+        type: 'p',
+        text: 'On a flat-rate AI subscription the dollar cost is fixed, but tokens are not free — they are rate-limit headroom. Burn through the window and you hit a mid-task cutoff four hours into a refactor. So the question an agent actually wants to ask before a long task is simple: am I about to hit the cap? We built a tool to answer it. A code review found the tool was answering with a guess.',
+      },
+      {
+        type: 'p',
+        text: 'The tool is tokenops. It exposes a function the agent can call — session_budget — that returns one of four recommendations (continue, slow down, switch model, wait for the reset) plus a confidence level. The idea is that the agent checks its headroom before committing to something long. The idea was fine. The number underneath it was not.',
+      },
+      {
+        type: 'stats',
+        stats: [
+          { value: '0', label: 'lines of code that read the vendor’s own usage meter' },
+          { value: '5', label: 'high-signal event types the counter explicitly threw away' },
+          { value: '“high”', label: 'the confidence the tool reported — on a number it guessed' },
+        ],
+      },
+      {
+        type: 'h',
+        text: 'The answer it never read',
+      },
+      {
+        type: 'p',
+        text: 'To know how much of your rate-limit window you have used, you can count. How many messages have I sent in the last five hours, against the cap? That is what the tool did. But there is a far better source: the vendor tells you directly. Anthropic’s session data carries a five-hour used-percentage. Codex’s responses carry a rate-limits block. Copilot’s API returns how much quota remains. And tokenops was already ingesting every one of them into its own event store.',
+      },
+      {
+        type: 'code',
+        lang: 'json',
+        code: `// the shape of a snapshot the poller writes every cycle — the vendor's own meter:
+{
+  "granularity":        "quota_snapshot",
+  "five_hour_used_pct": "87.00",                     // ← the answer (an example reading)
+  "five_hour_reset_at": "2026-06-15T18:30:00Z"       // ← and exactly when it clears
+}`,
+        caption: 'The number the tool needed was written to its own database every poll — and read by nothing.',
+      },
+      {
+        type: 'p',
+        text: 'And nothing read it. A search for anything consuming those percentages — outside the code that wrote them — came back empty. The tool fetched the vendor’s own answer, stored it, and then computed its recommendation from something else entirely.',
+      },
+      {
+        type: 'code',
+        lang: 'console',
+        code: `$ grep -rn "five_hour_used_pct" --include=*.go
+poller.go:   "five_hour_used_pct": fmt.Sprintf("%.2f", pct)   # writes it
+# …and nothing, anywhere, that reads it.`,
+        caption: 'The whole bug in one grep: written, never read.',
+      },
+      {
+        type: 'h',
+        text: 'Computed from the wrong half of the data',
+      },
+      {
+        type: 'p',
+        text: 'It was worse than ignored. The message counter had an exclusion list — and it excluded exactly the high-signal sources. The per-turn usage records that carry the real token counts were tagged one way; the vendor quota snapshots were tagged another. Both were on the do-not-count list.',
+      },
+      {
+        type: 'code',
+        lang: 'go',
+        code: `func countsAsMessage(env *Envelope) bool {
+    switch env.Attributes["granularity"] {
+    case "assistant_turn", "daily", "bucket",
+         "quota_snapshot", "monthly_snapshot":
+        return false   // ← the high-signal sources — all excluded
+    default:
+        return true
+    }
+}`,
+        caption: 'The records that carried the truth were the ones the counter threw away.',
+      },
+      {
+        type: 'p',
+        text: 'So for the exact users the tool was built for — Claude Max, Claude Code, Codex, Copilot — the window count came out near zero. Near-zero of the cap reads as “plenty of room.” The recommendation: continue. Meanwhile the vendor’s meter, sitting one table over in the same database, might be reading 87%. The tool never looked.',
+      },
+      {
+        type: 'quote',
+        text: 'The dangerous bug in a measurement tool is not the one that crashes. It is the one that confidently reports a number it computed from the wrong inputs.',
+      },
+      {
+        type: 'h',
+        text: 'The confidence was computed from data the number ignored',
+      },
+      {
+        type: 'p',
+        text: 'The tell was the confidence label. tokenops grades its own trust: low when it is only seeing keep-alive pings, high when a real per-turn usage source is present. So the moment that per-turn data started flowing in, confidence was promoted to “high.” But that same data was on the exclusion list for the count. The label said “trust this” about a number derived from inputs the label’s own evidence was barred from touching. Confidence and answer came from disjoint halves of the same store — which is exactly why the failure was invisible. Nothing looked broken. It just looked confident.',
+      },
+      {
+        type: 'h',
+        text: 'The fix was to read the meter',
+      },
+      {
+        type: 'p',
+        text: 'The fix is not clever, and that is the point. When a vendor snapshot exists, use its percentage and its exact reset time — directly, at high confidence. Fall back to the message-count heuristic only when there is no meter to read. It also closed a quieter gap: plans that publish a rolling window but no message cap (Claude Code’s Max and Pro tiers) could not be scored by the count path at all, so they had always come back “unknown.” Reading the meter gives them a real answer for the first time.',
+      },
+      {
+        type: 'code',
+        lang: 'text',
+        code: `before  →  recommendation: continue      confidence: high     (window: ~0% used)
+after   →  recommendation: slow_down     confidence: high     (window: 87% used, resets in 42m)`,
+        caption: 'Same session, same instant. One reads the vendor’s meter; one guessed.',
+      },
+      {
+        type: 'p',
+        text: 'For the flagship plans the central question — will I hit the cap? — moved from a guess to the vendor’s own number, with the exact reset time attached so “wait for the reset” finally knows how long. It shipped in the next release.',
+      },
+      {
+        type: 'h',
+        text: 'The lesson',
+      },
+      {
+        type: 'p',
+        text: 'Two lessons, and the second one surprised me. The first is the familiar one: a tool that measures can still measure the wrong thing, and the failure hides because it arrives with a confident number bolted to it. Grade your own signal quality by the inputs you actually used, not the inputs you happen to have.',
+      },
+      {
+        type: 'p',
+        text: 'The second: the data you need is often already in your system, written and unread. This was not a missing-data bug. It was a tool that fetched the right answer, filed it away, and then went and computed a different one. The most valuable line of code we shipped that week deleted a heuristic and read a column that had been sitting there the whole time.',
+      },
+      {
+        type: 'quote',
+        text: 'Last time, the lesson was that the AI-token economy is full of confident advice measured against the wrong denominator. This time the thing doing the measuring was the one measuring against the wrong denominator.',
+      },
+      {
+        type: 'p',
+        text: 'tokenops is open source. It reads the logs and vendor signals your agent already produces and — now — reports rate-limit headroom from the meter, not a guess. Every bug in this post is a real commit; the fix is in the latest release. If you run an AI agent on a flat-rate plan, point it at your own usage and let it tell you the truth before the cutoff does.',
+      },
+    ],
+    cta: {
+      heading: 'tokenops is open source',
+      body: 'Rate-limit headroom for your AI agent, read from the vendor’s own meter. Local-first, deterministic, no telemetry.',
+      href: 'https://github.com/klarlabs-studio/tokenops',
+      label: 'View on GitHub',
+    },
+  },
+  {
     slug: 'where-ai-coding-tokens-actually-go',
     title: '800 to 1',
     dek: 'We set out to cut the token bill on our AI-assisted coding. The popular fix — make the model talk in terse shorthand — turned out to touch about 1% of it. Here is what the numbers actually showed, and the tool we built and open-sourced to find out.',
