@@ -6,7 +6,12 @@ export type ArticleBlock =
   | { type: 'stats'; stats: ArticleStat[] }
   | { type: 'code'; code: string; lang?: string; caption?: string; href?: string; hrefLabel?: string }
   /** A chart rendered by tokenops (`tokenops fmt analyze --svg` / `spend --svg`), embedded verbatim. cmd is the exact command that produced it. */
-  | { type: 'svg'; id: 'composition' | 'reads' | 'ratio' | 'fmt-roi'; cmd: string; caption?: string };
+  | {
+      type: 'svg';
+      id: 'composition' | 'reads' | 'ratio' | 'fmt-roi' | 'tokens-over-time' | 'composition-over-time';
+      cmd: string;
+      caption?: string;
+    };
 
 export interface ArticleStat {
   value: string;
@@ -79,6 +84,16 @@ export const articles: Article[] = [
       },
       {
         type: 'p',
+        text: 'And it is not an average hiding a lucky week. Bucket the same logs by week and the shape never moves — output stays pinned to the baseline against input, every single week.',
+      },
+      {
+        type: 'svg',
+        id: 'tokens-over-time',
+        cmd: 'tokenops fmt analyze --svg ./charts   # → tokens-over-time.svg',
+        caption: 'From `tokenops fmt analyze`. Input vs output tokens, week by week over recent weeks. The output line hugs the baseline every week — the ratio is structural, not a snapshot.',
+      },
+      {
+        type: 'p',
         text: 'The terse-talking trick compresses only the model’s prose, and it leaves code, tool calls, and structured output alone. That prose is 0.12% of our token volume. Even weighting for the fact that output tokens are priced several times higher than input, the absolute ceiling on what "make the AI talk less" could ever save us is around 1% of the bill. We were about to optimize a rounding error.',
       },
       {
@@ -119,6 +134,16 @@ Context composition — 768 sessions, 78539 tool results
         caption: 'tokenops fmt analyze — context composition from your own logs.',
         href: 'https://github.com/klarlabs-studio/tokenops',
         hrefLabel: 'github.com/klarlabs-studio/tokenops',
+      },
+      {
+        type: 'p',
+        text: 'And that split is not a one-off snapshot either. Bucket the same logs by week and the mix holds: file reads and command output dominate the context every week, not just on average.',
+      },
+      {
+        type: 'svg',
+        id: 'composition-over-time',
+        cmd: 'tokenops fmt analyze --svg ./charts   # → composition-over-time.svg',
+        caption: 'Also from tokenops. The context mix week by week — Read and Bash stay dominant throughout, while model prose stays a thin band on top.',
       },
       {
         type: 'h',

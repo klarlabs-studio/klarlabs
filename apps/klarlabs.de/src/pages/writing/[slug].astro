@@ -5,12 +5,16 @@ import compositionSvg from '../../charts/composition.svg?raw';
 import readsSvg from '../../charts/reads.svg?raw';
 import ratioSvg from '../../charts/ratio.svg?raw';
 import fmtRoiSvg from '../../charts/fmt-roi.svg?raw';
+import tokensOverTimeSvg from '../../charts/tokens-over-time.svg?raw';
+import compositionOverTimeSvg from '../../charts/composition-over-time.svg?raw';
 
 const CHARTS: Record<string, string> = {
   composition: compositionSvg,
   reads: readsSvg,
   ratio: ratioSvg,
   'fmt-roi': fmtRoiSvg,
+  'tokens-over-time': tokensOverTimeSvg,
+  'composition-over-time': compositionOverTimeSvg,
 };
 
 export function getStaticPaths() {
