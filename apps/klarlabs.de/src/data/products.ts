@@ -48,6 +48,27 @@ export const products: Product[] = [
     ctaLabel: 'Open Vorhut',
   },
   {
+    slug: 'mnemos',
+    name: 'Mnemos',
+    tagline: 'Self-hosted memory that thinks.',
+    description: 'A self-hosted memory + evidence layer for AI agents — with a cognitive layer that consolidates, forgets, and self-corrects. No vendor cloud, no LLM.',
+    theme: 'dark',
+    accent: '#0891B2',
+    status: 'live',
+    problem:
+      'AI agents forget, or remember wrong. Hosted memory services meter every call and hold your data; vector stores retrieve but keep no structure, no evidence, no sense of what contradicts what. And a memory that only ever grows is a memory that rots.',
+    solution:
+      'Mnemos is a memory layer you run yourself: every claim carries its evidence, every contradiction surfaces, and a cognitive layer runs the background work a brain does — consolidating duplicates, forgetting what has decayed (while protecting what matters), fusing dense and sparse retrieval, correcting weak recall, and flagging when new evidence challenges a settled belief. All deterministic, with no model in the loop.',
+    features: [
+      { heading: 'Evidence, not vibes', body: 'Every claim links back to the source it came from, and contradictions are first-class — surfaced in the query response, not silently overwritten. Bi-temporal, so you can ask what was believed at any point in time.' },
+      { heading: 'A cognitive layer', body: 'Consolidation and forgetting on a scheduled "sleep" pass, write-time salience that protects what matters, hybrid dense+sparse retrieval, self-correcting recall, and hypercorrection alerts — the background processes a brain runs, all with no LLM.' },
+      { heading: 'Self-hosted & deterministic', body: 'A single Go binary on your infrastructure. No vendor cloud, no per-call billing on your own recall, no data leaving your servers. Five storage backends; MIT-licensed.' },
+      { heading: 'Drops into any runtime', body: 'HTTP, CLI, gRPC, and MCP entrypoints plus first-party Python / TypeScript / Go SDKs. Works with Claude Code, Cursor, LangGraph, CrewAI, or your own agent.' },
+    ],
+    ctaHref: 'https://github.com/klarlabs-studio/mnemos',
+    ctaLabel: 'View on GitHub',
+  },
+  {
     slug: 'pet-medical',
     name: 'Pet Medical',
     tagline: 'Calm health intelligence for your pet.',
