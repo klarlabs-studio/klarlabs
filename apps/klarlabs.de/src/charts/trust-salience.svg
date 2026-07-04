@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="332" viewBox="0 0 720 332" role="img" aria-label="Trust decays as evidence ages; salience does not. Forgetting prunes claims below the trust floor unless their salience keeps them." font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+<title>Trust decays, salience does not</title>
+<text x="24" y="30" fill="currentColor" font-size="17" font-weight="600">Trust decays. Salience does not.</text>
+<text x="24" y="50" fill="currentColor" opacity="0.6" font-size="12.5">Two different axes — and why forgetting has to consult both.</text>
+<!-- legend -->
+<line x1="96" y1="72" x2="122" y2="72" stroke="#0891B2" stroke-width="2.6"/>
+<text x="130" y="76" fill="currentColor" opacity="0.8" font-size="12">trust — decays as the evidence ages</text>
+<line x1="356" y1="72" x2="382" y2="72" stroke="#6366F1" stroke-width="2.6"/>
+<text x="390" y="76" fill="currentColor" opacity="0.8" font-size="12">salience — never decays</text>
+<!-- forget zone -->
+<rect x="96" y="231.4" width="552" height="54.6" fill="currentColor" opacity="0.05"/>
+<!-- axes -->
+<line x1="96" y1="104" x2="96" y2="286" stroke="currentColor" opacity="0.25"/>
+<line x1="96" y1="286" x2="648" y2="286" stroke="currentColor" opacity="0.25"/>
+<text x="96" y="308" fill="currentColor" opacity="0.55" font-size="11.5">age of the claim  →</text>
+<text x="24" y="108" fill="currentColor" opacity="0.55" font-size="11.5">score</text>
+<!-- forget floor -->
+<line x1="96" y1="231.4" x2="648" y2="231.4" stroke="currentColor" opacity="0.4" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="648" y="224.4" fill="currentColor" opacity="0.55" font-size="11" text-anchor="end">forget floor</text>
+<!-- salience line -->
+<line x1="96" y1="165.9" x2="648" y2="165.9" stroke="#6366F1" stroke-width="2.5"/>
+<!-- trust curve -->
+<path d="M 96.0,118.6 L 105.2,125.7 L 114.4,132.4 L 123.6,138.8 L 132.8,145.0 L 142.0,150.8 L 151.2,156.3 L 160.4,161.6 L 169.6,166.6 L 178.8,171.3 L 188.0,175.8 L 197.2,180.2 L 206.4,184.3 L 215.6,188.2 L 224.8,191.9 L 234.0,195.4 L 243.2,198.7 L 252.4,201.9 L 261.6,205.0 L 270.8,207.9 L 280.0,210.6 L 289.2,213.2 L 298.4,215.7 L 307.6,218.1 L 316.8,220.3 L 326.0,222.4 L 335.2,224.5 L 344.4,226.4 L 353.6,228.3 L 362.8,230.0 L 372.0,231.7 L 381.2,233.3 L 390.4,234.8 L 399.6,236.2 L 408.8,237.6 L 418.0,238.9 L 427.2,240.1 L 436.4,241.3 L 445.6,242.4 L 454.8,243.4 L 464.0,244.5 L 473.2,245.4 L 482.4,246.3 L 491.6,247.2 L 500.8,248.0 L 510.0,248.8 L 519.2,249.6 L 528.4,250.3 L 537.6,251.0 L 546.8,251.6 L 556.0,252.2 L 565.2,252.8 L 574.4,253.3 L 583.6,253.9 L 592.8,254.4 L 602.0,254.9 L 611.2,255.3 L 620.4,255.7 L 629.6,256.1 L 638.8,256.5 L 648.0,256.9" fill="none" stroke="#0891B2" stroke-width="2.6"/>
+<!-- crossing marker -->
+<line x1="370.5" y1="231.4" x2="370.5" y2="286" stroke="currentColor" opacity="0.2" stroke-dasharray="3 3"/>
+<circle cx="370.5" cy="231.4" r="4" fill="#0891B2"/>
+<!-- annotation, lower-left of the zone (clear of the curve) -->
+<text x="114" y="257.4" fill="currentColor" opacity="0.72" font-size="12">Below the floor, an ordinary claim is dropped —</text>
+<text x="114" y="274.4" fill="currentColor" opacity="0.72" font-size="12">but a salient one is kept, however old.</text>
+</svg>

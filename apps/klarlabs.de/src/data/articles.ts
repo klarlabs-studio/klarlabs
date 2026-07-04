@@ -11,7 +11,9 @@ export type ArticleBlock =
       id: 'composition' | 'reads' | 'ratio' | 'fmt-roi' | 'tokens-over-time' | 'composition-over-time';
       cmd: string;
       caption?: string;
-    };
+    }
+  /** A hand-authored conceptual diagram (inline SVG, no command line). */
+  | { type: 'diagram'; id: 'store-vs-memory' | 'trust-salience'; caption?: string };
 
 export interface ArticleStat {
   value: string;
@@ -54,6 +56,7 @@ export const articles: Article[] = [
     blocks: [
       { type: 'p', text: 'Mnemos started as an evidence layer: typed claims, each linked back to the source event that produced it, with contradictions surfaced instead of silently overwritten. That part is useful on its own. But the longer we ran it, the more it looked like a store — something you write to and read from — and less like a memory, which is something that also changes on its own between the writes and the reads.' },
       { type: 'p', text: 'A brain does not just record and recall. While you sleep it consolidates the day into gist, forgets what did not matter, and quietly strengthens what did. At encoding it tags some things as important and lets others fade. At retrieval it notices when it comes up short and looks again. And it flags, loudly, when new evidence contradicts something you were sure of. We spent a stretch building those processes into Mnemos. Here is what we learned — including the parts we got wrong first.' },
+      { type: 'diagram', id: 'store-vs-memory', caption: 'A store keeps bytes between a write and a read. A memory runs continuous processes in between — so what it recalls tomorrow depends on the work it did overnight.' },
       { type: 'h', text: 'A store is not a memory system' },
       { type: 'p', text: 'The most useful realisation came early and was slightly humbling: most of the organs of a memory system were already in the codebase, just never wired to run on their own. Trust scoring with half-life decay was there, but only computed at query time. A consolidation routine existed, but as a manual command. A bias-detection pass existed, but ran on demand. Temporal pattern detection was computed and then never read.' },
       { type: 'p', text: 'The lever, over and over, was not "build a new capability" — it was "take the capability you have and make it a process." Schedule the consolidation. Read the temporal signals into the recall path. Turn the one-shot bias check into a standing alert. If you are building a memory system, audit what you already compute and throw away before you add anything new.' },
@@ -65,6 +68,7 @@ export const articles: Article[] = [
       { type: 'h', text: 'Trust and importance are different axes' },
       { type: 'p', text: 'We nearly conflated two things that need to stay separate. Trust answers "is this still true?" and it decays — an unverified claim gets less trustworthy as its evidence ages. Salience answers "does this matter enough to keep, even if I rarely recall it?" and it does not decay. A Sev-1 post-mortem is important the day it is written and important a year later, regardless of how fresh the evidence is.' },
       { type: 'p', text: 'If forgetting keys only on decayed trust, you forget the consequential-but-old — exactly the memories you most want to keep. So salience is a separate, write-time score, computed from signals already on the claim: confidence, how much independent evidence corroborates it, its kind (a decision or a verified test result outweighs a passing remark), source authority. The consolidation pass protects anything sufficiently salient from being forgotten, and prunes only the mundane tail. It is the rule-based analog of the poignancy score other systems ask a language model for — and it costs nothing to compute.' },
+      { type: 'diagram', id: 'trust-salience', caption: 'Trust decays with the age of the evidence; salience does not. Forgetting looks at both — so an old, unverified aside is pruned while an old, consequential decision is kept.' },
       { type: 'h', text: 'For hybrid search, fuse ranks, not scores' },
       { type: 'p', text: 'Embedding similarity has a systematic blind spot: exact tokens. A commit SHA, a service name, an error code, a flag — cosine blurs these, because they carry little semantic weight. So a query for a specific identifier can miss the one event that contains it, even with a perfectly good embedder.' },
       { type: 'p', text: 'The fix is hybrid retrieval — run a sparse full-text leg alongside the dense vector leg — but the interesting part is the fusion. The two legs produce incomparable scores: cosine distance and a full-text rank are on different scales, and normalising them is guesswork. Reciprocal Rank Fusion sidesteps this entirely by consuming only ranks.' },

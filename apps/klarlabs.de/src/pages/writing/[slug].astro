@@ -7,6 +7,8 @@ import ratioSvg from '../../charts/ratio.svg?raw';
 import fmtRoiSvg from '../../charts/fmt-roi.svg?raw';
 import tokensOverTimeSvg from '../../charts/tokens-over-time.svg?raw';
 import compositionOverTimeSvg from '../../charts/composition-over-time.svg?raw';
+import storeVsMemorySvg from '../../charts/store-vs-memory.svg?raw';
+import trustSalienceSvg from '../../charts/trust-salience.svg?raw';
 
 const CHARTS: Record<string, string> = {
   composition: compositionSvg,
@@ -15,6 +17,12 @@ const CHARTS: Record<string, string> = {
   'fmt-roi': fmtRoiSvg,
   'tokens-over-time': tokensOverTimeSvg,
   'composition-over-time': compositionOverTimeSvg,
+};
+
+// Hand-authored conceptual diagrams (no command line, unlike the tokenops charts).
+const DIAGRAMS: Record<string, string> = {
+  'store-vs-memory': storeVsMemorySvg,
+  'trust-salience': trustSalienceSvg,
 };
 
 export function getStaticPaths() {
@@ -110,6 +118,13 @@ const dateLabel = new Date(article.date).toLocaleDateString('en-US', {
                 <figure class="chart">
                   <div class="chart-svg" set:html={CHARTS[block.id]} />
                   <p class="chart-cmd"><span class="prompt">$</span> {block.cmd}</p>
+                  {block.caption && <p class="chart-caption">{block.caption}</p>}
+                </figure>
+              );
+            if (block.type === 'diagram')
+              return (
+                <figure class="chart">
+                  <div class="chart-svg" set:html={DIAGRAMS[block.id]} />
                   {block.caption && <p class="chart-caption">{block.caption}</p>}
                 </figure>
               );
