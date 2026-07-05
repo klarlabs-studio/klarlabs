@@ -50,18 +50,19 @@ export const products: Product[] = [
   {
     slug: 'mnemos',
     name: 'Mnemos',
-    tagline: 'Self-hosted memory that thinks.',
-    description: 'A self-hosted memory + evidence layer for AI agents — with a cognitive layer that consolidates, forgets, and self-corrects. No vendor cloud, no LLM.',
+    tagline: 'Self-hosted memory that thinks — and gets better with use.',
+    description: 'A self-hosted memory + evidence layer for AI agents — with a full cognitive layer that consolidates, forgets, predicts, and learns from its own errors. No vendor cloud, no LLM.',
     theme: 'dark',
     accent: '#0891B2',
     status: 'live',
     problem:
-      'AI agents forget, or remember wrong. Hosted memory services meter every call and hold your data; vector stores retrieve but keep no structure, no evidence, no sense of what contradicts what. And a memory that only ever grows is a memory that rots.',
+      'AI agents forget, or remember wrong. Hosted memory services meter every call and hold your data; vector stores retrieve but keep no structure, no evidence, no sense of what contradicts what. And a memory that only ever grows is a memory that rots — it never learns which of its beliefs were actually right.',
     solution:
-      'Mnemos is a memory layer you run yourself: every claim carries its evidence, every contradiction surfaces, and a cognitive layer runs the background work a brain does — consolidating duplicates, forgetting what has decayed (while protecting what matters), fusing dense and sparse retrieval, correcting weak recall, and flagging when new evidence challenges a settled belief. All deterministic, with no model in the loop.',
+      'Mnemos is a memory layer you run yourself: every claim carries its evidence, every contradiction surfaces, and a cognitive layer runs the background work a brain does. It consolidates duplicates and forgets what has decayed (while protecting what matters); it makes falsifiable predictions, measures its own error when reality arrives, and spends that error to keep confirmed beliefs and let go of refuted ones; it distils recurring experience into reusable skills and tunes them by how well they actually work. All deterministic, with no model in the loop.',
     features: [
       { heading: 'Evidence, not vibes', body: 'Every claim links back to the source it came from, and contradictions are first-class — surfaced in the query response, not silently overwritten. Bi-temporal, so you can ask what was believed at any point in time.' },
-      { heading: 'A cognitive layer', body: 'Consolidation and forgetting on a scheduled "sleep" pass, write-time salience that protects what matters, hybrid dense+sparse retrieval, self-correcting recall, and hypercorrection alerts — the background processes a brain runs, all with no LLM.' },
+      { heading: 'A brain, not a bucket', body: 'A scheduled "sleep" pass consolidates and forgets; salience protects what matters; retrieval fuses dense and sparse, grades itself, spends effort by the stakes, and follows the current train of thought. An abstain gate lets an agent say "I don\'t know enough" instead of confabulating. All with no LLM.' },
+      { heading: 'Gets better with use', body: 'Mnemos closes the loop on prediction error: it predicts, checks itself against what happened, and routes that surprise into what it keeps, forgets, and rehearses. It turns experience into skills that self-tune by outcome, routes a question to whichever agent knows most, and recognises when it has "seen this shape before."' },
       { heading: 'Self-hosted & deterministic', body: 'A single Go binary on your infrastructure. No vendor cloud, no per-call billing on your own recall, no data leaving your servers. Five storage backends; MIT-licensed.' },
       { heading: 'Drops into any runtime', body: 'HTTP, CLI, gRPC, and MCP entrypoints plus first-party Python / TypeScript / Go SDKs. Works with Claude Code, Cursor, LangGraph, CrewAI, or your own agent.' },
     ],
@@ -239,7 +240,7 @@ export const ossGroups: OssGroup[] = [
     libraries: [
       { name: 'agent-go', description: 'State-driven AI agent runtime for Go.', repoHref: gh('agent-go'), docsHref: vdoc('agent'), docsLabel: 'pkg.go.dev' },
       { name: 'axi-go', description: 'Safe, auditable execution kernel for AI agent tools.', repoHref: gh('axi-go'), docsHref: vdoc('axi'), docsLabel: 'pkg.go.dev' },
-      { name: 'mnemos', description: 'Self-hosted memory brain for AI agents: evidence-backed claims, contradiction detection, and a cognitive layer that consolidates, forgets, and self-corrects — no vendor cloud, no LLM required.', repoHref: gh('mnemos'), docsHref: vdoc('mnemos'), docsLabel: 'pkg.go.dev' },
+      { name: 'mnemos', description: 'Self-hosted memory brain for AI agents: evidence-backed claims, contradiction detection, and a cognitive layer that consolidates, forgets, predicts, and learns from its own errors — gets better with use, no vendor cloud, no LLM required.', repoHref: gh('mnemos'), docsHref: vdoc('mnemos'), docsLabel: 'pkg.go.dev' },
       { name: 'chronos', description: 'Time-series pattern detection for AI agents — trends, spikes, drops, anomalies as structured signals.', repoHref: 'https://github.com/felixgeelhaar/chronos', docsHref: 'https://pkg.go.dev/github.com/felixgeelhaar/chronos', docsLabel: 'pkg.go.dev' },
       { name: 'mcp-go', description: 'Go framework for building MCP servers.', repoHref: gh('mcp-go'), docsHref: vdoc('mcp'), docsLabel: 'pkg.go.dev' },
       { name: 'scout', description: 'Browser automation. One binary, no Node, no Python.', repoHref: gh('scout'), docsHref: vdoc('scout'), docsLabel: 'pkg.go.dev' },
