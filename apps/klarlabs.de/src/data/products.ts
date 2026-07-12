@@ -173,6 +173,25 @@ export const products: Product[] = [
     ctaLabel: 'Open Armada',
   },
   {
+    slug: 'devatlas',
+    name: 'DevAtlas',
+    tagline: 'One place that knows every service you run.',
+    description: 'An internal developer portal built on a context lake — services, ownership, dependencies, and operational history unified for humans and AI agents.',
+    theme: 'dark',
+    accent: '#059669',
+    status: 'coming-soon',
+    problem:
+      'Engineering context is scattered — ownership in a wiki, dependencies in someone’s head, SLOs in Datadog, incidents in PagerDuty. When a service breaks at 3 a.m., nobody can answer "who owns this and what does it touch?" — and the AI agents you point at your stack inherit the same blindness.',
+    solution:
+      'DevAtlas ingests from the tools you already run — GitHub, GitLab, Jira, PagerDuty, Datadog — into a single context lake: a live catalog of services, dependencies, ownership, and operational history. Humans self-serve answers; AI agents consume the same context under RBAC, tenant isolation, and audit logging. Ask in plain language "what breaks if service X goes down?" and get an answer grounded in the graph, not a guess.',
+    features: [
+      { heading: 'Context lake, not another wiki', body: 'Connectors keep the catalog in sync with reality — services, APIs, dependencies, tech stacks, SLOs, and incident history flow in from GitHub, Jira, PagerDuty, and Datadog automatically.' },
+      { heading: 'Blast radius on demand', body: '"What breaks if this goes down?" answered from the live dependency graph — before you deploy, not after the incident.' },
+      { heading: 'Governed by default', body: 'RBAC, PostgreSQL row-level tenant isolation, full audit logging, and tiered rate limits on every endpoint. Safe enough for agents to act on.' },
+      { heading: 'Built for human + agent', body: 'Ask DevAtlas in natural language, or let AI agents consume the same governed context for AIOps, anomaly detection, and always-current docs.' },
+    ],
+  },
+  {
     slug: 'nexa',
     name: 'Nexa',
     tagline: 'Your personal finances, on autopilot.',
