@@ -10,7 +10,7 @@ spec:
     spec:
       namespace: klarlabs
       resource: deployment/klarlabs-site
-      image: ghcr.io/klarlabs-studio/klarlabs-site:latest@sha256:8734ee33fa153311a33882f9ca3acc6922632821a3958b00b20aa000af61470b
+      image: ghcr.io/klarlabs-studio/klarlabs-site:latest@sha256:b73c117c048d560d32f681115786eb4355f3703e8fa4675b06cb2367bc0f1350
       manifest: |
         apiVersion: apps/v1
         kind: Deployment
