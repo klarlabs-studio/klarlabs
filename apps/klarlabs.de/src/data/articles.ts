@@ -45,6 +45,73 @@ export interface Article {
  */
 export const articles: Article[] = [
   {
+    slug: 'is-the-brain-healthy',
+    title: 'Is the brain healthy?',
+    dek: 'We gave our memory system a health check, watched it flash critical, and spent a week finding out the red was mostly the check’s own fault. What running a brain in production taught us about narration, contradictions, and trusting a number you never calibrated.',
+    date: '2026-07-22',
+    readingMinutes: 9,
+    author: 'Felix Geelhaar',
+    accent: '#E11D48',
+    tags: ['AI', 'Memory', 'Measurement', 'Engineering'],
+    blocks: [
+      { type: 'p', text: 'An earlier note described building the cognitive half of Mnemos — consolidation, forgetting, salience, self-correcting recall. This one is about running it. We wired the brain into an agent’s daily loop, let it capture weeks of real work, and gave it a health check: a single verdict, healthy or degraded or unhealthy, over a handful of vitals. It came back unhealthy. The honest story is that finding out whether that was true took longer, and taught us more, than fixing it.' },
+      { type: 'p', text: 'The short version: a memory system running in production is mostly a measurement problem, not a memory problem. Almost every plan we made was overturned by a number — and, more than once, the number itself was the thing that was wrong.' },
+
+      { type: 'h', text: 'The brain started talking, and mostly to itself' },
+      { type: 'p', text: 'For a long stretch, capture barely ran — a couple of claims a day, a trickle. Then a change landed that made it capture incrementally, throughout a session instead of only at the end, and it started working properly. "Working properly" turned out to mean absorbing the entire transcript. Intake went from around two claims a day to several thousand. On the brain we were watching, thirty-one percent of everything it knew had been created in a single working day.' },
+      {
+        type: 'stats',
+        stats: [
+          { value: '~2/day', label: 'claims captured before incremental capture worked' },
+          { value: '~4,000/day', label: 'after — the same feature, now actually running' },
+          { value: '31%', label: 'of the entire brain created in one working day' },
+        ],
+      },
+      { type: 'p', text: 'Volume is not the problem; a brain is allowed to learn a lot in a day. The problem is what the volume was. We hand-labelled a sample and it came back roughly fifty-eight percent narration — not knowledge. Progress reports. Status snapshots. Completion announcements. "First test fails." "CI passed in 1m59s." "Merged as abc123." Every one of them true at the moment it was written, and none of them true for long. Knowledge erodes slowly; narration flips on an event, from true to false, the instant something happens.' },
+
+      { type: 'h', text: 'Most of the contradictions were a conversation arguing with itself' },
+      { type: 'p', text: 'The vital that flashed red is called dissonance: how many active, high-stakes contradictions the brain is holding, per belief. Contradiction detection is one of the parts of Mnemos we are proudest of — surfacing a conflict instead of silently overwriting is the whole point of an evidence layer. So a brain full of contradictions reads as alarming. We started pruning them.' },
+      { type: 'p', text: 'Then we stopped and measured what they actually were. Of the live contradictions, only about a fifth were genuine — two durable beliefs that truly disagreed. The rest had a narration endpoint. They were the beginning of a conversation lexically colliding with its end, across unrelated sessions:' },
+      { type: 'quote', text: '“Both PRs are open” contradicting “PR #23 squash-merged.” “Key suspicion forming: the timeout is 90s” contradicting “Root cause confirmed: the field is unset.” A narrative that moves will always disagree with itself — its start conflicts with its finish. That is not a contradiction. It is progress.' },
+      { type: 'p', text: 'This reframed the whole exercise. We had spent a day fixing contradiction detectors — and the detectors were mostly fine. Eighty percent of the "contradictions" were an intake problem wearing a detection costume. You cannot prune your way out of that; the next session just makes more.' },
+
+      { type: 'h', text: 'The health check was measuring the wrong thing' },
+      { type: 'p', text: 'Here is where it got humbling. The reason pruning never moved the number was not that we pruned too little. It was that the metric was miscounting, in three separate ways, each of which we found only by distrusting it.' },
+      { type: 'p', text: 'First, it counted contradictions into retired beliefs as active. When you deprecate a claim — mark it stale, take it out of recall — its disagreements should become history. The metric never checked. Two thousand of the edges it was flagging as "active high-stakes contradictions" had an endpoint that had already been retired. The one remedy the tooling offered — retire bad beliefs — moved the number by exactly zero.' },
+      { type: 'p', text: 'Second, a rate with the wrong denominator. A cleanup pass reported that twenty-eight percent of the claims it looked at were narration. That felt low against every hand-count. It was dividing by every claim on the work list, including the ones it had run out of time to examine — counting claims nobody had looked at as though they had been judged fine. Measured over what was actually classified, the rate was sixty-one percent. The number was understating, by more than half, the exact quantity you would use to decide whether the pass was worth running.' },
+      { type: 'p', text: 'Third, and worst: the threshold itself had never been calibrated. The lines between healthy, degraded, and unhealthy were described in our own design doc as "conservative defaults," with a note that tuning them against real data was the whole point of a metrics journal we had built for exactly that. We opened the journal. It was empty. Recording a health snapshot required a flag nothing ever set, so in months of daily use it had collected precisely zero data points. "Degraded" and "unhealthy" had never been grounded verdicts — for anyone, on any brain.' },
+      { type: 'quote', text: 'We had spent a week optimizing a system toward a red line that was a placeholder, measured against data that was never collected. The badge was real. What it meant was not.' },
+
+      { type: 'h', text: 'The number kept being wrong before the system was' },
+      { type: 'p', text: 'That became the through-line, and it is the part worth generalising. Over and over, a fix started with a plausible story and a supporting number, and the honest move was to check the number before believing the story.' },
+      { type: 'list', items: [
+        'A detector looked broken; a sample of eight pairs "confirmed" it. Re-running over all of them showed the fault was in a different detector entirely. Eight is not a sample; it is an anecdote with error bars.',
+        'A rewritten classifier prompt scored a huge jump — ninety-two percent — on the examples it was tuned against, and was statistically indistinguishable from the original on examples it had never seen. That is not an improvement; it is overfitting with a good story attached.',
+        'A classification pass reported "zero classified" with no error, which read as a broken model. It was a stale endpoint in a config quietly pointing a cloud client at a local address; every call failed into a safe empty result and the safety looked like output.',
+      ]},
+      { type: 'p', text: 'None of these were hard to catch. Every one of them was cheaper to catch than the work it would have wasted. What they have in common is that the wrong answer arrived pre-packaged with a reason to believe it. A number that confirms your plan deserves more suspicion than one that contradicts it, not less.' },
+
+      { type: 'h', text: 'The fix was to mark, not to delete' },
+      { type: 'p', text: 'Knowing that most intake was narration, the tempting move is to drop it at the door. We did not, and the reason is the most important design decision in the whole effort. Narration is not wrong — it was true when written — and real knowledge is threaded all through it. Deleting a belief on a misclassification is an invisible loss: you never see the thing you no longer know. So instead of dropping, we mark. Each belief carries a durability: does its value outlive the conversation that produced it? Session-local claims stay in the store, stay queryable, and simply stop competing with knowledge — they no longer rank in recall, and they no longer generate contradictions with each other.' },
+      { type: 'p', text: 'The safety property that makes this liveable: unclassified is treated as durable. The entire back catalogue predates the field, so absence of a verdict never demotes a belief, and an unrecognised value fails toward keeping a belief in play rather than hiding it. Every irreversible step bends toward not losing knowledge.' },
+
+      { type: 'h', text: 'Measure the model before you trust it, too' },
+      { type: 'p', text: 'The classifier that decides durability is itself a measurement instrument, so it got the same treatment. A local model was reliable in one direction and a coin-flip in the other: when it called something session-local it was almost always right, but when it called something durable it was right about half the time. That asymmetry is usable — we key the destructive action (suppressing a contradiction) on the reliable direction only, so a mistake leaves a belief exactly where it was.' },
+      { type: 'p', text: 'A stronger, hosted model changed the economics. Its session-local precision measured between ninety-two and one hundred percent on held-out samples — reliable enough to act on aggressively and safely. That single number is what let one pass cleanly separate roughly seventeen hundred pieces of narration from knowledge. But we only trusted it because we scored it first, on examples it had never seen, more than once — having already been burned by a model that scored fifty-five percent on a run where every call had silently failed and returned nothing.' },
+
+      { type: 'h', text: 'So — is the brain healthy?' },
+      { type: 'p', text: 'The dissonance vital went from deep in the red to sitting exactly on the healthy line. The remaining contradictions are, for the first time, worth reading: genuine conflicts between durable beliefs, plus a smaller set where a live observation bumps into something the brain holds as settled — which is precisely the signal the vital exists to raise. What was removed was noise; what is left is a question worth a human.' },
+      { type: 'p', text: 'We stopped four edges short of the healthy badge, and stopping there was the point. Crossing the last fraction would have meant suppressing edges that carry real signal, to flip a label measured against a threshold we had just proven was never calibrated. The trend — a sharp, legitimate fall driven entirely by removing narration and touching no genuine conflict — tells you more than the badge does. A health metric is only ever as good as the data it was tuned on, and that data is something you have to collect, on purpose, over time. Until it exists, the honest read is the direction of travel, not the color of the light.' },
+      { type: 'p', text: 'The brain underneath was sound the whole time. It was just talking a lot, and we had built a check that could not tell the talking from the knowing. Teaching it that difference — and being willing to distrust our own instruments while we did — was the actual work.' },
+    ],
+    cta: {
+      heading: 'Mnemos is open source',
+      body: 'MIT-licensed, a single Go binary, local-first. The evidence layer, the cognitive processes, and the brain-health vitals described here are all in the box — point it at your own work and watch what it learns.',
+      href: 'https://github.com/klarlabs-studio/mnemos',
+      label: 'View Mnemos on GitHub',
+    },
+  },
+  {
     slug: 'from-store-to-brain',
     title: 'From store to brain',
     dek: 'A memory library that only writes and reads is missing the interesting half. What building the other half — consolidation, forgetting, salience, self-correcting recall, and metacognition — taught us, with no language model in the loop.',
