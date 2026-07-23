@@ -133,7 +133,7 @@ export const articles: Article[] = [
 
       { type: 'h', text: 'So — is the brain healthy?' },
       { type: 'p', text: 'Now, yes: every vital green, the integrity checks clean, dissonance sitting just under its line. And the remaining contradictions are, for the first time, worth reading — genuine conflicts between durable beliefs, plus a smaller set where a live observation bumps into something the brain holds as settled, which is precisely the signal the vital exists to raise. What was removed was noise; what is left is a question worth a human. But the badge is the least interesting part of the answer. The number moved because we taught the check to count the right set and to tell narration from knowledge — not because the brain underneath ever changed. It was sound the whole time. It was just talking a lot, and we had built a check that could not tell the talking from the knowing.' },
-      { type: 'p', text: 'A coda, in the spirit of the thing. We wrote most of this piece the day the brain first read healthy — and then, cleaning up one last stubborn orphan warning, found the second half of the deprecated-belief bug described above, still live, still miscounting the retired as the living. The article’s own lesson, proving itself one more time on the article’s own author. That is the nature of measuring your own system: the check is another part of the system, and it is wrong in the same quiet ways everything else is. Health is not a badge you reach. It is a practice of distrusting your instruments until they earn it.' },
+      { type: 'p', text: 'A coda, in the spirit of the thing. We wrote most of this piece the day the brain first read healthy — and then, cleaning up one last stubborn orphan warning, found the second half of the deprecated-belief bug described above, still live, still miscounting the retired as the living — until the same one-clause fix, applied a second time in that same pass, cleared it. The article’s own lesson, proving itself one more time on the article’s own author. That is the nature of measuring your own system: the check is another part of the system, and it is wrong in the same quiet ways everything else is. Health is not a badge you reach. It is a practice of distrusting your instruments until they earn it.' },
     ],
     cta: {
       heading: 'Give your agents a brain, not a log',
@@ -589,6 +589,59 @@ $ tokenops coach prompts     # per-session waste, ranked by tokens / $ / hours`,
       body: 'Point it at your own logs and see where your AI-coding tokens actually go. Local-first, deterministic, no telemetry.',
       href: 'https://github.com/klarlabs-studio/tokenops',
       label: 'View on GitHub',
+    },
+  },
+  {
+    slug: 'meet-mnemos',
+    title: 'Meet Mnemos',
+    dek: 'AI agents forget everything the moment a session ends, and most “memory” products just bolt fuzzy search onto a pile of text. Mnemos is different: an open-source memory layer that stores facts with evidence, surfaces contradictions instead of silently overwriting, and forgets what stopped mattering — a brain for your agents, running on your own machine. Here is what it does, and how people use it.',
+    date: '2026-06-20',
+    readingMinutes: 8,
+    author: 'Felix Geelhaar',
+    accent: '#E11D48',
+    tags: ['AI', 'Memory', 'Agents', 'Open Source'],
+    blocks: [
+      { type: 'p', text: 'Every AI agent has the same amnesia. Close the session and it forgets your codebase, your decisions, your preferences — everything it just learned. The usual fix is to stuff a vector database with snippets of text and hope semantic search pulls the right one back. That helps a little, but it is still fuzzy retrieval over a pile of strings. It has no idea what is true, what changed, or what contradicts what.' },
+      { type: 'p', text: 'Mnemos is a different kind of memory. It is open source, runs as a single binary on your own machine, and instead of storing raw text it stores claims — small, checkable statements — each one traceable to the source it came from. When two claims disagree, it says so out loud rather than letting the newer one quietly win. And it does not just sit there between reads and writes: it consolidates, ages, and forgets, the way a memory is supposed to. In short, it behaves less like a database and more like a brain.' },
+      { type: 'diagram', id: 'store-vs-memory', caption: 'A store holds bytes between a write and a read. A memory does work in between — and what it hands back depends on that work.' },
+
+      { type: 'h', text: 'What it actually remembers' },
+      { type: 'p', text: 'Give Mnemos a line from a meeting note — “we decided to drop the legacy API by Q3, and the new one averages 45ms” — and it does not save the sentence. It extracts two claims: a decision (drop the legacy API by Q3) and a fact (new API ≈ 45ms), each tagged with a type, a confidence, and a link back to the exact note it came from. Ask it later what you decided about the API and you get the decision back with its evidence attached — not a paragraph it hopes is relevant.' },
+      { type: 'p', text: 'Now suppose a week later someone writes “the legacy API stays until Q4.” A vector store would happily keep both and hand your agent whichever one ranks higher. Mnemos notices the two decisions collide and flags them as contested — so instead of confidently asserting the wrong quarter, it surfaces the conflict and lets a human settle it. Raising contradictions instead of burying them is the entire point of an evidence layer.' },
+      { type: 'quote', text: 'Most memory for AI answers “what text looks similar to my question?” Mnemos answers a harder one: “what do we actually know, what is it based on, and where does it disagree with itself?”' },
+
+      { type: 'h', text: 'It behaves like a brain' },
+      { type: 'p', text: 'Storing facts well is only half of it. A real memory does work in the background, and Mnemos runs the same handful of processes a brain does: it encodes new input into claims, consolidates them on a cycle, forgets what has gone weak or stale, retrieves with evidence when asked, and — unusually — reflects, taking the vital signs of its own memory the way you would check a patient.' },
+      { type: 'diagram', id: 'brain-mechanisms', caption: 'The five processes a memory needs. Mnemos runs each one continuously — and the fifth, reflect, is the memory measuring its own health.' },
+      { type: 'p', text: 'That self-measuring habit is rare in a memory system, and it is where a lot of the interesting engineering lives — enough that we wrote a separate, more technical piece on how a brain takes its own vitals and what running one in production taught us about counting the right thing.' },
+
+      { type: 'h', text: 'How people use it' },
+      { type: 'p', text: 'There are two ways in, depending on whether you are wiring up an agent or building an app. Both are local-first, and both leave your data on your side.' },
+
+      { type: 'h', text: 'Give your coding agent a memory' },
+      { type: 'p', text: 'If you use an AI coding assistant like Claude Code, this is one command. Mnemos detects your setup and wires itself in through the assistant’s own hooks: it recalls relevant past knowledge before each task, briefs itself at the start of a session, and captures what was learned at the end — automatically, with nothing to call. It even consolidates on a nightly sleep cycle, so the memory stays healthy on its own.' },
+      { type: 'code', lang: 'bash', caption: 'One command wires in recall, brief, and capture plus a nightly consolidation. Nothing to call — your agent just starts remembering.', code: '# wire Mnemos into your AI coding assistant\nmnemos init' },
+      { type: 'p', text: 'From then on your agent remembers your architecture decisions, the bug you fixed last month, and why you chose Postgres over the alternative — across sessions, across projects, even across machines, because the brain is yours and lives where you put it.' },
+
+      { type: 'h', text: 'Build it into your app' },
+      { type: 'p', text: 'If you are building your own AI product, Mnemos is an HTTP API — no SDK, any language. Putting knowledge in and recalling it with evidence months later is a couple of calls:' },
+      { type: 'code', lang: 'bash', caption: 'No SDK. Any language with an HTTP client. Put text in; get evidence-backed answers out.', code: '# put knowledge in — Mnemos extracts claims and finds contradictions\ncurl -X POST localhost:7777/v1/process \\\n  -d \'{"text": "We chose Postgres over DynamoDB for cost predictability."}\'\n\n# recall it later, with evidence — months on, same brain\ncurl "localhost:7777/v1/search?q=which+database+did+we+choose"' },
+      { type: 'p', text: 'Under the hood it runs a small pipeline — ingest, extract, relate, query — but you only ever touch the two ends: you put text in, and you ask questions and get evidence-backed answers out. It runs on SQLite by default, so there is nothing to provision, and scales to Postgres, MySQL, or libSQL when you need it. There is also an MCP server, so agents can read and write the brain as a native tool.' },
+
+      { type: 'h', text: 'Own your memory' },
+      { type: 'p', text: 'The reason Mnemos exists is ownership. Hosted memory services put your users’ data in someone else’s cloud and bill you per call; Mnemos is a binary you run, with your data in your own storage. That is the difference between a nice-to-have and something you can put in a regulated, on-prem, or air-gapped stack. It is MIT-licensed and local-first — no account to create, and no telemetry leaves your machine unless you turn it on.' },
+      { type: 'stats', stats: [
+        { value: '1 binary', label: 'pure Go, no vendor cloud, no per-call billing' },
+        { value: 'evidence', label: 'every claim traces back to the source it came from' },
+        { value: 'MIT', label: 'open source, local-first, your data stays yours' },
+      ]},
+      { type: 'p', text: 'Memory is the piece most AI stacks bolt on last and trust least. Mnemos treats it as the foundation: structured, evidence-backed, contradiction-aware, and yours. Give your agents that, and they stop starting from zero every morning.' },
+    ],
+    cta: {
+      heading: 'Give your agents a memory they own',
+      body: 'Mnemos is MIT-licensed, a single Go binary, and local-first. Install it, run `mnemos init`, and your agent starts remembering — with evidence.',
+      href: 'https://github.com/klarlabs-studio/mnemos',
+      label: 'Get started on GitHub',
     },
   },
 ];
