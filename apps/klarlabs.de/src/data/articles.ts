@@ -13,7 +13,7 @@ export type ArticleBlock =
       caption?: string;
     }
   /** A hand-authored conceptual diagram (inline SVG, no command line). */
-  | { type: 'diagram'; id: 'store-vs-memory' | 'trust-salience'; caption?: string };
+  | { type: 'diagram'; id: 'store-vs-memory' | 'trust-salience' | 'brain-mechanisms' | 'circadian-dissonance'; caption?: string };
 
 export interface ArticleStat {
   value: string;
@@ -47,9 +47,9 @@ export const articles: Article[] = [
   {
     slug: 'is-the-brain-healthy',
     title: 'Is the brain healthy?',
-    dek: 'Liveness tells you a service is up. It says nothing about whether what a memory system believes is any good. Here is how Mnemos measures the health of a brain — a handful of cognitive vitals, one verdict — and what running one in production taught us about the hardest part: making sure the check counts the right thing.',
+    dek: 'Most memory for AI is a database with an embedding index. Mnemos is a brain: it consolidates while you are away, forgets what stopped mattering, and takes its own vital signs. This is how it measures the health of what it believes \u2014 five cognitive vitals, one verdict \u2014 and what running one in production taught us about counting the right thing.',
     date: '2026-07-22',
-    readingMinutes: 12,
+    readingMinutes: 13,
     author: 'Felix Geelhaar',
     accent: '#E11D48',
     tags: ['AI', 'Memory', 'Measurement', 'Engineering'],
@@ -67,6 +67,7 @@ export const articles: Article[] = [
         'Staleness — the share of valid beliefs not seen or re-verified within a horizon. A recency proxy for "still load-bearing, or just still present?"',
       ]},
       { type: 'p', text: 'Alongside the vitals sit three integrity checks — structural, not cognitive. Orphan beliefs: claims with zero evidence, which should not exist, because every belief in Mnemos is supposed to trace back to a source event. Dangling edges: relationships pointing at a belief that is gone. Stale expectations: predictions the brain made and never reconciled. These are the data-integrity smell tests; a single orphan is a warning, a dangling edge is an error.' },
+      { type: 'diagram', id: 'brain-mechanisms', caption: 'One brain, five processes. Mnemos runs each one — and the vitals are simply the brain measuring its own \u201creflect\u201d organ.' },
       { type: 'p', text: 'That is the whole instrument. It is deliberately boring — sums and rates over the belief set, no model in the loop, cheap enough to run on a schedule. The subtlety is entirely in one phrase that appears in every vital: "currently-valid beliefs." Get the definition of that set wrong and every number is quietly off. Which, it turned out, is exactly what happened.' },
 
       { type: 'h', text: 'Running it turned the vitals red' },
@@ -115,15 +116,20 @@ export const articles: Article[] = [
       { type: 'p', text: 'The classifier that decides durability is itself a measurement instrument, so it got the same treatment. A local model was reliable in one direction and a coin-flip in the other: when it called something session-local it was almost always right; when it called something durable it was right about half the time. That asymmetry is usable — we key the destructive action, suppressing a contradiction, on the reliable direction only, so a mistake leaves a belief exactly where it was.' },
       { type: 'p', text: 'A stronger, hosted model changed the economics: its session-local precision measured between ninety-two and one hundred percent on held-out samples — reliable enough to act on aggressively and safely, and that single number is what let one pass cleanly separate roughly seventeen hundred pieces of narration from knowledge. But we only trusted it because we scored it first, on examples it had never seen, more than once — having already been burned by a model that scored fifty-five percent on a run where every call had silently failed and returned nothing.' },
 
+      { type: 'h', text: 'The brain recovers on its own now' },
+      { type: 'p', text: 'A memory system that needs a human to run its maintenance is not really a brain; it is a database with good intentions. So the last piece is the one that makes the rest autonomous. Mnemos already had every organ of consolidation \u2014 dedupe, trust decay, forgetting, reinforcement, replay \u2014 but nothing ran them on a clock, so the day\u2019s narration accumulated and dissonance only ever fell when someone ran a pass by hand. A brain that consolidates only when poked has insomnia.' },
+      { type: 'p', text: 'It sleeps now. Once a day, when a session opens after a long enough gap \u2014 the equivalent of waking \u2014 a detached background pass runs the full consolidation, including the classifier that separates the day\u2019s narration from its knowledge and quietly retires the contradictions between passing remarks. Off the critical path, conservative by default, and impossible to get stuck: it forgets only what an outcome refuted, and a corrupt marker fails toward sleeping rather than never sleeping again.' },
+      { type: 'diagram', id: 'circadian-dissonance', caption: 'Without a sleep cycle, dissonance ratchets up and stays there. With nightly consolidation it rises through a working day and falls each night \u2014 a rhythm, not a one-way climb.' },
+      { type: 'p', text: 'That turns \u201cdegraded by evening, healthy by morning\u201d from a bug into the correct shape of a brain that is used and then rests. The dissonance you see is the honest residue of a working day, and it clears while you are away.' },
       { type: 'h', text: 'So — is the brain healthy?' },
       { type: 'p', text: 'Now, yes: every vital green, the integrity checks clean, dissonance sitting just under its line. And the remaining contradictions are, for the first time, worth reading — genuine conflicts between durable beliefs, plus a smaller set where a live observation bumps into something the brain holds as settled, which is precisely the signal the vital exists to raise. What was removed was noise; what is left is a question worth a human. But the badge is the least interesting part of the answer. The number moved because we taught the check to count the right set and to tell narration from knowledge — not because the brain underneath ever changed. It was sound the whole time. It was just talking a lot, and we had built a check that could not tell the talking from the knowing.' },
       { type: 'p', text: 'A coda, in the spirit of the thing. We wrote most of this piece the day the brain first read healthy — and then, cleaning up one last stubborn orphan warning, found the second half of the deprecated-belief bug described above, still live, still miscounting the retired as the living. The article’s own lesson, proving itself one more time on the article’s own author. That is the nature of measuring your own system: the check is another part of the system, and it is wrong in the same quiet ways everything else is. Health is not a badge you reach. It is a practice of distrusting your instruments until they earn it.' },
     ],
     cta: {
-      heading: 'Mnemos is open source',
-      body: 'MIT-licensed, a single Go binary, local-first. The evidence layer, the cognitive processes, and the brain-health vitals described here are all in the box — point it at your own work and run `mnemos health`.',
+      heading: 'Give your agents a brain, not a log',
+      body: 'Mnemos is MIT-licensed, a single Go binary, and local-first \u2014 the evidence layer, the cognitive processes, the health vitals, and the nightly sleep are all in the box. Point it at your own work, then run `mnemos health` and watch what it has learned.',
       href: 'https://github.com/klarlabs-studio/mnemos',
-      label: 'View Mnemos on GitHub',
+      label: 'Explore Mnemos on GitHub',
     },
   },
   {
