@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="468" viewBox="0 0 720 468" role="img" aria-label="A stylized brain surrounded by the five cognitive processes Mnemos runs: encode, consolidate, forget, retrieve, and reflect — the last being the brain-health vitals." font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+<title>One brain, many organs</title>
+<text x="24" y="32" fill="currentColor" font-size="17" font-weight="600">One brain, many organs</text>
+<text x="24" y="52" fill="currentColor" opacity="0.62" font-size="12.5">Mnemos runs the processes a memory needs — continuously, deterministically, and now on a sleep cycle.</text>
+<g stroke="#E11D48" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M360 150 C 300 150 262 170 250 205 C 214 205 196 232 208 258 C 190 276 202 306 226 312 C 232 340 270 352 300 342 C 316 360 352 360 360 344 C 368 360 404 360 420 342 C 450 352 488 340 494 312 C 518 306 530 276 512 258 C 524 232 506 205 470 205 C 458 170 420 150 360 150 Z" fill="#E11D48" fill-opacity="0.05"/><path d="M360 156 C 356 200 364 240 358 286 C 354 316 362 330 360 342" opacity="0.55"/><path d="M300 188 C 320 198 316 214 298 220" opacity="0.5"/><path d="M262 232 C 286 236 288 254 268 262" opacity="0.5"/><path d="M262 288 C 288 288 300 300 288 316" opacity="0.5"/><path d="M320 316 C 332 300 328 288 312 286" opacity="0.5"/><path d="M420 188 C 400 198 404 214 422 220" opacity="0.5"/><path d="M458 232 C 434 236 432 254 452 262" opacity="0.5"/><path d="M458 288 C 432 288 420 300 432 316" opacity="0.5"/><path d="M400 316 C 388 300 392 288 408 286" opacity="0.5"/><path d="M352 344 C 350 360 350 372 356 384 M368 344 C 370 360 370 372 364 384" opacity="0.7"/></g>
+<line x1="250" y1="205" x2="274" y2="119" stroke="#E11D48" stroke-opacity="0.45" stroke-width="1.5"/>
+<circle cx="250" cy="205" r="3" fill="#E11D48"/>
+<rect x="24" y="96" width="250" height="46" rx="10" fill="#E11D48" fill-opacity="0.06" stroke="#E11D48" stroke-opacity="0.55"/>
+<text x="40" y="117" fill="#E11D48" font-size="13.5" font-weight="700">Encode</text>
+<text x="40" y="134" fill="currentColor" opacity="0.72" font-size="11.5">capture → claims; salience gates what matters</text>
+<line x1="470" y1="205" x2="446" y2="119" stroke="#E11D48" stroke-opacity="0.45" stroke-width="1.5"/>
+<circle cx="470" cy="205" r="3" fill="#E11D48"/>
+<rect x="446" y="96" width="250" height="46" rx="10" fill="#E11D48" fill-opacity="0.06" stroke="#E11D48" stroke-opacity="0.55"/>
+<text x="462" y="117" fill="#E11D48" font-size="13.5" font-weight="700">Consolidate</text>
+<text x="462" y="134" fill="currentColor" opacity="0.72" font-size="11.5">sleep: dedupe · gist · reinforce · replay</text>
+<line x1="226" y1="300" x2="254" y2="273" stroke="#E11D48" stroke-opacity="0.45" stroke-width="1.5"/>
+<circle cx="226" cy="300" r="3" fill="#E11D48"/>
+<rect x="24" y="250" width="230" height="46" rx="10" fill="#E11D48" fill-opacity="0.06" stroke="#E11D48" stroke-opacity="0.55"/>
+<text x="40" y="271" fill="#E11D48" font-size="13.5" font-weight="700">Forget</text>
+<text x="40" y="288" fill="currentColor" opacity="0.72" font-size="11.5">weak &amp; stale decay; valid-time closes</text>
+<line x1="494" y1="300" x2="466" y2="273" stroke="#E11D48" stroke-opacity="0.45" stroke-width="1.5"/>
+<circle cx="494" cy="300" r="3" fill="#E11D48"/>
+<rect x="466" y="250" width="230" height="46" rx="10" fill="#E11D48" fill-opacity="0.06" stroke="#E11D48" stroke-opacity="0.55"/>
+<text x="482" y="271" fill="#E11D48" font-size="13.5" font-weight="700">Retrieve</text>
+<text x="482" y="288" fill="currentColor" opacity="0.72" font-size="11.5">hybrid recall · bounded self-correction</text>
+<line x1="360" y1="384" x2="360" y2="400" stroke="#E11D48" stroke-opacity="0.45" stroke-width="1.5"/>
+<circle cx="360" cy="384" r="3" fill="#E11D48"/>
+<rect x="150" y="400" width="420" height="50" rx="10" fill="#E11D48" fill-opacity="0.06" stroke="#E11D48" stroke-opacity="0.55"/>
+<text x="166" y="421" fill="#E11D48" font-size="13.5" font-weight="700">Reflect</text>
+<text x="166" y="438" fill="currentColor" opacity="0.72" font-size="11.5">health vitals: dissonance · calibration · trust · staleness</text>
+</svg>
