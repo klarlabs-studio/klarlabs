@@ -131,6 +131,27 @@ export const products: Product[] = [
     ctaLabel: 'Open KraftSport Coach',
   },
   {
+    slug: 'roady',
+    name: 'Roady',
+    tagline: 'The plan-of-record for AI coding agents.',
+    description: 'Spec, plan, and drift detection that survive context resets — file-based, git-versioned, MCP-native. Runs no model of its own.',
+    theme: 'dark',
+    accent: '#7C3AED',
+    status: 'live',
+    problem:
+      'You pair with an agent on a multi-day feature. Three days in it has forgotten what was decided, rewritten the wrong thing, or quietly drifted off-spec — and nothing tells you which. Chat history is lossy across a reset, and the tracker your PM uses is not where the work is happening.',
+    solution:
+      'Roady keeps intent, plan, and execution state as durable files in the repo, and continuously diffs them against reality. Every task carries a citation back to the document that motivated it, every state change lands in a hash-chained log, and every operation is an MCP tool your agent can call. It holds no API key: it assembles the context a model needs and hands it to the agent that already has one.',
+    features: [
+      { heading: 'Drift detection', body: 'Diffs intent against plan against code — including a plan the repository has quietly moved past. Exits non-zero, so it gates CI.' },
+      { heading: 'Provenance you can audit', body: 'Every event records the agent and session behind it. Ask which agent touched a task and what evidence backs it.' },
+      { heading: 'Reports, not dashboards', body: 'A self-contained progress document you can email, commit, or publish. Nothing to host, nothing to log into.' },
+      { heading: 'Bidirectional tracker sync', body: 'Linear, Jira, GitHub, Trello, Asana, Notion. Status and priority flow both ways; your policy guards travel with them.' },
+    ],
+    ctaHref: 'https://github.com/klarlabs-studio/roady',
+    ctaLabel: 'Open Roady',
+  },
+  {
     slug: 'nox',
     name: 'Nox',
     tagline: 'The security scanner that understands your AI app.',
