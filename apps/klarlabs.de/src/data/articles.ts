@@ -45,155 +45,157 @@ export interface Article {
  */
 export const articles: Article[] = [
   {
-    "slug": "the-planning-tool-that-lost-the-plan",
-    "title": "The planning tool that lost the plan",
-    "dek": "We pointed our drift detector at its own repository. It reported a healthy project — 89 days stale, 55 commits behind, seven releases it had never heard of. Fixing that exposed 105 integrity violations in an audit log nothing had ever flagged. None of them were tampering.",
+    "slug": "the-drift-nobody-checks-for",
+    "title": "The drift nobody checks for",
+    "dek": "Roady v0.16 learned to catch a plan the repository has quietly moved past — the way planning actually goes stale. We ran it on ourselves first. It found 89 days of drift in under a second, and the thread we pulled produced five releases in a day.",
     "date": "2026-08-01",
-    "readingMinutes": 7,
+    "readingMinutes": 6,
     "author": "Felix Geelhaar",
     "accent": "#7C3AED",
     "tags": [
       "AI",
       "Developer Tools",
       "Auditing",
-      "Debugging"
+      "Release"
     ],
     "blocks": [
       {
         "type": "p",
-        "text": "Roady is a planning tool for AI coding agents. Its central claim is drift detection: it holds what you said you would build, watches what actually gets built, and tells you when the two part company. Yesterday I pointed it at its own repository. It reported: “No drift detected. Project is in a healthy state.”"
+        "text": "Roady is the plan-of-record for AI coding agents: spec, plan, and drift detection that survive a context reset. This week it learned to catch a kind of drift that nothing else looks for — a plan the repository has quietly moved past — and we pointed it at ourselves first. It found a three-month-old plan in under a second, and pulling that thread produced five releases in a day."
+      },
+      {
+        "type": "h",
+        "text": "The drift nobody checks for"
       },
       {
         "type": "p",
-        "text": "At that moment Roady’s own plan had not been touched in 89 days. Its specification was titled “v0.11.0”. All 113 tasks were marked done. Fifty-five commits and seven releases had shipped since — including one that deleted an entire architectural layer. The tool whose job is to notice exactly this noticed nothing."
+        "text": "Drift detection usually means comparing a specification to a plan, or a plan to the code. Roady already did all three. But every one of those checks compares planning artifacts against each other, and there is a failure mode underneath them: a plan nobody edits stays perfectly consistent with itself forever, however far the work moves on."
+      },
+      {
+        "type": "p",
+        "text": "That is the most common way planning goes stale in practice. Not contradiction — abandonment. Nobody writes a wrong plan; they stop updating a right one."
+      },
+      {
+        "type": "p",
+        "text": "Roady v0.16 detects it. It judges by commit volume rather than file timestamps, because a fresh clone rewrites modification times and would flag every checkout. It excludes commits that touch the planning directory, so a project cannot look current by editing only its own bookkeeping. And it is deliberately quiet where the signal is weak: a repository nobody is committing to is not stale, and where git is unavailable it says nothing rather than guessing."
+      },
+      {
+        "type": "code",
+        "lang": "text",
+        "code": "$ roady drift detect\n\n[high] (plan/STALE) The plan has not changed in 89 days while 56 commits landed.\n  Hint: Re-run 'roady spec analyze' and 'roady plan generate' to bring the plan\n  back to what is actually being built, or archive it if the work is finished.",
+        "caption": "The first thing it found was ours."
       },
       {
         "type": "stats",
         "stats": [
           {
             "value": "89",
-            "label": "days since the plan was last touched"
+            "label": "days of drift found on the first run"
           },
           {
             "value": "55",
-            "label": "commits that landed in the meantime"
+            "label": "commits the plan had never seen"
           },
           {
             "value": "7",
-            "label": "releases the plan never heard about"
+            "label": "releases it was behind"
           },
           {
-            "value": "0",
-            "label": "drift issues reported"
+            "value": "<1s",
+            "label": "to detect it"
           }
         ]
       },
       {
-        "type": "h",
-        "text": "Why it was silent"
-      },
-      {
         "type": "p",
-        "text": "The failure was structural, not a bug. Every check Roady ran compared its own artifacts against each other: the spec against its locked snapshot, the plan against the spec, completed tasks against files on disk. All of those stay green on an abandoned plan, because an artifact nobody edits remains perfectly consistent with itself forever."
-      },
-      {
-        "type": "p",
-        "text": "Nothing asked the only question that mattered: does this plan still have anything to do with the work? Self-consistency was standing in for correctness, and from the inside the two are indistinguishable."
-      },
-      {
-        "type": "quote",
-        "text": "A system that only compares itself to itself will always report health. Health is not the same as being right."
-      },
-      {
-        "type": "p",
-        "text": "The fix judges by commit volume rather than file timestamps — a fresh clone rewrites mtimes, so a timestamp check would flag every checkout — and it excludes commits that touch the planning directory, so a project cannot stay “fresh” by editing only its own bookkeeping. It is deliberately quiet in both directions: a repository nobody is committing to is not stale, and when git is unavailable it says nothing at all. A false accusation of drift is worse than silence, because it teaches people to ignore the report."
-      },
-      {
-        "type": "code",
-        "lang": "text",
-        "code": "$ roady drift detect\n\n[high] (plan/STALE) The plan has not changed in 89 days while 56 commits landed.\n  Hint: Re-run 'roady spec analyze' and 'roady plan generate' to bring the plan\n  back to what is actually being built, or archive it if the work is finished.",
-        "caption": "Roady, flagging Roady."
+        "text": "Every conventional check had been green the whole time, and correctly so — the artifacts genuinely agreed with each other. The new one asks a different question, and that is exactly the point: it catches what agreement cannot."
       },
       {
         "type": "h",
-        "text": "Then the audit log"
+        "text": "Following the thread"
       },
       {
         "type": "p",
-        "text": "Acting on that finding meant regenerating the plan, which meant writing to the audit log, which meant verifying it. Roady keeps every state change in a hash-chained journal: each entry commits to its predecessor, so altering or removing one breaks the chain. That journal is what its compliance features rest on — the ability to answer, for an auditor, which agent did what and prove the record has not been touched."
+        "text": "Acting on the finding meant refreshing the plan, which meant writing to the audit log — and Roady verifies that log on the way through. Every state change lands in a hash-chained journal, so altering or removing an entry breaks the chain. Verification surfaced 105 entries it could not vouch for."
       },
       {
         "type": "p",
-        "text": "Verification returned 105 violations. In a log that had never once been reported as broken."
-      },
-      {
-        "type": "p",
-        "text": "None of them were tampering. There were three separate causes, and each needed a different answer."
+        "text": "None were tampering. Three unrelated causes, all previously indistinguishable because they surfaced as the same sentence:"
       },
       {
         "type": "list",
         "items": [
-          "Two hash functions were writing to one file. Two code paths appended events, and they hashed different fields. Any entry carrying an aggregate identifier was written by one scheme and checked by the other.",
-          "A shell script had been appending raw JSON. The release script wrote entries with no hash and no link to the chain — twelve of them, over several months. They sat outside the chain entirely, which is a different fact from a hash that fails to match.",
-          "The hash algorithm had changed under existing events. A commit months earlier folded a canonical JSON encoding into the digest. Every event written before it stopped reproducing its own hash. Seventy-three entries. They were never altered; the algorithm moved beneath them."
+          "Two writers were hashing different fields, so entries carrying an aggregate identifier were checked against the wrong scheme.",
+          "A release script had been appending entries directly, outside the chain — technically unverifiable rather than technically wrong.",
+          "A hash-algorithm improvement months earlier meant 73 older entries no longer reproduced their digest. The entries were untouched; the algorithm had moved."
         ]
       },
       {
         "type": "p",
-        "text": "All three surfaced as the same message: “Content hash mismatch. Possible tampering.” That phrasing is why nobody investigated. It reads as an accusation, and an accusation that turns out to be nothing teaches you to stop reading. The most valuable thing we changed was not the hashing — it was making the tool say which of the three had happened."
+        "text": "v0.16 reports the three separately, which is the substantive change. A verifier that answers “possible tampering” to every question is one nobody reads. Entries now carry the algorithm that produced them, so any future change is recognisable as a version difference rather than an alarm."
+      },
+      {
+        "type": "quote",
+        "text": "The most useful thing a verifier can do is tell you which kind of problem you have."
+      },
+      {
+        "type": "p",
+        "text": "We also left something deliberately unfixed. Those 73 entries stay unverifiable, and the documentation says so. Re-hashing them would make the log verify perfectly while destroying the single property it exists to provide — a past that cannot be rewritten. A tool that reports a clean bill of health it has not earned is worth less than one that names its own limits."
+      },
+      {
+        "type": "h",
+        "text": "What shipped"
+      },
+      {
+        "type": "p",
+        "text": "Five releases in a day, each smoke-tested against the published archive:"
+      },
+      {
+        "type": "list",
+        "items": [
+          "Staleness drift detection, with severity scaled to how far behind the plan has fallen.",
+          "Audit verification that distinguishes an altered entry, an unchained entry, and an algorithm change — and versioned hashes so the distinction holds in future.",
+          "roady_audit_trail over MCP: an agent can now ask which agent worked on a task and what evidence backs it, with chain verification, instead of shelling out.",
+          "Roady stopped calling language models entirely. It assembles the context a model needs and hands it to the agent that already has one — no second key, no second bill, no second opinion competing with the one that has the task in view.",
+          "Bidirectional tracker sync — Linear, Jira, GitHub, Trello, Asana, Notion — with status and priority flowing both ways, and stakeholder progress reports as a self-contained document rather than a dashboard to host."
+        ]
       },
       {
         "type": "stats",
         "stats": [
           {
-            "value": "105",
-            "label": "integrity violations, none of them tampering"
+            "value": "5",
+            "label": "releases shipped in a day"
           },
           {
-            "value": "73",
-            "label": "events invalidated by an algorithm change"
+            "value": "0",
+            "label": "API keys Roady now requires"
           },
           {
-            "value": "12",
-            "label": "entries a shell script wrote outside the chain"
+            "value": "54",
+            "label": "MCP tools, every one annotated"
           },
           {
-            "value": "3",
-            "label": "distinct causes reported as one"
+            "value": "3.1.0",
+            "label": "MCP schema version"
           }
         ]
       },
       {
         "type": "h",
-        "text": "What we could not fix"
+        "text": "Why we ran it on ourselves first"
       },
       {
         "type": "p",
-        "text": "The 73 events remain unverifiable. Re-hashing them would make the log verify perfectly and destroy the thing it exists to provide — a record whose past cannot be rewritten. So they stay broken, correctly labelled, and the documentation now states plainly that entries from before that change cannot be cryptographically verified."
+        "text": "A build passing, a linter clean, and coverage holding its thresholds all confirm that a system agrees with itself. None of them confirm it is right about the world. The only check that does is using the thing for real and reading what it says."
       },
       {
         "type": "p",
-        "text": "Events now carry the algorithm that produced them, so the next change is recognisable rather than indistinguishable from an attack. That is the durable lesson: a hash function is a public interface, and changing one silently invalidates every claim you have ever made with it."
-      },
-      {
-        "type": "h",
-        "text": "The pattern"
+        "text": "Roady found a stale plan, an audit log with unexplained entries, and a handful of smaller things behind them — in its own repository, on the first run, in under a second. Then we fixed them and shipped. That is the whole argument for the tool, and we would rather demonstrate it than assert it."
       },
       {
         "type": "p",
-        "text": "Every one of these was invisible to a green build. The test suite passed. The linter was clean. Coverage held its thresholds. The MCP surface validated end to end. None of that touches a tool that reports health while being wrong, because all of it checks that the system agrees with itself."
-      },
-      {
-        "type": "p",
-        "text": "They surfaced from one move, repeated: run the thing against itself, then read the output instead of the diff. It caught the product twice, and it caught me twice too — once when a command that showed only the last line of a report hid 104 others, and once when a fix stamped only one of two writers, defeating its own purpose."
-      },
-      {
-        "type": "quote",
-        "text": "Trust a tool the day it tells you something you did not want to hear about itself."
-      },
-      {
-        "type": "p",
-        "text": "Roady now flags its own stale plans and is honest about which parts of its own history it cannot vouch for. That is a smaller claim than it made yesterday, and a truer one."
+        "text": "It is free, MIT, and holds no key to anything: brew install klarlabs-studio/tap/roady."
       }
     ],
     "cta": {
