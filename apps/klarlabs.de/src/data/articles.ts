@@ -49,7 +49,7 @@ export const articles: Article[] = [
     "title": "The drift nobody checks for",
     "dek": "Roady v0.16 learned to catch a plan the repository has quietly moved past — the way planning actually goes stale. We ran it on ourselves first. It found 89 days of drift in under a second, and the thread we pulled produced five releases in a day.",
     "date": "2026-08-01",
-    "readingMinutes": 6,
+    "readingMinutes": 7,
     "author": "Felix Geelhaar",
     "accent": "#7C3AED",
     "tags": [
