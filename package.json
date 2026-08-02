@@ -2,7 +2,7 @@
   "name": "klarlabs",
   "private": true,
   "version": "0.1.0",
-  "description": "Klarlabs — precision software from Munich. Monorepo for the studio design system and sites.",
+  "description": "Klarlabs \u2014 precision software from Munich. Monorepo for the studio design system and sites.",
   "type": "module",
   "scripts": {
     "build": "pnpm -r build",
@@ -13,5 +13,12 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "pnpm@10.24.0"
+  "packageManager": "pnpm@10.24.0",
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.25.12",
+      "sharp": "^0.35.0",
+      "yaml": "^2.8.3"
+    }
+  }
 }
