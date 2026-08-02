@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   ci:
-    uses: klarlabs-studio/.github/.github/workflows/js-ci.yml@main
+    uses: klarlabs-studio/.github/.github/workflows/js-ci.yml@fix/js-ci-permissions-ceiling
     permissions:
       contents: read
       security-events: write
