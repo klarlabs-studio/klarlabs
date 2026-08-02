@@ -45,6 +45,163 @@ export interface Article {
  */
 export const articles: Article[] = [
   {
+    "slug": "the-check-that-said-no",
+    "title": "The check that said no",
+    "dek": "We spent a day fixing the same bug six times across our own estate: a check that reports green while measuring nothing. Then Warden caught us doing it too — and refused the commit. That refusal is the product.",
+    "date": "2026-08-02",
+    "readingMinutes": 8,
+    "author": "Felix Geelhaar",
+    "accent": "#0EA5E9",
+    "tags": [
+      "Developer Tools",
+      "Provenance",
+      "CI/CD",
+      "Supply Chain"
+    ],
+    "blocks": [
+      {
+        "type": "p",
+        "text": "Green is the most expensive colour in software. Not because passing checks are bad, but because “passing” and “ran at all” look identical from the outside, and almost nothing distinguishes them for you."
+      },
+      {
+        "type": "p",
+        "text": "We know this because we went looking. Over a single day we audited our own estate — two GitHub organisations, seventy-odd repositories, every workflow we rely on. We found the same defect six separate times."
+      },
+      {
+        "type": "h",
+        "text": "Six shapes of the same bug"
+      },
+      {
+        "type": "list",
+        "items": [
+          "A `|| true` on an auto-merge call. Thirty-nine security remediation PRs had been sitting unmerged — thirty-five of them had never had auto-merge enabled at all. The command failed every week for weeks and reported success every time.",
+          "A capability lost at a wrapper. A coverage warning type-asserted for an interface; the object underneath implemented it, the decorator around it did not. The warning reported nothing and looked exactly like having nothing to report.",
+          "Enrichments computed and discarded. Two security plugins produced 71 annotations per scan. No reporter serialised them. Every one was thrown away before reaching the artefact anyone reads.",
+          "A gate whose baseline matched zero findings — so it evaluated nothing, while passing.",
+          "A provenance check that was a reporter, not a gate. It could not fail.",
+          "A benchmark corrupted by a stray file. A leftover scan output in a test corpus silently moved a precision score from 1.000 to 0.902."
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Not one of these announced itself. Every one of them was, on the dashboard, indistinguishable from working."
+      },
+      {
+        "type": "h",
+        "text": "Then it happened to us"
+      },
+      {
+        "type": "p",
+        "text": "Midway through the same day, we merged a pull request whose security check was red, on the assumption that the failure was stale. It was not. A high-severity CVE sat on a main branch until we noticed and fixed it forward."
+      },
+      {
+        "type": "p",
+        "text": "The contributing mistake is almost funny. The shell command that was supposed to push the fix ended in `; echo pushed` — which prints unconditionally, whether the push succeeded or not. We had spent the morning removing exactly that pattern from other people's workflows, and then wrote it ourselves."
+      },
+      {
+        "type": "quote",
+        "text": "Every failure we found that day was a step whose failure was swallowed. Including ours."
+      },
+      {
+        "type": "h",
+        "text": "What Warden did about it"
+      },
+      {
+        "type": "p",
+        "text": "Later that day we prepared a release commit for Warden itself, from a fresh clone. Seven checks passed. Warden's own gate refused it."
+      },
+      {
+        "type": "p",
+        "text": "Not because the change was wrong — the diff was fine. Because the commit carried no evidence that anything had been checked. Warden could not distinguish “the tests were run” from “someone says the tests were run,” so it declined to accept the second one. It was right to."
+      },
+      {
+        "type": "p",
+        "text": "Committing through the gate produced this:"
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "code": "steps_run: [credentials, rebase, lint, security-scan, test]\nevidence_chain_root: e5d43302…\nevidence:\n  credentials.pass    → hash e5d43302…\n  rebase.pass         → prev e5d43302…\n  lint.pass           → prev 17415f4f…\n  security-scan.pass  → prev e631cd9a…\n  test.pass           → prev db65895a…\n  push.pass           → prev 70ae8484…",
+        "caption": "A Warden provenance note. Each link carries the previous hash — a chain you can walk, not a claim you have to trust."
+      },
+      {
+        "type": "p",
+        "text": "That is the whole idea. Warden does not tell you the checks passed. It hands you something you can verify independently, signed by a key your forge already knows."
+      },
+      {
+        "type": "h",
+        "text": "The distinction it refuses to collapse"
+      },
+      {
+        "type": "p",
+        "text": "Warden 0.24 added `attest-external`: record an existing CI run as a commit's attestation, instead of re-running the same checks on the same tree. Useful — CI already did the work; paying for it twice is waste."
+      },
+      {
+        "type": "p",
+        "text": "The obvious design was a flag: `warden run --attest-external`. We deliberately built a separate command instead. `run` means “run the pipeline.” A flag on it meaning “run nothing” would put a strong claim and a weak one on the same code path, where they could be confused. Keeping them impossible to confuse is the design."
+      },
+      {
+        "type": "p",
+        "text": "The same instinct governs what it will copy. Warden takes the run id, the attempt, the repository, the URL — facts the platform states about itself. But `--checks` is required and never inferred, because what passed is a claim about work Warden did not do. It will not manufacture that on your behalf."
+      },
+      {
+        "type": "stats",
+        "stats": [
+          {
+            "value": "39 → 0",
+            "label": "security PRs unblocked across the estate"
+          },
+          {
+            "value": "6",
+            "label": "distinct checks found reporting green while measuring nothing"
+          },
+          {
+            "value": "81–94%",
+            "label": "Warden's own test coverage, all nine domains passing"
+          },
+          {
+            "value": "0",
+            "label": "unattested commits Warden will accept, including ours"
+          }
+        ]
+      },
+      {
+        "type": "h",
+        "text": "Why this matters more with agents in the loop"
+      },
+      {
+        "type": "p",
+        "text": "Most of the work described here was done by an AI agent, at speed, across dozens of repositories. That is the point, and also the risk. An agent can fix thirty-nine things before lunch. It can also assert something plausible and wrong with total fluency — as ours did, twice, in the same day."
+      },
+      {
+        "type": "p",
+        "text": "The answer is not to trust the agent more or less. It is to make the difference between “verified” and “claimed” mechanically visible, so it does not depend on anyone's judgement in the moment. Warden gates `git commit` and `git push` themselves — native git, no bot, no forge integration required — and records what actually ran."
+      },
+      {
+        "type": "p",
+        "text": "Three questions, answerable after the fact, about any commit in your history: what produced it, human or which agent. Was it actually checked, and by which policy. Can you trust that answer — signed by an identity your forge already recognises."
+      },
+      {
+        "type": "h",
+        "text": "The test of a guarantee"
+      },
+      {
+        "type": "p",
+        "text": "A gate that only ever stops other people is decoration. The test is whether it stops you, on a day you are in a hurry, on your own repository, when you are certain you are right."
+      },
+      {
+        "type": "p",
+        "text": "Ours did. That is the only evidence we have worth offering."
+      }
+    ],
+    "cta": {
+      "heading": "Make green mean something",
+      "body": "Warden is open source. It gates git commit and push directly, records a verifiable evidence chain for every commit, and refuses assertions it cannot back — including its own author's.",
+      "href": "https://github.com/klarlabs-studio/warden",
+      "label": "Warden on GitHub"
+    }
+  },
+  {
     "slug": "the-drift-nobody-checks-for",
     "title": "The drift nobody checks for",
     "dek": "Roady v0.16 learned to catch a plan the repository has quietly moved past — the way planning actually goes stale. We ran it on ourselves first. It found 89 days of drift in under a second, and the thread we pulled produced five releases in a day.",
