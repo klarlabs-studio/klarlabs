@@ -17,6 +17,12 @@ on:
   pull_request:
     branches: [main]
 
+  # Re-run the bar on demand. Without this the only way to retest main is to
+  # push a commit, which is why a startup_failure in the shared workflow could
+  # only be confirmed fixed through a throwaway pull request: a rerun of a
+  # failed run replays the original ref, and this repo had no other trigger.
+  workflow_dispatch:
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
