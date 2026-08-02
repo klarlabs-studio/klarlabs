@@ -49,7 +49,7 @@ export const articles: Article[] = [
     "title": "The check that said no",
     "dek": "We spent a day fixing the same bug six times across our own estate: a check that reports green while measuring nothing. Then Warden caught us doing it too — and refused the commit. That refusal is the product.",
     "date": "2026-08-02",
-    "readingMinutes": 8,
+    "readingMinutes": 7,
     "author": "Felix Geelhaar",
     "accent": "#0EA5E9",
     "tags": [
@@ -120,7 +120,7 @@ export const articles: Article[] = [
       },
       {
         "type": "code",
-        "lang": "json",
+        "lang": "text",
         "code": "steps_run: [credentials, rebase, lint, security-scan, test]\nevidence_chain_root: e5d43302…\nevidence:\n  credentials.pass    → hash e5d43302…\n  rebase.pass         → prev e5d43302…\n  lint.pass           → prev 17415f4f…\n  security-scan.pass  → prev e631cd9a…\n  test.pass           → prev db65895a…\n  push.pass           → prev 70ae8484…",
         "caption": "A Warden provenance note. Each link carries the previous hash — a chain you can walk, not a claim you have to trust."
       },
