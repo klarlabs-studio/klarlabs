@@ -28,14 +28,23 @@ export class KlButton extends LitElement {
         /* Variant defaults — primary */
         --_bg: var(--kl-button-bg, var(--kl-accent, #0d9488));
         --_bg-hover: var(--kl-accent-light, #14b8a6);
-        --_color: var(--kl-button-color, #ffffff);
+        /* Was #ffffff, which measured 3.74:1 on --kl-accent and 2.49:1 on the
+           --kl-accent-light hover — both below WCAG AA 4.5:1, and the hover
+           was the worse of the two. --kl-on-accent gives 5.29:1 at rest and
+           7.95:1 on hover, so brightening now improves legibility instead of
+           destroying it. The accent fills are untouched. */
+        --_color: var(--kl-button-color, var(--kl-on-accent, #0a0a0b));
         --_border: transparent;
       }
 
       :host([variant='secondary']) {
         --_bg: transparent;
         --_bg-hover: var(--kl-accent-dim, #0d948820);
-        --_color: var(--kl-accent, #0d9488);
+        /* --kl-accent as foreground is 3.74:1 on a light surface (it passes
+           only on dark, 5.31:1), so this variant failed AA in light mode.
+           --kl-accent-text is the theme-aware step: #0f766e light (5.47:1),
+           #0d9488 dark (5.31:1). */
+        --_color: var(--kl-accent-text, var(--kl-accent, #0d9488));
         --_border: var(--kl-accent-border, #0d948840);
       }
 
@@ -48,7 +57,11 @@ export class KlButton extends LitElement {
 
       :host([variant='danger']) {
         --_bg: var(--kl-error, #dc2626);
-        --_bg-hover: color-mix(in srgb, var(--kl-error, #dc2626) 88%, white);
+        /* Darken on hover, do not lighten. Mixing 12% white gave #e04040,
+           where white text is 4.22:1 — the rest state passes at 4.83:1 and
+           the hover did not. Mixing toward black keeps contrast monotonically
+           increasing under interaction. */
+        --_bg-hover: color-mix(in srgb, var(--kl-error, #dc2626) 88%, black);
         --_color: #ffffff;
         --_border: transparent;
       }

@@ -16,6 +16,14 @@
     --kl-accent-dark:   #0f766e;
     --kl-accent-dim:    color-mix(in srgb, #0d9488 12%, transparent);
     --kl-accent-border: color-mix(in srgb, #0d9488 30%, transparent);
+    /* Text/icon colour ON a filled accent surface. Theme-INVARIANT, like the
+       accent itself: the fill does not change between themes, so the thing
+       drawn on top of it must not either. --kl-ink-inverse looks like the
+       right token and is not — it flips per theme, so it would put #fafafa
+       on teal in light mode (3.7:1).
+       #0a0a0b on --kl-accent is 5.29:1 and on --kl-accent-light 7.95:1, so a
+       brightening hover only improves it. */
+    --kl-on-accent:     #0a0a0b;
 
     /* ── Semantic states (same in both themes) ─────────────── */
     --kl-success:     #16a34a;
@@ -122,6 +130,11 @@
     --kl-border:        #e4e4e7;
     --kl-border-strong: #d4d4d8;
 
+    /* Accent as FOREGROUND text (ghost/secondary buttons, links). Unlike the
+       accent fill this must track the theme: --kl-accent on white is only
+       3.74:1. The darker step clears AA on light; the base clears it on dark. */
+    --kl-accent-text:   #0f766e;
+
     --kl-ink:           #0a0a0b;
     --kl-ink-secondary: #3f3f46;
     --kl-ink-tertiary:  #71717a;
@@ -148,6 +161,8 @@
     --kl-surface-raised: #111113;
     --kl-surface-muted:  #18181b;
     --kl-surface-subtle: #27272a;
+
+    --kl-accent-text:   #0d9488; /* 5.31:1 on --kl-surface */
 
     --kl-border:        #27272a;
     --kl-border-strong: #3f3f46;
