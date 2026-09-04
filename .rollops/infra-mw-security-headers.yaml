@@ -1,0 +1,71 @@
+# The security-headers middleware, back under RollOps.
+#
+# It was hand-applied because rollopsd held no traefik.io RBAC: an attempt to
+# manage it applied the Ingress, failed the Middleware with Forbidden, rolled
+# back only the Middleware, and left klarlabs.de serving 404
+# (klarlabs-studio/rollops#182).
+#
+# rollops#183 granted `traefik.io/middlewares` with get,list,watch,create,
+# update,patch — deliberately no delete. That was then rehearsed on an isolated
+# namespace with a host that does not resolve, declaring a Middleware and the
+# Ingress referencing it in one batch: both applied, and the router returned
+# 200 with the headers attached. This adoption is the real move that rehearsal
+# was for.
+#
+# The manifest below was diffed against the live object and is identical, so
+# the first reconcile is an adoption rather than a change. Applying it must not
+# alter a single response header.
+apiVersion: rollops.klarlabs.de/v1
+kind: RolloutConfig
+metadata:
+  name: kl-mw-security-headers
+spec:
+  target:
+    kind: kubernetes
+    ref: klarlabs/prod/mw-security-headers
+    criticality: medium
+    spec:
+      namespace: klarlabs
+      resource: middleware/security-headers
+      manifest: |
+        apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: security-headers
+          namespace: klarlabs
+        spec:
+          headers:
+            contentSecurityPolicy: >-
+              default-src 'self';
+              script-src 'self' 'unsafe-inline';
+              style-src 'self' 'unsafe-inline';
+              img-src 'self';
+              font-src 'self';
+              connect-src 'self';
+              frame-ancestors 'none';
+              base-uri 'self';
+              form-action 'self';
+              object-src 'none'
+            # 'unsafe-inline' covers one inline <script> (Astro's hydration bootstrap),
+            # one inline <style> block and 11 style= attributes. Hashes were considered
+            # and rejected: Astro regenerates that script per build, so a hash CSP would
+            # break the site on the next deploy rather than at review time; nonces need
+            # a request-time value the ingress cannot supply. frame-ancestors,
+            # object-src, base-uri and form-action are the directives 'unsafe-inline'
+            # does not weaken, and all four are closed.
+
+            # One day, no preload, no includeSubDomains. Long max-age and preload are
+            # effectively irreversible — a mistake locks browsers out of the apex over
+            # plain HTTP for the life of the cache. Raise once observed working.
+            stsSeconds: 86400
+            stsIncludeSubdomains: false
+            stsPreload: false
+            forceSTSHeader: true
+
+            frameDeny: true
+            contentTypeNosniff: true
+            browserXssFilter: false
+            referrerPolicy: strict-origin-when-cross-origin
+            permissionsPolicy: "geolocation=(), microphone=(), camera=(), payment=()"
+  strategy:
+    type: rolling
