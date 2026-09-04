@@ -1,0 +1,36 @@
+# TEMPORARY — rollout rehearsal, remove after.
+#
+# Reproduces the exact shape that took klarlabs.de down (rollops#182): a
+# Middleware and an Ingress that references it, declared together in one
+# reconcile batch. The target is an isolated namespace with a host that does
+# not resolve, so a 404 here costs nothing.
+#
+# Before rollops#183 the Middleware failed Forbidden and only its target rolled
+# back, leaving the Ingress pointing at nothing. This is the test that the
+# grant actually fixed that, driven through rollops rather than kubectl.
+apiVersion: rollops.klarlabs.de/v1
+kind: RolloutConfig
+metadata:
+  name: zz-rehearsal-mw
+spec:
+  target:
+    kind: kubernetes
+    ref: rollops-rehearsal/prod/mw-rehearsal-headers
+    criticality: low
+    spec:
+      namespace: rollops-rehearsal
+      resource: middleware/rehearsal-headers
+      manifest: |
+        apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: rehearsal-headers
+          namespace: rollops-rehearsal
+        spec:
+          headers:
+            customResponseHeaders:
+              X-Rehearsal: "rollops-183"
+            contentTypeNosniff: true
+            frameDeny: true
+  strategy:
+    type: rolling
