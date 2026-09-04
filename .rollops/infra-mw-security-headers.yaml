@@ -1,0 +1,72 @@
+# Response security headers for klarlabs.de.
+#
+# The site returned none of Content-Security-Policy, Strict-Transport-Security,
+# X-Frame-Options or X-Content-Type-Options — verified with `curl -sSI`, not
+# only by a scanner. Setting them at the ingress rather than in the container
+# means every backend behind this router inherits them, and the policy is
+# reviewable in one place.
+apiVersion: rollops.klarlabs.de/v1
+kind: RolloutConfig
+metadata:
+  name: kl-mw-security-headers
+spec:
+  target:
+    kind: kubernetes
+    ref: klarlabs/prod/mw-security-headers
+    criticality: low
+    spec:
+      namespace: klarlabs
+      resource: middleware/security-headers
+      manifest: |
+        apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: security-headers
+          namespace: klarlabs
+        spec:
+          headers:
+            # Deliberately conservative: this is a static marketing site, so a
+            # restrictive default costs nothing and a permissive one would be
+            # the kind of policy that exists without protecting anything.
+            # Every directive below was checked against what the live page
+            # and its stylesheet actually load (2026-09-04): all assets are
+            # same-origin, there are no data: URIs, no @font-face, no offsite
+            # hosts, no forms and no iframes.
+            contentSecurityPolicy: >-
+              default-src 'self';
+              script-src 'self' 'unsafe-inline';
+              style-src 'self' 'unsafe-inline';
+              img-src 'self';
+              font-src 'self';
+              connect-src 'self';
+              frame-ancestors 'none';
+              base-uri 'self';
+              form-action 'self';
+              object-src 'none'
+            # 'unsafe-inline' is a concession to one inline <script> (Astro's
+            # hydration bootstrap), one inline <style> block and 11 style=
+            # attributes — not a recommendation. Hashes were considered and
+            # rejected: Astro regenerates that script per build, so a hash CSP
+            # would break the site on the next deploy rather than at review
+            # time. Nonces need a request-time value the ingress cannot supply.
+            #
+            # The header still earns its place meanwhile: frame-ancestors,
+            # object-src, base-uri and form-action are all closed, and those
+            # are the directives 'unsafe-inline' does not weaken.
+
+            # HSTS starts at one day with no preload. Long max-age and preload
+            # are effectively irreversible — a mistake locks browsers out of
+            # the apex over plain HTTP for the life of the cache — so the value
+            # is raised only after this has been observed working.
+            stsSeconds: 86400
+            stsIncludeSubdomains: false
+            stsPreload: false
+            forceSTSHeader: true
+
+            frameDeny: true
+            contentTypeNosniff: true
+            browserXssFilter: false
+            referrerPolicy: strict-origin-when-cross-origin
+            permissionsPolicy: "geolocation=(), microphone=(), camera=(), payment=()"
+  strategy:
+    type: rolling
