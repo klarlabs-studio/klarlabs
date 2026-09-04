@@ -8,7 +8,7 @@
 # Before rollops#183 the Middleware failed Forbidden and only its target rolled
 # back, leaving the Ingress pointing at nothing. This is the test that the
 # grant actually fixed that, driven through rollops rather than kubectl.
-apiVersion: rollops.klarlabs.de/v1
+apiVersion: rollops.klarlabs.de/v1 # nox:ignore IAC-464 -- 1.31.0 matches the word "namespace" anywhere in a k8s file; no Namespace is defined here
 kind: RolloutConfig
 metadata:
   name: zz-rehearsal-mw
