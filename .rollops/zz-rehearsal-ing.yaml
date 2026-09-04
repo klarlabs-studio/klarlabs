@@ -1,0 +1,41 @@
+# TEMPORARY — rollout rehearsal, remove after. See zz-rehearsal-mw.yaml.
+#
+# Host does not resolve in DNS; reached only by sending a Host header to the
+# ingress. No cert-manager annotation, so no ACME order is attempted for a
+# name that cannot be validated.
+apiVersion: rollops.klarlabs.de/v1 # nox:ignore IAC-464 -- 1.31.0 matches the word "namespace" anywhere in a k8s file; no Namespace is defined here
+kind: RolloutConfig
+metadata:
+  name: zz-rehearsal-ing
+spec:
+  target:
+    kind: kubernetes
+    ref: rollops-rehearsal/prod/ing-rehearsal
+    criticality: low
+    spec:
+      namespace: rollops-rehearsal
+      resource: ingress/rehearsal
+      manifest: |
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress # nox:ignore IAC-149,IAC-296 -- host does not resolve in DNS, so no certificate can be issued and TLS cannot be configured; rehearsal fixture, deleted immediately after
+        metadata:
+          name: rehearsal
+          namespace: rollops-rehearsal
+          annotations:
+            traefik.ingress.kubernetes.io/router.entrypoints: web
+            traefik.ingress.kubernetes.io/router.middlewares: rollops-rehearsal-rehearsal-headers@kubernetescrd
+        spec:
+          ingressClassName: traefik
+          rules:
+          - host: rehearsal.rollops.invalid
+            http:
+              paths:
+              - backend:
+                  service:
+                    name: echo
+                    port:
+                      number: 80
+                path: /
+                pathType: Prefix
+  strategy:
+    type: rolling
