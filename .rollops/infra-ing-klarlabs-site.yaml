@@ -1,0 +1,62 @@
+# The klarlabs.de ingress, brought under RollOps.
+#
+# It was applied by hand (kubectl.kubernetes.io/last-applied-configuration was
+# its only provenance), so nothing in git described what serves the apex
+# domain, and the security-headers middleware reference would have been lost
+# the next time someone re-applied an older copy.
+#
+# The spec below is the live object as captured on 2026-09-04, unchanged except
+# for the router.middlewares annotation.
+apiVersion: rollops.klarlabs.de/v1
+kind: RolloutConfig
+metadata:
+  name: kl-ing-klarlabs-site
+spec:
+  target:
+    kind: kubernetes
+    ref: klarlabs/prod/ing-klarlabs-site
+    criticality: medium
+    spec:
+      namespace: klarlabs
+      resource: ingress/klarlabs-site
+      manifest: |
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+          name: klarlabs-site
+          namespace: klarlabs
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-prod
+            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            traefik.ingress.kubernetes.io/router.tls: "true"
+            traefik.ingress.kubernetes.io/router.middlewares: klarlabs-security-headers@kubernetescrd
+        spec:
+          ingressClassName: traefik
+          rules:
+          - host: klarlabs.de
+            http:
+              paths:
+              - backend:
+                  service:
+                    name: klarlabs-site
+                    port:
+                      number: 80
+                path: /
+                pathType: Prefix
+          - host: www.klarlabs.de
+            http:
+              paths:
+              - backend:
+                  service:
+                    name: klarlabs-site
+                    port:
+                      number: 80
+                path: /
+                pathType: Prefix
+          tls:
+          - hosts:
+            - klarlabs.de
+            - www.klarlabs.de
+            secretName: klarlabs-de-tls
+  strategy:
+    type: rolling
