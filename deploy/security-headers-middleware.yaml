@@ -1,0 +1,64 @@
+# Traefik middleware attached to the klarlabs-site ingress
+# (traefik.ingress.kubernetes.io/router.middlewares in
+# .rollops/infra-ing-klarlabs-site.yaml).
+#
+# APPLIED BY HAND — not by RollOps:
+#
+#   kubectl apply -f deploy/security-headers-middleware.yaml
+#
+# rollopsd's ClusterRole grants networking.k8s.io/ingresses but has no
+# traefik.io rule at all, so an attempt to manage this through .rollops fails
+# every reconcile with:
+#
+#   middlewares.traefik.io "security-headers" is forbidden: User
+#   "system:serviceaccount:rollops-system:rollopsd" cannot get resource
+#   "middlewares" in API group "traefik.io" in the namespace "klarlabs"
+#
+# It applied the INGRESS that references this middleware and rolled back only
+# the middleware, which left the router unbuildable and the apex serving 404
+# until this was applied by hand. All 18 middlewares in the cluster are
+# hand-applied for the same reason; this file exists so at least the content is
+# in git rather than living only in the cluster.
+#
+# Every CSP directive was checked against what the live page and its stylesheet
+# actually load (2026-09-04): all assets same-origin, no data: URIs, no
+# @font-face, no offsite hosts, no forms, no iframes.
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: security-headers
+  namespace: klarlabs
+spec:
+  headers:
+    contentSecurityPolicy: >-
+      default-src 'self';
+      script-src 'self' 'unsafe-inline';
+      style-src 'self' 'unsafe-inline';
+      img-src 'self';
+      font-src 'self';
+      connect-src 'self';
+      frame-ancestors 'none';
+      base-uri 'self';
+      form-action 'self';
+      object-src 'none'
+    # 'unsafe-inline' covers one inline <script> (Astro's hydration bootstrap),
+    # one inline <style> block and 11 style= attributes. Hashes were considered
+    # and rejected: Astro regenerates that script per build, so a hash CSP would
+    # break the site on the next deploy rather than at review time; nonces need
+    # a request-time value the ingress cannot supply. frame-ancestors,
+    # object-src, base-uri and form-action are the directives 'unsafe-inline'
+    # does not weaken, and all four are closed.
+
+    # One day, no preload, no includeSubDomains. Long max-age and preload are
+    # effectively irreversible — a mistake locks browsers out of the apex over
+    # plain HTTP for the life of the cache. Raise once observed working.
+    stsSeconds: 86400
+    stsIncludeSubdomains: false
+    stsPreload: false
+    forceSTSHeader: true
+
+    frameDeny: true
+    contentTypeNosniff: true
+    browserXssFilter: false
+    referrerPolicy: strict-origin-when-cross-origin
+    permissionsPolicy: "geolocation=(), microphone=(), camera=(), payment=()"
