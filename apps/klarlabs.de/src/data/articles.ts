@@ -45,6 +45,89 @@ export interface Article {
  */
 export const articles: Article[] = [
   {
+    slug: 'one-belief-one-trust',
+    title: 'One belief, one trust',
+    dek: 'For the first time in a while, the latest Mnemos release adds no new cognitive feature. Instead we measured what a million beliefs costs, found one belief carrying three different trust values at once, and caught consolidation merging a contradiction out of existence. This is what we fixed, the fix we had to throw away, and why a system that reasons about evidence has to be held to its own standard.',
+    date: '2026-10-05',
+    readingMinutes: 10,
+    author: 'Felix Geelhaar',
+    accent: '#E11D48',
+    tags: ['AI', 'Memory', 'Measurement', 'Engineering'],
+    blocks: [
+      { type: 'p', text: 'Mnemos has grown fast. It started as a small evidence layer — extract claims from text, link each one to its source, surface contradictions instead of silently overwriting them. Since then it has picked up a sleep cycle, forgetting, salience, outcome credit, health vitals, and a long tail of cognitive processes. Each arrived with tests. But each was also another place where the system could quietly disagree with itself: one Go library, a CLI, REST, gRPC, MCP over two transports, and five storage backends, all claiming to describe the same brain.' },
+      { type: 'p', text: 'So we stopped adding and started consolidating. The rule for the whole program was simple and a little uncomfortable: no change lands without saying what the brain did before, what it does after, and how we know the difference is an improvement rather than just a difference. This piece is about what that rule turned up.' },
+
+      { type: 'h', text: 'First, measure what a big brain costs' },
+      { type: 'p', text: 'You cannot tell whether a system got better if you never wrote down how it behaved. We had good tests for correctness and almost no record of cost. So the first thing we built was a harness that generates a synthetic brain — beliefs, episodes, evidence links, associations — as a pure function of a size, a seed, and a shape. The same parameters produce the identical brain on any machine, so a number taken today can be regenerated at any later commit and the difference blamed on the code, not the data. Besides a uniform brain it builds the pathological ones: a few beliefs with enormous fan-in, dense contradiction clusters, a vocabulary so small that everything overlaps, evidence piled onto a handful of beliefs, and a brain where most knowledge is years past its freshness.' },
+      { type: 'code', lang: 'bash', caption: 'Deterministic: the same flags rebuild the same brain at any commit, so a regression is attributable.', code: 'go run ./tools/scalebench -beliefs 1000000 -json base-1m.json\ngo run ./tools/scalebench -beliefs 100000 -shape hub' },
+      { type: 'p', text: 'Then we ran it at ten thousand, a hundred thousand, and a million beliefs. The headline is reassuring and sobering in equal parts: every operation completed at a million beliefs. None of them was fast.' },
+      {
+        type: 'stats',
+        stats: [
+          { value: '18.8 s', label: 'one Remember (a single write) at 1M beliefs — 0.28 s at 10k' },
+          { value: '12.8 s', label: 'a full brain-health check at 1M' },
+          { value: '2.7 s', label: 'p95 recall at 1M, cold' },
+          { value: '4.1 GiB', label: 'peak heap for a 1M-belief brain' },
+        ],
+      },
+      { type: 'p', text: 'The write path breaks first. Each new belief is compared against existing knowledge to find support and contradiction, and that comparison grows with the brain: the comparison alone takes about a second at fifty thousand beliefs, and a whole write takes nineteen at a million. Health and knowledge-gap reports are full scans. None of that is news you want, but all of it is now a number with a commit next to it, which is the only way the scale work that follows can claim to have helped.' },
+
+      { type: 'h', text: 'One belief, three trust values' },
+      { type: 'p', text: 'Trust is the most important number Mnemos computes. It is what recall filters on, what forgetting reads, what the health check counts, what an agent sees next to every answer. It is meant to answer one plain question: given the evidence, how much should I rely on this belief right now? When we traced every place that computed it, we found three different answers to that question for the same belief at the same instant.' },
+      { type: 'p', text: 'Take a volatile belief — something about what is currently deployed, which Mnemos rightly gives a short fourteen-day freshness. Confidence 0.9, one supporting episode, thirty days old. The stored trust said 0.645, because it decayed on a global ninety-day clock and ignored the belief’s own. Recall re-scored it on the fly with a different recency curve and reported about 0.56. The health check and the gate that decides what floats up to shared knowledge used the belief’s own clock and saw 0.27. Three subsystems, three numbers, and consequences that do not add up: the belief was counted in neither the low-trust vital nor the decay vital, because each looked at a different number.' },
+      { type: 'quote', text: 'The root cause was not a formula. It was a function signature. The storage layer scored trust with a callback that took confidence, an evidence count, and a timestamp — and had no room for a belief’s own decay rate, its confirmations, or its credit. So the stored value could not honour them, and every subsystem that needed them computed a private variant instead.' },
+      { type: 'p', text: 'The fix is one function, trust.At, that takes everything trust is made of and an instant, and returns the trust. Every writer uses it; every reader reads its stored output. For a belief with no decay rate of its own, no confirmation, and no credit, it returns exactly what the old formula did — a test pins that — so only beliefs carrying one of the new inputs can move.' },
+      { type: 'code', lang: 'text', caption: 'The canonical trust model (ADR 0026). τ is the belief’s own time constant; credit is what outcomes have taught it.', code: 'trust     = clamp01(base + credit)\nbase      = confidence × (1 + 0.2·ln n) × freshness\nfreshness = max(0.3, exp(−d / τ))\nd         = days since max(newest evidence, last confirmation)\ncredit    = outcome credit, capped at ±0.30' },
+      { type: 'p', text: 'Two details in that block were bugs before they were decisions. Outcome credit — the brain learning that a belief behind a good or bad decision deserves more or less trust — used to be written straight into the stored score, where the very next write touching that belief erased it. It is now stored on its own and added back on every recompute. And the parameter everyone called a half-life never was one: at its own value the freshness factor sits at thirty-seven percent, not fifty. We kept the arithmetic, so nothing reranks, and stopped calling it something it is not.' },
+
+      { type: 'h', text: 'The fix we threw away' },
+      { type: 'p', text: 'The first version of trust.At used the belief’s last-verified time as a freshness signal. It is intuitive: if someone re-confirmed a belief yesterday, it should not be penalised for old evidence. Every unit test agreed. Then we ran the brain benchmark — a paired experiment that seeds identical brains, runs consolidation on one, and compares — and one scenario went quietly wrong. On the current release, consolidation retires four stale beliefs that a newer fact has superseded, and the outdated answer stops being recalled. With the new trust model it retired none of them, and the outdated answer kept coming back.' },
+      { type: 'p', text: 'The cause took one experiment to confirm. Last-verified is not only written when a person verifies a belief. The nightly replay writes it — rehearsing a belief keeps it fresh against forgetting — and so does recall when reconsolidation is switched on. So using it as a trust input meant a belief became more trusted simply by being rehearsed or remembered, which made it more likely to be recalled, which made it more trusted. Stale knowledge that keeps getting recalled would never decay. Remove that one input and the benchmark matched the old release exactly.' },
+      { type: 'quote', text: 'A belief must not become more trustworthy because it was remembered. Retrieval is not evidence.' },
+      { type: 'p', text: 'So confirmation got its own field, last-confirmed, with exactly two writers: an explicit verify, and an observed outcome that validated the belief. Replay and recall keep touching last-verified, which still drives what it always drove — liveness and replay order — and can no longer touch trust. Every unit test had been green throughout. Only the experiment that compares whole brains could see the loop.' },
+
+      { type: 'h', text: 'What it does to a real brain' },
+      { type: 'p', text: 'We ran the old and new models side by side over a real working brain — read-only, nothing written — and compared every live belief. This is the number the rule exists for: not whether the new model is elegant, but what it changes.' },
+      {
+        type: 'stats',
+        stats: [
+          { value: '210,361', label: 'live beliefs compared, old model against new' },
+          { value: '4.9%', label: 'moved — exactly the volatile beliefs, all downward' },
+          { value: '95.1%', label: 'bit-for-bit unchanged' },
+          { value: '0.39% → 5.2%', label: 'share below the low-trust floor; the warning line is 30%' },
+        ],
+      },
+      { type: 'p', text: 'Ten thousand beliefs about mutable state — what is installed, running, deployed — had been holding ninety-day trust they never deserved, and now decay on the clock they were given at ingest. Nothing else moved. Nothing is forgotten as a result, because forgetting by trust is not part of the default sleep. That is what a consolidation change should look like: a large correction, precisely where the inconsistency was, and nowhere else.' },
+
+      { type: 'h', text: 'Consolidation was merging contradictions away' },
+      { type: 'p', text: 'The second finding was worse, because it ran every night. Part of the sleep pass merges near-duplicate beliefs: when two beliefs embed almost identically, the weaker folds into the stronger and its evidence moves across. That is the right thing for paraphrases. But the merge only asked whether two beliefs were about the same thing — never whether they agreed. Two beliefs connected by a recorded contradiction could be fused into one, carrying both sides’ evidence, with the contradiction edge between them dropped as a self-loop. A statement and its negation, the same rule for two different services, a decision and a fact with the same wording, even beliefs the brain had already retired — all were eligible. And merges chained: if A resembled B and B resembled C, A and C merged even when they did not resemble each other at all.' },
+      { type: 'p', text: 'The benchmark showed it happening on every run of the current release: a scenario that starts with three recorded contradictions ends consolidation with two. The fix keeps merging what is genuinely redundant and refuses everything else — never across a contradiction, a negation, a scope, a type, or a retired belief, and only when every member of a cluster is a near-duplicate of every other. The same scenario now keeps all three contradictions, merges one cluster instead of two, and its verdict improves from mixed to improved.' },
+      { type: 'p', text: 'For a system whose whole premise is that contradictions are first-class state, consolidation deleting them was the most important bug in this program. It is also the one no test caught, because each individual merge looked reasonable.' },
+
+      { type: 'h', text: 'The smaller things an audit turns up' },
+      { type: 'p', text: 'Most of what a consolidation finds is not dramatic. It is the accumulated distance between what a system says and what it does. A sample:' },
+      { type: 'list', items: [
+        'Deleting one episode deleted every belief it supported — even a belief four other episodes still backed. It now removes only that link and rescores what is left.',
+        'The dissonance vital divided live contradictions by every belief ever stored, including retired ones, so pruning bad beliefs made the brain look calmer without changing a single live conflict.',
+        'An empty brain reported its prediction-error vital as perfectly healthy, against the system’s own rule that what is not measured is unknown, not zero.',
+        'The context block an agent receives listed narration and already-forgotten beliefs that recall deliberately hides.',
+        'The documentation told Go users to import an internal package that only compiles inside the repository. Every Go example in the docs is now compiled on every CI run from a module outside the repository.',
+        'One storage backend reset a belief’s verification whenever it was re-ingested; the others never did.',
+        'The brain benchmark itself turned out not to be deterministic across runs. We found that because we ran every comparison three times.',
+      ]},
+
+      { type: 'h', text: 'Distrust the instrument, again' },
+      { type: 'p', text: 'The last piece we wrote about Mnemos ended on a line we keep coming back to: health is a practice of distrusting your instruments until they earn it. This program was that practice applied to the whole system. The trust model was an instrument that gave three readings. The merge was an instrument that measured similarity and was read as agreement. The benchmark was an instrument that turned out to wobble. And the fix we were proudest of was the one a whole-brain experiment made us throw away.' },
+      { type: 'p', text: 'There is more to do. Stored trust becomes an explicitly versioned cache with a bounded, verified backfill for existing brains. Every capability gets a machine-checked contract across the library, REST, gRPC, and MCP, so a renamed operation cannot silently disappear from one of them. And every online operation gets an explicit computation budget, so a million beliefs costs something you chose rather than something you discovered. None of it is a new cognitive feature. All of it is what lets the next one be trusted.' },
+    ],
+    cta: {
+      heading: 'Mnemos is open source',
+      body: 'MIT-licensed, a single Go binary, local-first. The trust model, the consolidation guards, and the scale harness described here are all in the repository, with the measurements that justified them.',
+      href: 'https://github.com/klarlabs-studio/mnemos',
+      label: 'Explore Mnemos on GitHub',
+    },
+  },
+  {
     "slug": "the-check-that-said-no",
     "title": "The check that said no",
     "dek": "We spent a day fixing the same bug six times across our own estate: a check that reports green while measuring nothing. Then Warden caught us doing it too — and refused the commit. That refusal is the product.",
