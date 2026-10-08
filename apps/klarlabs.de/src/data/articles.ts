@@ -48,7 +48,7 @@ export const articles: Article[] = [
     slug: 'one-belief-one-trust',
     title: 'One belief, one trust',
     dek: 'For the first time in a while, the latest Mnemos release adds no new cognitive feature. Instead we measured what a million beliefs costs, found one belief carrying three different trust values at once, and caught consolidation merging a contradiction out of existence. This is what we fixed, the fix we had to throw away, and why a system that reasons about evidence has to be held to its own standard.',
-    date: '2026-10-05',
+    date: '2026-10-08',
     readingMinutes: 10,
     author: 'Felix Geelhaar',
     accent: '#E11D48',
