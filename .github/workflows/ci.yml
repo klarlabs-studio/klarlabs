@@ -37,3 +37,10 @@ jobs:
     secrets: inherit
     with:
       package-manager: pnpm
+      # The shared nox gate enforces only once a scan reports baselined
+      # findings, and is report-only otherwise. That is the right default for a
+      # repo adopting the workflow and the wrong one here: this repo has no
+      # .nox/baseline.json at all, so the gate has never been able to fail,
+      # whatever it found. nox-strict makes it enforce without committing a
+      # baseline — which would suppress findings rather than gate on them.
+      nox-strict: true
