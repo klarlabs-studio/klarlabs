@@ -19,6 +19,8 @@ export interface Product {
   features: ProductFeature[];
   ctaHref?: string;
   ctaLabel?: string;
+  /** Path under public/ to a square logo with a transparent background. */
+  logo?: string;
 }
 
 /**
@@ -153,6 +155,7 @@ export const products: Product[] = [
   },
   {
     slug: 'nox',
+    logo: '/logos/nox.webp',
     name: 'Nox',
     tagline: 'The security scanner that understands your AI app.',
     description: 'Secrets, dependencies, IaC, and the LLM and MCP risks other scanners miss — in one offline-first pass. Open source.',
@@ -174,6 +177,7 @@ export const products: Product[] = [
   },
   {
     slug: 'nox-intelligence',
+    logo: '/logos/nox.webp',
     name: 'NOX Intelligence',
     tagline: 'Vulnerability answers you can verify, not just trust.',
     description: 'The advisory service behind every Nox scan — everything OSV.dev knows plus what the NOX network has found, checked against OSV.dev on every lookup.',
