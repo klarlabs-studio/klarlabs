@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { products, ossGroups } from '../data/products';
+import { productLines, productsIn, alsoFromStudio, ossGroups } from '../data/products';
 ---
 
 <Base
@@ -41,20 +41,28 @@ import { products, ossGroups } from '../data/products';
     <section id="products">
       <span class="section-label">01 Products</span>
       <h2>Tools for building, running, and trusting AI systems.</h2>
-      <div class="grid">
-        {
-          products.map((p) => (
-            <kl-product-card
-              name={p.name}
-              description={p.description}
-              href={`/products/${p.slug}/`}
-              logo-src={p.logo}
-              status={p.status}
-              style={`--kl-product-card-accent: ${p.accent}`}
-            />
-          ))
-        }
-      </div>
+      {
+        productLines.map((line) => (
+          <div class="line">
+            <div class="line-head">
+              <h3 class="line-title">{line.title}</h3>
+              <p class="line-summary">{line.summary}</p>
+            </div>
+            <div class="grid">
+              {productsIn(line.id).map((p) => (
+                <kl-product-card
+                  name={p.name}
+                  description={p.description}
+                  href={`/products/${p.slug}/`}
+                  logo-src={p.logo}
+                  status={p.status}
+                  style={`--kl-product-card-accent: ${p.accent}`}
+                />
+              ))}
+            </div>
+          </div>
+        ))
+      }
     </section>
 
     <kl-divider></kl-divider>
@@ -84,8 +92,27 @@ import { products, ossGroups } from '../data/products';
 
     <kl-divider></kl-divider>
 
+    <section id="also">
+      <span class="section-label">03 Also from the studio</span>
+      <ul class="also-list">
+        {
+          alsoFromStudio.map((p) => (
+            <li>
+              <a href={`/products/${p.slug}/`}>
+                <span class="also-name">{p.name}</span>
+                <span class="also-tagline">{p.tagline}</span>
+                {p.status === 'coming-soon' && <span class="also-status">Coming soon</span>}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <kl-divider></kl-divider>
+
     <section id="studio">
-      <span class="section-label">03 Studio</span>
+      <span class="section-label">04 Studio</span>
       <p class="studio-copy">
         Klarlabs is an independent software studio in Munich. One engineer, strong opinions,
         production standards. We design for the long run: typed contracts, evidence over
@@ -178,6 +205,78 @@ import { products, ossGroups } from '../data/products';
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: var(--kl-space-6);
+  }
+
+  .line {
+    display: grid;
+    gap: var(--kl-space-4);
+    margin-block-start: var(--kl-space-4);
+  }
+
+  .line-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--kl-space-2) var(--kl-space-4);
+  }
+
+  .line-title {
+    margin: 0;
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    font-weight: var(--kl-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--kl-tracking-caps);
+    color: var(--kl-ink-secondary);
+  }
+
+  .line-summary {
+    margin: 0;
+    font-family: var(--kl-font-sans);
+    font-size: var(--kl-text-sm);
+    color: var(--kl-ink-tertiary);
+  }
+
+  .also-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: var(--kl-space-2) var(--kl-space-6);
+  }
+
+  .also-list a {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--kl-space-1) var(--kl-space-2);
+    padding-block: var(--kl-space-2);
+    border-block-end: 1px solid var(--kl-border);
+    font-family: var(--kl-font-sans);
+    text-decoration: none;
+  }
+
+  .also-name {
+    font-size: var(--kl-text-sm);
+    font-weight: var(--kl-weight-semibold);
+    color: var(--kl-ink);
+  }
+
+  .also-tagline {
+    font-size: var(--kl-text-sm);
+    color: var(--kl-ink-tertiary);
+  }
+
+  .also-status {
+    font-size: var(--kl-text-xs);
+    color: var(--kl-ink-tertiary);
+    text-transform: uppercase;
+    letter-spacing: var(--kl-tracking-caps);
+  }
+
+  .also-list a:hover .also-name {
+    color: var(--kl-accent);
   }
 
   .oss-group {

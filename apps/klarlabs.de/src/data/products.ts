@@ -1,5 +1,6 @@
 export type ProductTheme = 'dark' | 'light';
 export type ProductStatus = 'live' | 'beta' | 'coming-soon';
+export type ProductLine = 'secure' | 'remember' | 'operate';
 
 export interface ProductFeature {
   heading: string;
@@ -21,6 +22,12 @@ export interface Product {
   ctaLabel?: string;
   /** Path under public/ to a square logo with a transparent background. */
   logo?: string;
+  /**
+   * The line of the AI-infrastructure family this product belongs to. Products
+   * without one are studio work outside that story, listed in the compact
+   * "Also from the studio" row rather than the main product grid.
+   */
+  line?: ProductLine;
 }
 
 /**
@@ -30,6 +37,7 @@ export interface Product {
 export const products: Product[] = [
   {
     slug: 'vorhut',
+    line: 'operate',
     name: 'Vorhut',
     tagline: 'Predict incidents before they happen.',
     description: 'AI-powered incident prediction and governed auto-remediation.',
@@ -51,6 +59,7 @@ export const products: Product[] = [
   },
   {
     slug: 'mnemos',
+    line: 'remember',
     name: 'Mnemos',
     tagline: 'Self-hosted memory that thinks — and gets better with use.',
     description: 'A self-hosted memory + evidence layer for AI agents — with a full cognitive layer that consolidates, forgets, predicts, and learns from its own errors. No vendor cloud, no LLM.',
@@ -93,26 +102,6 @@ export const products: Product[] = [
     ctaLabel: 'Open Pet Medical',
   },
   {
-    slug: 'brotwerk',
-    name: 'Brotwerk',
-    tagline: 'Daily AI coaching for your sourdough.',
-    description: 'A photo, a verdict, a tip — daily AI companionship for real sourdough.',
-    theme: 'light',
-    accent: '#D97706',
-    status: 'beta',
-    problem:
-      'Reading a sourdough starter is guesswork. Is it ready? Underfed? Past its peak? Most advice is folklore, not observation.',
-    solution:
-      'Brotwerk reads your starter from a photo. A morning and evening snapshot from your phone — the model reads dome, bubbles, and rise, scores ripeness 0–100 with confidence, and answers in one plain sentence: feed, hydrate, wait, or bake.',
-    features: [
-      { heading: 'Photo → verdict → tip', body: 'Eight seconds to photograph, six to assess, five to read. No light box, no tripod.' },
-      { heading: 'Ripeness score', body: 'A 0–100 maturity reading with confidence — dome, bubbles, and level, tracked across the seven-day arc.' },
-      { heading: 'Privacy by design', body: 'EU-hosted, no tracking pixels, photos never used for AI training. GDPR export and deletion built in.' },
-    ],
-    ctaHref: 'https://brotwerk.app',
-    ctaLabel: 'Open Brotwerk',
-  },
-  {
     slug: 'kraftsport-coach',
     name: 'KraftSport Coach',
     tagline: 'Strength programming, engineered.',
@@ -134,6 +123,7 @@ export const products: Product[] = [
   },
   {
     slug: 'roady',
+    line: 'remember',
     name: 'Roady',
     tagline: 'The plan-of-record for AI coding agents.',
     description: 'Spec, plan, and drift detection that survive context resets — file-based, git-versioned, MCP-native. Runs no model of its own.',
@@ -155,6 +145,7 @@ export const products: Product[] = [
   },
   {
     slug: 'nox',
+    line: 'secure',
     logo: '/logos/nox.webp',
     name: 'Nox',
     tagline: 'The security scanner that understands your AI app.',
@@ -177,6 +168,7 @@ export const products: Product[] = [
   },
   {
     slug: 'nox-intelligence',
+    line: 'secure',
     logo: '/logos/nox.webp',
     name: 'NOX Intelligence',
     tagline: 'Vulnerability answers you can verify, not just trust.',
@@ -274,6 +266,25 @@ export const products: Product[] = [
     ],
   },
 ];
+
+export interface ProductLineInfo {
+  id: ProductLine;
+  title: string;
+  summary: string;
+}
+
+/** The AI-infrastructure family, in the order the home page tells it. */
+export const productLines: ProductLineInfo[] = [
+  { id: 'secure', title: 'Secure', summary: 'Find what AI-built software gets wrong, and prove which findings are real.' },
+  { id: 'remember', title: 'Remember & plan', summary: 'Memory and a plan of record that keep agents on track across sessions.' },
+  { id: 'operate', title: 'Operate', summary: 'Predict incidents and remediate them under explicit governance.' },
+];
+
+/** Products in a line, in inventory order. */
+export const productsIn = (line: ProductLine): Product[] => products.filter((p) => p.line === line);
+
+/** Studio work outside the AI-infrastructure family. */
+export const alsoFromStudio: Product[] = products.filter((p) => !p.line);
 
 export interface OssLibrary {
   name: string;
