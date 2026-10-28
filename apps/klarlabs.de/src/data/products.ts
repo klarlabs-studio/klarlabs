@@ -1,5 +1,6 @@
 export type ProductTheme = 'dark' | 'light';
 export type ProductStatus = 'live' | 'beta' | 'coming-soon';
+export type ProductLine = 'secure' | 'remember' | 'operate';
 
 export interface ProductFeature {
   heading: string;
@@ -19,6 +20,14 @@ export interface Product {
   features: ProductFeature[];
   ctaHref?: string;
   ctaLabel?: string;
+  /** Path under public/ to a square logo with a transparent background. */
+  logo?: string;
+  /**
+   * The line of the AI-infrastructure family this product belongs to. Products
+   * without one are studio work outside that story, listed in the compact
+   * "Also from the studio" row rather than the main product grid.
+   */
+  line?: ProductLine;
 }
 
 /**
@@ -28,6 +37,7 @@ export interface Product {
 export const products: Product[] = [
   {
     slug: 'vorhut',
+    line: 'operate',
     name: 'Vorhut',
     tagline: 'Predict incidents before they happen.',
     description: 'AI-powered incident prediction and governed auto-remediation.',
@@ -48,7 +58,31 @@ export const products: Product[] = [
     ctaLabel: 'Open Vorhut',
   },
   {
+    slug: 'tokenops',
+    line: 'operate',
+    logo: '/logos/tokenops.svg',
+    name: 'TokenOps',
+    tagline: "Know what's left. Set what's allowed. Let your agents work.",
+    description: 'Guardrails for coding agents: what is left on every AI plan, steering inside the session, and limits your agents respect. Local-first; prompts never leave your machine.',
+    theme: 'dark',
+    accent: '#C6F432',
+    status: 'live',
+    problem:
+      'Coding agents now run for hours across several plans at once — Claude, Codex, Cursor, Copilot, API keys. Each vendor shows its own meter in its own place, so the cutoff arrives mid-refactor, a looping agent burns an hour of the window before anyone looks, and an unattended run has no moment where someone asks "should this keep going?"',
+    solution:
+      'TokenOps reads every plan and account your agents draw on, more than 80 providers, and acts inside the session before a limit, a budget or a rule you set is crossed. It runs as a local daemon with a menu bar app, a status line and MCP tools for the agent itself; prompts and code never leave the machine. Teams share the same guardrails on the hosted team plane, free during the beta.',
+    features: [
+      { heading: 'Know what is left', body: 'Every 5-hour, weekly and monthly window in one view, with its pace and its reset — in the menu bar, the status line and the agent\'s own context. A reading that stopped shows its age, never passes for current.' },
+      { heading: 'Steer the session it is in', body: 'A loop breaker pauses the call that repeats with nothing changed, a redundant file read is refused before it costs a token, and long command output is cut to what the agent needs.' },
+      { heading: 'Set what is allowed', body: 'Action boundaries on session cost, the last of a plan or a bigger model start in shadow, then enforce. Only a person at a terminal can approve — never the agent that was stopped.' },
+      { heading: 'Shared, not surveilled', body: 'The team plane rolls up derived figures by team, repository and kind of work — never prompts, files or paths. Owners set signed rules members can tighten but never loosen. Hosted in Germany.' },
+    ],
+    ctaHref: 'https://team.klarlabs.de',
+    ctaLabel: 'Open TokenOps',
+  },
+  {
     slug: 'mnemos',
+    line: 'remember',
     name: 'Mnemos',
     tagline: 'Self-hosted memory that thinks — and gets better with use.',
     description: 'A self-hosted memory + evidence layer for AI agents — with a full cognitive layer that consolidates, forgets, predicts, and learns from its own errors. No vendor cloud, no LLM.',
@@ -91,26 +125,6 @@ export const products: Product[] = [
     ctaLabel: 'Open Pet Medical',
   },
   {
-    slug: 'brotwerk',
-    name: 'Brotwerk',
-    tagline: 'Daily AI coaching for your sourdough.',
-    description: 'A photo, a verdict, a tip — daily AI companionship for real sourdough.',
-    theme: 'light',
-    accent: '#D97706',
-    status: 'beta',
-    problem:
-      'Reading a sourdough starter is guesswork. Is it ready? Underfed? Past its peak? Most advice is folklore, not observation.',
-    solution:
-      'Brotwerk reads your starter from a photo. A morning and evening snapshot from your phone — the model reads dome, bubbles, and rise, scores ripeness 0–100 with confidence, and answers in one plain sentence: feed, hydrate, wait, or bake.',
-    features: [
-      { heading: 'Photo → verdict → tip', body: 'Eight seconds to photograph, six to assess, five to read. No light box, no tripod.' },
-      { heading: 'Ripeness score', body: 'A 0–100 maturity reading with confidence — dome, bubbles, and level, tracked across the seven-day arc.' },
-      { heading: 'Privacy by design', body: 'EU-hosted, no tracking pixels, photos never used for AI training. GDPR export and deletion built in.' },
-    ],
-    ctaHref: 'https://brotwerk.app',
-    ctaLabel: 'Open Brotwerk',
-  },
-  {
     slug: 'kraftsport-coach',
     name: 'KraftSport Coach',
     tagline: 'Strength programming, engineered.',
@@ -132,6 +146,7 @@ export const products: Product[] = [
   },
   {
     slug: 'roady',
+    line: 'remember',
     name: 'Roady',
     tagline: 'The plan-of-record for AI coding agents.',
     description: 'Spec, plan, and drift detection that survive context resets — file-based, git-versioned, MCP-native. Runs no model of its own.',
@@ -153,24 +168,49 @@ export const products: Product[] = [
   },
   {
     slug: 'nox',
+    line: 'secure',
+    logo: '/logos/nox.webp',
     name: 'Nox',
     tagline: 'The security scanner that understands your AI app.',
-    description: 'Catches the LLM and MCP threats every other scanner misses — offline-first, open source.',
+    description: 'Secrets, dependencies, IaC, and the LLM and MCP risks other scanners miss — in one offline-first pass. Open source.',
     theme: 'dark',
-    accent: '#EF4444',
+    accent: '#3B82F6',
     status: 'live',
     problem:
-      'Teams ship LLM features — chat completions, RAG ingest, agents with tool calls, MCP servers — and every conventional scanner is blind to the threats that come with them.',
+      'Teams ship LLM features — chat completions, RAG ingest, agents with tool calls, MCP servers — and every conventional scanner is blind to the threats that come with them. The ones it does see arrive as a wall of alerts nobody can tell apart from a real attack path.',
     solution:
-      'Nox understands AI applications: full OWASP MCP Top 10 coverage, prompt injection at the call site, embedding leakage, agent over-privilege, and cross-file AI taint — plus secrets, dependencies, IaC, and containers in one deterministic pass. Offline-first: no API, no token, no telemetry. Open source, Apache-2.0.',
+      'Nox understands AI applications: the OWASP LLM, MCP, and Agentic Top 10, prompt injection at the call site, cross-file AI taint, hallucinated packages — plus secrets, dependencies, IaC, and containers in one deterministic pass. It runs on your machine and sends no source code anywhere; dependency answers come from NOX Intelligence and are checked against OSV.dev on every scan. Findings land as SARIF, CycloneDX, and SPDX, in your editor over LSP, and in your agent over MCP. Open source, Apache-2.0.',
     features: [
-      { heading: 'Full MCP threat coverage', body: 'Tool poisoning, rug-pull, auth/SSRF, shadow servers — mapped to the OWASP MCP Top 10.' },
-      { heading: 'Cross-file AI taint', body: 'Tracks request data through service hops into LLM call sites — across functions and files.' },
-      { heading: '717 rules, 19 plugins', body: 'SAST, DAST, reachability, k8s runtime, red team, GRC across 12 compliance frameworks.' },
-      { heading: 'Signed marketplace', body: 'Every official plugin Sigstore-verified; unsigned drops refused by default.' },
+      { heading: 'Built for AI applications', body: 'Tool poisoning, rug-pull, auth/SSRF, and shadow servers mapped to the OWASP MCP Top 10; prompt injection traced from request to model call across functions and files.' },
+      { heading: 'Proof, not alarms', body: 'nox attack turns findings into exploit hypotheses and, only when you authorise it, tests them against a running target. A finding is confirmed by reproduction — never by an LLM’s opinion.' },
+      { heading: 'Fixes, not just findings', body: 'nox fix plans, applies, and verifies dependency and action-pin upgrades. The Remediate GitHub Action opens the pull request for you.' },
+      { heading: 'Offline-first, deterministic', body: 'Same input, same output. No account, no telemetry, no API key — and one setting turns off the network entirely.' },
     ],
     ctaHref: 'https://nox-hq.dev',
     ctaLabel: 'Open Nox',
+  },
+  {
+    slug: 'nox-intelligence',
+    line: 'secure',
+    logo: '/logos/nox.webp',
+    name: 'NOX Intelligence',
+    tagline: 'Vulnerability answers you can verify, not just trust.',
+    description: 'The advisory service behind every Nox scan — everything OSV.dev knows plus what the NOX network has found, checked against OSV.dev on every lookup.',
+    theme: 'dark',
+    accent: '#A371F7',
+    status: 'live',
+    problem:
+      'Your scanner trusts one vulnerability database. When it is wrong, late, or down, you find out from an incident — and the risks that come with AI-written code, like packages a model invented, are in no database at all.',
+    solution:
+      'NOX Intelligence answers every dependency lookup with everything OSV.dev returns, plus what the NOX network has found — never less. The Nox scanner verifies that on every run and restores anything missing, so a bad day for the service cannot cost you a finding. Answers come from a continuously synced mirror in about half a second; lookups carry package names and versions, never source code. It is on by default in every Nox scan, with no sign-up and no API key.',
+    features: [
+      { heading: 'A guarantee, not a promise', body: 'Every answer is the union with OSV.dev, and the scanner checks it. When the mirror cannot vouch for an answer, the service asks OSV.dev live instead of guessing.' },
+      { heading: 'Fast enough for every commit', body: 'About half a second for a typical lookup, with EPSS, CISA KEV, and reachability context included — free.' },
+      { heading: 'AI supply chain', body: 'A signed weekly blocklist of package names language models are likely to hallucinate, and an advisory feed for MCP packages — so the tools your agents call are covered like any other dependency.' },
+      { heading: 'Evidence that cannot be gamed', body: 'Opt in, and your scans become independent evidence. Confidence counts distinct reporters, not repeated scans, and only people notify maintainers or publish a disclosure.' },
+    ],
+    ctaHref: 'https://intel.klarlabs.de',
+    ctaLabel: 'Open NOX Intelligence',
   },
   {
     slug: 'armada',
@@ -249,6 +289,25 @@ export const products: Product[] = [
     ],
   },
 ];
+
+export interface ProductLineInfo {
+  id: ProductLine;
+  title: string;
+  summary: string;
+}
+
+/** The AI-infrastructure family, in the order the home page tells it. */
+export const productLines: ProductLineInfo[] = [
+  { id: 'secure', title: 'Secure', summary: 'Find what AI-built software gets wrong, and prove which findings are real.' },
+  { id: 'remember', title: 'Remember & plan', summary: 'Memory and a plan of record that keep agents on track across sessions.' },
+  { id: 'operate', title: 'Operate', summary: 'Keep agents within their limits, and predict and remediate incidents, under explicit governance.' },
+];
+
+/** Products in a line, in inventory order. */
+export const productsIn = (line: ProductLine): Product[] => products.filter((p) => p.line === line);
+
+/** Studio work outside the AI-infrastructure family. */
+export const alsoFromStudio: Product[] = products.filter((p) => !p.line);
 
 export interface OssLibrary {
   name: string;
