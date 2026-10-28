@@ -50,6 +50,22 @@ const statusVariant = product.status === 'coming-soon' ? 'neutral' : 'accent';
         }
         <kl-badge variant={statusVariant}>{statusLabel}</kl-badge>
       </span>
+      {/* The slot is on a wrapper that always renders: Astro drops a slot
+          attribute from an element inside an expression, and the logo
+          would then never reach kl-hero's visual slot. */}
+      <span slot="visual">
+        {
+          product.logo && (
+            <img
+              class="product-logo"
+              src={product.logo}
+              alt={`${product.name} logo`}
+              width="160"
+              height="160"
+            />
+          )
+        }
+      </span>
     </kl-hero>
 
     <main>
@@ -117,6 +133,14 @@ const statusVariant = product.status === 'coming-soon' ? 'neutral' : 'accent';
     color: var(--kl-accent);
     font-weight: var(--kl-weight-semibold);
     font-style: normal;
+  }
+
+  .product-logo {
+    display: block;
+    inline-size: clamp(112px, 18vw, 160px);
+    block-size: auto;
+    margin-inline: auto;
+    filter: drop-shadow(0 0 32px color-mix(in srgb, var(--product-accent) 35%, transparent));
   }
 
   .hero-actions {
