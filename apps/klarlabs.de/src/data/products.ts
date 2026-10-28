@@ -58,6 +58,29 @@ export const products: Product[] = [
     ctaLabel: 'Open Vorhut',
   },
   {
+    slug: 'tokenops',
+    line: 'operate',
+    logo: '/logos/tokenops.svg',
+    name: 'TokenOps',
+    tagline: "Know what's left. Set what's allowed. Let your agents work.",
+    description: 'Guardrails for coding agents: what is left on every AI plan, steering inside the session, and limits your agents respect. Local-first; prompts never leave your machine.',
+    theme: 'dark',
+    accent: '#C6F432',
+    status: 'live',
+    problem:
+      'Coding agents now run for hours across several plans at once — Claude, Codex, Cursor, Copilot, API keys. Each vendor shows its own meter in its own place, so the cutoff arrives mid-refactor, a looping agent burns an hour of the window before anyone looks, and an unattended run has no moment where someone asks "should this keep going?"',
+    solution:
+      'TokenOps reads every plan and account your agents draw on, more than 80 providers, and acts inside the session before a limit, a budget or a rule you set is crossed. It runs as a local daemon with a menu bar app, a status line and MCP tools for the agent itself; prompts and code never leave the machine. Teams share the same guardrails on the hosted team plane, free during the beta.',
+    features: [
+      { heading: 'Know what is left', body: 'Every 5-hour, weekly and monthly window in one view, with its pace and its reset — in the menu bar, the status line and the agent\'s own context. A reading that stopped shows its age, never passes for current.' },
+      { heading: 'Steer the session it is in', body: 'A loop breaker pauses the call that repeats with nothing changed, a redundant file read is refused before it costs a token, and long command output is cut to what the agent needs.' },
+      { heading: 'Set what is allowed', body: 'Action boundaries on session cost, the last of a plan or a bigger model start in shadow, then enforce. Only a person at a terminal can approve — never the agent that was stopped.' },
+      { heading: 'Shared, not surveilled', body: 'The team plane rolls up derived figures by team, repository and kind of work — never prompts, files or paths. Owners set signed rules members can tighten but never loosen. Hosted in Germany.' },
+    ],
+    ctaHref: 'https://team.klarlabs.de',
+    ctaLabel: 'Open TokenOps',
+  },
+  {
     slug: 'mnemos',
     line: 'remember',
     name: 'Mnemos',
@@ -277,7 +300,7 @@ export interface ProductLineInfo {
 export const productLines: ProductLineInfo[] = [
   { id: 'secure', title: 'Secure', summary: 'Find what AI-built software gets wrong, and prove which findings are real.' },
   { id: 'remember', title: 'Remember & plan', summary: 'Memory and a plan of record that keep agents on track across sessions.' },
-  { id: 'operate', title: 'Operate', summary: 'Predict incidents and remediate them under explicit governance.' },
+  { id: 'operate', title: 'Operate', summary: 'Keep agents within their limits, and predict and remediate incidents, under explicit governance.' },
 ];
 
 /** Products in a line, in inventory order. */
