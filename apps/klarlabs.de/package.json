@@ -11,7 +11,7 @@
     "lint": "astro check"
   },
   "dependencies": {
-    "astro": "^5.1.1",
+    "astro": "^7.2.8",
     "lit": "^3.3.0",
     "@klarlabs-studio/ui": "workspace:*"
   },
